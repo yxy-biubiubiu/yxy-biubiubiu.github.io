@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>ZSYXY Meteorological workshop</title>
   
-  
+  <subtitle>爱生活|爱气象|爱编程</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
