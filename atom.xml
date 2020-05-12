@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-12T07:29:05.508Z</updated>
+  <updated>2020-05-12T13:27:05.256Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,21 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>文档</title>
+    <link href="http://yoursite.com/2020/05/12/index/"/>
+    <id>http://yoursite.com/2020/05/12/index/</id>
+    <published>2020-05-12T07:10:41.000Z</published>
+    <updated>2020-05-12T13:27:05.256Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>从有到无搭建一个属于自己的网站</title>
