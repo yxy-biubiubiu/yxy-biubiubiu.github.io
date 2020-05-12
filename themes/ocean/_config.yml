@@ -1,0 +1,54 @@
+# Menu
+menu:
+  主页: /
+  文档: /archives
+  标签: /tags
+  下载: /download
+  链接: /link
+  关于: /about
+rss: /atom.xml
+
+
+# Miscellaneous
+favicon: /2.ico
+brand: /images/shaun.svg
+
+# Ocean Video
+# Because I put videos in multiple formats on the same path, I just labeled the path here.
+ocean:
+  overlay: true
+  path: /images/ocean/
+  brand: /images/shaun.svg
+
+# Content
+excerpt_link: Read More...
+
+# Tags
+show_count: false
+
+# Toc
+toc: true
+
+# fancybox
+fancybox: true
+
+# Gitalk
+gitalk:
+  enable: false # true
+  clientID: # GitHub Application Client ID
+  clientSecret: # Client Secret
+  repo: # Repository name
+  owner: # GitHub ID
+  admin: # GitHub ID
+
+# Valine
+valine:
+  enable: true # true
+  el: 'vcomments'
+  appId: Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz
+  appKey: wz7jzCTKavkyF9OCm5uC7yDL
+  notify: false
+  verify: true
+  avatar: 'mp'
+  pageSize: '10'
+  placeholder: '请输入...' 

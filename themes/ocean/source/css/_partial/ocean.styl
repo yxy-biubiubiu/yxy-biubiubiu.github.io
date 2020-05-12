@@ -1,0 +1,59 @@
+//
+.video
+  position relative
+  height auto
+  .brand
+    width brand-size
+
+.video-frame
+  position absolute
+  z-index 1
+  right 0
+  bottom 0
+  left 0
+  min-width 100%
+  img
+    display block
+    width 100%
+
+.video-media
+  position relative
+  z-index 0
+  height 90vh
+  overflow hidden
+  video, img
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+    min-width 100%
+    min-height 100%
+
+.video-overlay
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+  background-color rgba(178, 191, 204, .6)
+
+.video-inner
+  position absolute
+  top 50%
+  left 50%
+  transform translate(-50%, -65%)
+  a, &
+    color white
+    text-decoration none
+
+.video-learn-more
+  position absolute
+  z-index 1
+  bottom -3rem
+  right 0
+  left 0
+  a > .fe
+    font-size 3rem
+    color gray
+    &:hover
+      color sea
