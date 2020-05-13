@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-12T07:29:05.508Z</updated>
+  <updated>2020-05-13T02:29:34.535Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>批量下载气象数据(EC;NCEP;CMIP)</title>
+    <link href="http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/"/>
+    <id>http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/</id>
+    <published>2020-05-13T01:19:58.000Z</published>
+    <updated>2020-05-13T02:29:34.535Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;介绍如何使用python批量下载EC数据以及使用wget批量下载NCEP/NCAR以及CMIP资料。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Shell" scheme="http://yoursite.com/tags/Shell/"/>
+    
+      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
+    
+  </entry>
   
   <entry>
     <title>从有到无搭建一个属于自己的网站</title>
