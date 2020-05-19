@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    method |
+    去趋势 |
     
     ZSYXY Meteorological workshop</title>
   
@@ -42,7 +42,7 @@
                 
   
     <h1 class="article-title" itemprop="name">
-      method
+      去趋势
     </h1>
   
   
@@ -64,11 +64,26 @@
                                             
 
                                                 
-                                                                    
+                                                                    <p>去趋势主要指的是去除带有趋势的序列中的线性趋势。scipy库提供了对应的函数以实现这一目的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.detrend(data, axis=<span class="number">-1</span>, type=<span class="string">'linear'</span>, bp=<span class="number">0</span>, overwrite_data=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>　　　　data: 数组</p>
+<p>　　　　axis: 整形，去趋势的维度</p>
+<p>　　　　type:{‘linear’, ‘constant’}参数可选</p>
+<p>　　　　　　‘linear’　默认值，数据减去线性最小二乘法拟合的结果</p>
+<p>　　　　　　‘constant’　去掉序列的均值，即求距平</p>
+<p>​             bp：整形，一系列的断点。如果给定，则在两个断点之间对数据的每个部分执行单独的线性拟合。断点被                        指定为数据的索引</p>
+<p> overwrite_data ：布尔型，默认为False，若为真则结果覆盖data</p>
+<p>注：由于是扣除了最小二乘法拟合，因此最终结果与原始序列均值之和才是原始数据去除线性趋势的结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from scipy import signal</span><br><span class="line">import numpy as np</span><br><span class="line">y &#x3D; np.array([6.08, 4.56, 5.63, 5.31, 5.15, 5.44, 4.65, 4.24, 7.3,  5.86, 4.51, 6.28, 5.55, 5.35,</span><br><span class="line">              5.12, 4.76, 4.35, 3.76, 4.74, 5.55, 4.54, 5.74, 5.54, 3.67, 4.77, 4.9,  3.06, 3.9,</span><br><span class="line">              4.18, 5.44, 5.21, 3.86, 3.96, 4.47, 4.37, 4.86, 4.43, 3.63, 3.98, 3.94, 5.09, 4.48,</span><br><span class="line">              4.05, 4.81, 4.07, 4.48, 4.46, 3.95, 5.24, 3.54, 3.11, 5.07, 6.09, 4.59, 4.55, 4.7,</span><br><span class="line">              3.43, 4.37, 4.79, 3.64, 4.3,  3.5 ])</span><br><span class="line">y_detrend_linear &#x3D; signal.detrend(y,axis &#x3D; 0,type&#x3D;&#39;linear&#39;)</span><br><span class="line">y_detrend_constant &#x3D; signal.detrend(y,axis &#x3D; 0,type&#x3D;&#39;constant&#39;)</span><br><span class="line">plt.plot(np.arange(0,62,1),y,&#39;k&#39;,label&#x3D;&#39;y&#39;)</span><br><span class="line">plt.plot(np.arange(0,62,1),y_detrend_linear+y.mean(),&#39;r&#39;,label&#x3D;&#39;linear&#39;)</span><br><span class="line">plt.legend()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200519214452584.png" alt="image-20200519214452584"></p>
+
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/method/index.html" data-id="ckadx3w4j000dvsvx12m3guc4" class="article-share-link">
+                                        <a data-url="http://yoursite.com/f1-2-3-1/index.html" data-id="ckadz2dbo0008jsvx51pf6abh" class="article-share-link">
                                             分享
                                         </a>
                                         

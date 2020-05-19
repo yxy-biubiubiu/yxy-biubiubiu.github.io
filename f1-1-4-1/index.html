@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    method |
+    数据标准化 |
     
     ZSYXY Meteorological workshop</title>
   
@@ -42,7 +42,7 @@
                 
   
     <h1 class="article-title" itemprop="name">
-      method
+      数据标准化
     </h1>
   
   
@@ -64,11 +64,17 @@
                                             
 
                                                 
-                                                                    
+                                                                    <p>将以下内容复制进A.py文件，与使用脚本放在同一文件夹内，通过import A 调用。</p>
+<p>In [ ]:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#39;&#39;&#39;</span><br><span class="line">function ：standardized(x,a)</span><br><span class="line">将数据标准化。 </span><br><span class="line">对x的a轴标准化。</span><br><span class="line">x为序列或数组，</span><br><span class="line">a为int；如1或(0,1)</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">import numpy as np</span><br><span class="line">def standardized(x,a):</span><br><span class="line">    y &#x3D; (x - x.mean(axis&#x3D;(a)))&#x2F;x.std(axis&#x3D;(a))</span><br><span class="line">    return y</span><br><span class="line">improt A</span><br><span class="line">standardized(x,a)</span><br></pre></td></tr></table></figure>
+
+<p>x为任意形状数组，函数对x的a轴进行标准化，</p>
+<p>a为int型；如1或(0,1)。</p>
+
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/method/index.html" data-id="ckadx3w4j000dvsvx12m3guc4" class="article-share-link">
+                                        <a data-url="http://yoursite.com/f1-1-4-1/index.html" data-id="ckadz2dbo0006jsvxeudm1qcy" class="article-share-link">
                                             分享
                                         </a>
                                         

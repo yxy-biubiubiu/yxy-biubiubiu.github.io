@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    method |
+    线性倾向估计(一元线性回归) |
     
     ZSYXY Meteorological workshop</title>
   
@@ -42,7 +42,7 @@
                 
   
     <h1 class="article-title" itemprop="name">
-      method
+      线性倾向估计(一元线性回归)
     </h1>
   
   
@@ -64,11 +64,29 @@
                                             
 
                                                 
-                                                                    
+                                                                    <p>除1.132节介绍的的线性回归系数可用来计算线性回归外，sklearn库中也有相关的函数用来计算一元线性回归，同时还可以输出回归线，为数据可视化提供了便利。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line">LinearRegression(fit_intercept=<span class="literal">True</span>, normalize=<span class="literal">False</span>, copy_X=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>fit_intercept ：是否计算截距，若数据已中心化，则可以不计算。默认True。</p>
+<p>normalize ：若开启，则对数据进行归一化处理。</p>
+<p>copy_X ：若开启，则复制X，否则对X进行重写覆盖。</p>
+<p>属性：</p>
+<p>coef_ ：线性回归系数</p>
+<p>intercept_ : 截距</p>
+<p>方法：</p>
+<p>fit(x,y) ：建立x,y的回归模型</p>
+<p>predict(x) ：利用回归模型进行预测</p>
+<p>score(x, y[, sample_weight]) ：返回R^2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from sklearn.linear_model import LinearRegression</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np</span><br><span class="line">#建立数据</span><br><span class="line">x &#x3D; np.arange(2000,2011,1).reshape(-1, 1)</span><br><span class="line">y &#x3D; np.array([3.9, 4.4, 10.8, 10.3, 11.2, 13.1, 14.1,  9.9, 13.9, 15.1, 12.5]).reshape(-1,1)</span><br><span class="line">#创建回归模型</span><br><span class="line">solver &#x3D; LinearRegression()</span><br><span class="line">#对x,y进行回归计算</span><br><span class="line">solver.fit(x,y)</span><br><span class="line">#计算x对应的回归值</span><br><span class="line">regressline &#x3D; solver.predict(x)</span><br><span class="line">#绘图</span><br><span class="line">plt.scatter(x,y)</span><br><span class="line">plt.plot(x, regressline, color&#x3D;&#39;k&#39;,linewidth&#x3D;3)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200519214110927.png" alt="image-20200519214110927"></p>
+<p>该方法较1.132节相对繁琐，甚至有些小题大做。因为该方法主要用于通过已有数据建立回归模型，对未知数据进行一元回归预测，在机器学习中使用更为广泛，在此处，仅仅体现了较为方便的回归线的绘制。</p>
+
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/method/index.html" data-id="ckadx3w4j000dvsvx12m3guc4" class="article-share-link">
+                                        <a data-url="http://yoursite.com/f1-2-1-1/index.html" data-id="ckadz2dbn0004jsvx5xu610bl" class="article-share-link">
                                             分享
                                         </a>
                                         

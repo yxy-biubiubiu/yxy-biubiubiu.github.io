@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-19T08:23:50.686Z</updated>
+  <updated>2020-05-19T12:55:39.757Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/2020/05/18/LBM/"/>
     <id>http://yoursite.com/2020/05/18/LBM/</id>
     <published>2020-05-18T07:20:24.000Z</published>
-    <updated>2020-05-19T08:23:50.686Z</updated>
+    <updated>2020-05-19T12:55:39.757Z</updated>
     
     <summary type="html">
     
@@ -30,6 +30,8 @@
     
     </summary>
     
+    
+      <category term="article" scheme="http://yoursite.com/categories/article/"/>
     
     
       <category term="model" scheme="http://yoursite.com/tags/model/"/>
@@ -41,7 +43,7 @@
     <link href="http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/"/>
     <id>http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/</id>
     <published>2020-05-13T01:19:58.000Z</published>
-    <updated>2020-05-13T02:29:34.535Z</updated>
+    <updated>2020-05-19T12:55:45.445Z</updated>
     
     <summary type="html">
     
@@ -49,6 +51,8 @@
     
     </summary>
     
+    
+      <category term="article" scheme="http://yoursite.com/categories/article/"/>
     
     
       <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
@@ -64,7 +68,7 @@
     <link href="http://yoursite.com/2020/05/12/1-building/"/>
     <id>http://yoursite.com/2020/05/12/1-building/</id>
     <published>2020-05-12T03:05:44.000Z</published>
-    <updated>2020-05-14T01:13:06.543Z</updated>
+    <updated>2020-05-19T12:55:23.982Z</updated>
     
     <summary type="html">
     
@@ -74,8 +78,10 @@
     </summary>
     
     
+      <category term="article" scheme="http://yoursite.com/categories/article/"/>
     
-      <category term="其他" scheme="http://yoursite.com/tags/%E5%85%B6%E4%BB%96/"/>
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
     
   </entry>
   

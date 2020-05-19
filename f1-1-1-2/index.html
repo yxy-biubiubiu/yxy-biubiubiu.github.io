@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    method |
+    百分位数 |
     
     ZSYXY Meteorological workshop</title>
   
@@ -42,7 +42,7 @@
                 
   
     <h1 class="article-title" itemprop="name">
-      method
+      百分位数
     </h1>
   
   
@@ -64,11 +64,22 @@
                                             
 
                                                 
-                                                                    
+                                                                    <p>将变量从小到大排序，计算相应的累计百分位，某一百分位对应的变量值为该百分位的百分位数(中位数即为50百分位数)。气候研究中计算极端事件的所用阈值法便可通过此函数实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">np.percentile(a, q, axis=<span class="literal">None</span>, overwrite_input=<span class="literal">False</span>, interpolation=<span class="string">'linear'</span>, keepdims=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>a : 输入数据，数组或序列；</p>
+<p>q : [0-100]之间的浮点数，所需计算的分位；</p>
+<p>axis : 指定计算平均的轴；</p>
+<p>overwrite_input : 是否重写覆盖原本数据，默认为False；</p>
+<p>interpolation : 所需分位数位于两个数据点之间时要使用的插值方法。可选：{‘linear’, ‘lower’, ‘higher’, ‘midpoint’, ‘nearest’}，默认’linear’；</p>
+<p>keepdims : 是否保留维度，如果为True，计算后减少的维度将保留1的大小，默认为False。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">data &#x3D; np.array([[1,3,6], [7,5,3]])</span><br><span class="line">print(np.percentile(data, 50))</span><br><span class="line">print(np.percentile(data, 50, axis&#x3D;0, interpolation&#x3D;&#39;lower&#39;))</span><br><span class="line">print(np.percentile(data, 50, axis&#x3D;1))</span><br><span class="line">print(np.percentile(data, 50, axis&#x3D;1, keepdims&#x3D;True))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4.0</span><br><span class="line">[1 3 3]</span><br><span class="line">[3. 5.]</span><br><span class="line">[[3.]</span><br><span class="line"> [5.]]</span><br></pre></td></tr></table></figure>
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/method/index.html" data-id="ckadx3w4j000dvsvx12m3guc4" class="article-share-link">
+                                        <a data-url="http://yoursite.com/f1-1-1-2/index.html" data-id="ckadz2dbm0003jsvx3ee3erqv" class="article-share-link">
                                             分享
                                         </a>
                                         
