@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    滑动t检验 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="page-" class="article article-type-page" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      滑动t检验
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">滑动t检验</span></span><br><span class="line"><span class="string">输入：</span></span><br><span class="line"><span class="string">inputdata：输入数据，一维序列</span></span><br><span class="line"><span class="string">step：滑动步长</span></span><br><span class="line"><span class="string">输出：t1：t统计量</span></span><br><span class="line"><span class="string">注：自由度v =2*n-2</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">slide_t</span><span class="params">(inputdata,step)</span>:</span></span><br><span class="line">    inputdata = np.array(inputdata)</span><br><span class="line">    n = inputdata.shape[<span class="number">0</span>]</span><br><span class="line">    t = np.zeros(n)</span><br><span class="line">    t1 = np.empty(n)</span><br><span class="line">    n1 = step    <span class="comment">#n1, n2为滑动步长，需调整</span></span><br><span class="line">    n2 = step</span><br><span class="line">    n11 = <span class="number">1</span> / n1</span><br><span class="line">    n22 = <span class="number">1</span> / n2</span><br><span class="line">    m = np.sqrt(n11 + n22)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range (step, n-step<span class="number">-1</span>):</span><br><span class="line">        x1_mean = np.mean(inputdata[i-step : i])   </span><br><span class="line">        x2_mean = np.mean(inputdata[i : i+step])</span><br><span class="line">        s1 = np.var(inputdata[i-step : i])          </span><br><span class="line">        s2 = np.var(inputdata[i : i+step])</span><br><span class="line">        s = np.sqrt((n1 * s1 + n2 * s2) / (n1 + n2 - <span class="number">2</span>))</span><br><span class="line">        t[i-step] = (x2_mean - x1_mean) / (s * m)</span><br><span class="line">        t1 = np.roll(t , step<span class="number">-1</span>)</span><br><span class="line">        t1[:step]=np.nan  </span><br><span class="line">        t1[n-step+<span class="number">1</span>:]=np.nan             </span><br><span class="line">    <span class="keyword">return</span>  t1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">y = np.array([<span class="number">15.4</span>,<span class="number">14.6</span>,<span class="number">15.8</span>,<span class="number">14.8</span>,<span class="number">15.0</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">15.0</span>,<span class="number">15.2</span>,<span class="number">15.4</span>,</span><br><span class="line">              <span class="number">14.8</span>,<span class="number">15.0</span>,<span class="number">15.1</span>,<span class="number">14.7</span>,<span class="number">16.0</span>,<span class="number">15.7</span>,<span class="number">15.4</span>,<span class="number">14.5</span>,<span class="number">15.1</span>,<span class="number">15.3</span>,</span><br><span class="line">              <span class="number">15.5</span>,<span class="number">15.1</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">14.9</span>,<span class="number">15.5</span>,<span class="number">15.3</span>,<span class="number">15.3</span>,<span class="number">15.4</span>,</span><br><span class="line">              <span class="number">15.7</span>,<span class="number">15.2</span>,<span class="number">15.5</span>,<span class="number">15.5</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">16.0</span>,<span class="number">16.0</span>,<span class="number">16.8</span>,</span><br><span class="line">              <span class="number">16.2</span>,<span class="number">16.2</span>,<span class="number">16.0</span>,<span class="number">15.6</span>,<span class="number">15.9</span>,<span class="number">16.2</span>,<span class="number">16.7</span>,<span class="number">15.8</span>,<span class="number">16.2</span>,<span class="number">15.9</span>,</span><br><span class="line">              <span class="number">15.8</span>,<span class="number">15.5</span>,<span class="number">15.9</span>,<span class="number">16.8</span>,<span class="number">15.5</span>,<span class="number">15.8</span>,<span class="number">15.0</span>,<span class="number">14.9</span>,<span class="number">15.3</span>,<span class="number">16.0</span>,</span><br><span class="line">              <span class="number">16.1</span>,<span class="number">16.5</span>,<span class="number">15.5</span>,<span class="number">15.6</span>,<span class="number">16.1</span>,<span class="number">15.6</span>,<span class="number">16.0</span>,<span class="number">15.4</span>,<span class="number">15.5</span>,<span class="number">15.2</span>,</span><br><span class="line">              <span class="number">15.4</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.8</span>,<span class="number">15.5</span>,<span class="number">16.0</span>,<span class="number">15.2</span>,<span class="number">15.8</span>,<span class="number">16.2</span>,<span class="number">16.2</span>,</span><br><span class="line">              <span class="number">15.2</span>,<span class="number">15.7</span>,<span class="number">16.0</span>,<span class="number">16.0</span>,<span class="number">15.7</span>,<span class="number">15.9</span>,<span class="number">15.7</span>,<span class="number">16.7</span>,<span class="number">15.3</span>,<span class="number">16.1</span>])</span><br><span class="line"></span><br><span class="line">t = slide_t(y,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">f_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.3</span>])</span><br><span class="line">f_ax1.plot(np.arange(<span class="number">1900</span>,<span class="number">1990</span>,<span class="number">1</span>),y,<span class="string">'k'</span>)</span><br><span class="line"></span><br><span class="line">f_ax2 = fig.add_axes([<span class="number">0.6</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.3</span>])</span><br><span class="line">f_ax2.plot(np.arange(<span class="number">1900</span>,<span class="number">1990</span>,<span class="number">1</span>),t,<span class="string">'k'</span>)</span><br><span class="line">f_ax2.set_xlim(<span class="number">1900</span>,<span class="number">1990</span>)</span><br><span class="line">f_ax2.set_ylim(<span class="number">-4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="comment"># 0.01显著性检验</span></span><br><span class="line">f_ax2.axhline(<span class="number">2.9</span>)</span><br><span class="line">f_ax2.axhline(<span class="number">-2.9</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200521090717453.png" alt="image-20200521090717453"></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/f1-3-1-1/index.html" data-id="ckag2wjn500016svx6wdy773d" class="article-share-link">
+                                            分享
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+
+            
+
+                
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul>
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2020  ☁  Shaun Young</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">主页</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">归档</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">标签</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/download">下载</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">链接</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">关于</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>
