@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-22T02:15:13.756Z</updated>
+  <updated>2020-05-22T09:30:51.534Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/2020/05/21/wsl-and-jupyternotebook/"/>
     <id>http://yoursite.com/2020/05/21/wsl-and-jupyternotebook/</id>
     <published>2020-05-21T13:48:03.000Z</published>
-    <updated>2020-05-22T02:15:13.756Z</updated>
+    <updated>2020-05-22T09:30:51.534Z</updated>
     
     <summary type="html">
     
@@ -30,21 +30,355 @@
     </summary>
     
     
-      <category term="article" scheme="http://yoursite.com/categories/article/"/>
+      <category term="Article" scheme="http://yoursite.com/categories/Article/"/>
     
     
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
   </entry>
   
   <entry>
+    <title>曼-肯德尔(Mann-Kendall)检验</title>
+    <link href="http://yoursite.com/2020/05/21/f1-3-2-1/"/>
+    <id>http://yoursite.com/2020/05/21/f1-3-2-1/</id>
+    <published>2020-05-21T01:06:17.000Z</published>
+    <updated>2020-05-22T09:17:16.669Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>滑动t检验</title>
+    <link href="http://yoursite.com/2020/05/21/f1-3-1-1/"/>
+    <id>http://yoursite.com/2020/05/21/f1-3-1-1/</id>
+    <published>2020-05-21T01:06:12.000Z</published>
+    <updated>2020-05-22T09:19:21.945Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>线性倾向估计(一元线性回归)</title>
+    <link href="http://yoursite.com/2020/05/19/f1-2-1-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-2-1-1/</id>
+    <published>2020-05-19T13:40:18.000Z</published>
+    <updated>2020-05-22T09:18:17.914Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;除1.132节介绍的的线性回归系数可用来计算线性回归外，sklearn库中也有相关的函数用来计算一元线性回归，同时还可以输出回归线，为数据可视化提供了便利。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>滑动平均</title>
+    <link href="http://yoursite.com/2020/05/19/f1-2-2-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-2-2-1/</id>
+    <published>2020-05-19T13:40:14.000Z</published>
+    <updated>2020-05-22T09:18:31.178Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;滑动平均是趋势拟合的基础方法，也相当于一个滤波器，比如使用九点滑动平均来分析时间序列的年代际变化。 python的常用算法库中并未给出直接计算滑动平均的函数。但是numpy库中给出了一个更加强大更加基础的函数，卷积numpy.convolve()。&lt;/p&gt;
+&lt;figure
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>去趋势</title>
+    <link href="http://yoursite.com/2020/05/19/f1-2-3-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-2-3-1/</id>
+    <published>2020-05-19T13:40:11.000Z</published>
+    <updated>2020-05-22T09:18:43.585Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;去趋势主要指的是去除带有趋势的序列中的线性趋势。scipy库提供了对应的函数以实现这一目的。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>滤波(Butterworth滤波器)</title>
+    <link href="http://yoursite.com/2020/05/19/f1-2-4-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-2-4-1/</id>
+    <published>2020-05-19T13:40:07.000Z</published>
+    <updated>2020-05-22T09:19:06.181Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;分析气候变化趋势中常用的方法还有滤波技术，主要分为低通滤波，高通滤波以及带通滤波。Scipy库中提供了构造Butterworth滤波器的函数。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数据标准化</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-4-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-4-1/</id>
+    <published>2020-05-19T13:35:24.000Z</published>
+    <updated>2020-05-22T09:18:01.478Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;将以下内容复制进A.py文件，与使用脚本放在同一文件夹内，通过import A 调用。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>线性回归系数</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-3-2/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-3-2/</id>
+    <published>2020-05-19T13:34:28.000Z</published>
+    <updated>2020-05-22T09:19:49.930Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>皮尔逊相关系数</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-3-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-3-1/</id>
+    <published>2020-05-19T13:33:49.000Z</published>
+    <updated>2020-05-22T09:17:10.504Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>标准差与方差</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-2-2/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-2-2/</id>
+    <published>2020-05-19T13:32:39.000Z</published>
+    <updated>2020-05-22T09:16:45.114Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;标准差：&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>距平</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-2-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-2-1/</id>
+    <published>2020-05-19T13:31:35.000Z</published>
+    <updated>2020-05-22T09:16:24.979Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;距平表示变量偏离平均水平的量。numpy中并没有直接的函数可以计算某变量的距平，然而我们可以通过对均值函数的灵活运用加以实现。除此以外，scipy库中的去趋势函数也可以计算数据的距平，具体将在去趋势一节中介绍。&lt;/p&gt;
+&lt;p&gt;将以下内容复制进A.py文件，与使用脚本放在同一
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>百分位数</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-1-2/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-1-2/</id>
+    <published>2020-05-19T13:30:27.000Z</published>
+    <updated>2020-05-22T09:16:03.895Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;将变量从小到大排序，计算相应的累计百分位，某一百分位对应的变量值为该百分位的百分位数(中位数即为50百分位数)。气候研究中计算极端事件的所用阈值法便可通过此函数实现。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>均值</title>
+    <link href="http://yoursite.com/2020/05/19/f1-1-1-1/"/>
+    <id>http://yoursite.com/2020/05/19/f1-1-1-1/</id>
+    <published>2020-05-19T13:19:11.000Z</published>
+    <updated>2020-05-22T09:14:26.339Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;均值用来描述某一变量的平均水平。numpy库中提供了直接的函数用来计算变量均值。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Linear Baroclinic Model(线性斜压模式，LBM)初探</title>
-    <link href="http://yoursite.com/2020/05/18/LBM/"/>
-    <id>http://yoursite.com/2020/05/18/LBM/</id>
+    <link href="http://yoursite.com/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/"/>
+    <id>http://yoursite.com/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/</id>
     <published>2020-05-18T07:20:24.000Z</published>
-    <updated>2020-05-21T01:04:52.752Z</updated>
+    <updated>2020-05-22T09:30:58.696Z</updated>
     
     <summary type="html">
     
@@ -53,10 +387,37 @@
     </summary>
     
     
-      <category term="article" scheme="http://yoursite.com/categories/article/"/>
+      <category term="Article" scheme="http://yoursite.com/categories/Article/"/>
     
     
-      <category term="model" scheme="http://yoursite.com/tags/model/"/>
+      <category term="Model" scheme="http://yoursite.com/tags/Model/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用气候统计方法(含源码及示例)</title>
+    <link href="http://yoursite.com/2020/05/15/method1/"/>
+    <id>http://yoursite.com/2020/05/15/method1/</id>
+    <published>2020-05-15T01:19:58.000Z</published>
+    <updated>2020-05-22T09:30:22.183Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;整理了常用的气候统计方法，包括源码及示例。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Other" scheme="http://yoursite.com/categories/Other/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
+    
+      <category term="Method" scheme="http://yoursite.com/tags/Method/"/>
+    
+      <category term="Statistical" scheme="http://yoursite.com/tags/Statistical/"/>
     
   </entry>
   
@@ -65,7 +426,7 @@
     <link href="http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/"/>
     <id>http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/</id>
     <published>2020-05-13T01:19:58.000Z</published>
-    <updated>2020-05-19T12:55:45.445Z</updated>
+    <updated>2020-05-22T08:19:26.237Z</updated>
     
     <summary type="html">
     
@@ -74,7 +435,7 @@
     </summary>
     
     
-      <category term="article" scheme="http://yoursite.com/categories/article/"/>
+      <category term="Article" scheme="http://yoursite.com/categories/Article/"/>
     
     
       <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
@@ -87,10 +448,10 @@
   
   <entry>
     <title>从无到有搭建一个属于自己的网站</title>
-    <link href="http://yoursite.com/2020/05/12/1-building/"/>
-    <id>http://yoursite.com/2020/05/12/1-building/</id>
+    <link href="http://yoursite.com/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    <id>http://yoursite.com/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</id>
     <published>2020-05-12T03:05:44.000Z</published>
-    <updated>2020-05-19T12:55:23.982Z</updated>
+    <updated>2020-05-22T09:30:43.917Z</updated>
     
     <summary type="html">
     
@@ -100,19 +461,19 @@
     </summary>
     
     
-      <category term="article" scheme="http://yoursite.com/categories/article/"/>
+      <category term="Article" scheme="http://yoursite.com/categories/Article/"/>
     
     
-      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+      <category term="Other" scheme="http://yoursite.com/tags/Other/"/>
     
   </entry>
   
   <entry>
     <title>DELL大型机使用Jupyter Notebook</title>
-    <link href="http://yoursite.com/1899/11/30/test/"/>
-    <id>http://yoursite.com/1899/11/30/test/</id>
+    <link href="http://yoursite.com/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/"/>
+    <id>http://yoursite.com/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/</id>
     <published>1899-11-29T15:55:00.000Z</published>
-    <updated>2020-05-22T02:59:12.380Z</updated>
+    <updated>2020-05-22T09:40:04.416Z</updated>
     
     <summary type="html">
     
@@ -121,10 +482,8 @@
     </summary>
     
     
+      <category term="Group" scheme="http://yoursite.com/categories/Group/"/>
     
-      <category term="Pro.Zeng&#39;s Group" scheme="http://yoursite.com/tags/Pro-Zeng-s-Group/"/>
-    
-      <category term="hide" scheme="http://yoursite.com/tags/hide/"/>
     
   </entry>
   

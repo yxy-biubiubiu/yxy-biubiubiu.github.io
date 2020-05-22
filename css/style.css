@@ -2341,7 +2341,7 @@ pre .javascript .function {
   content: '\f12f';
 }
 .navbar .nav.nav-main .nav-item:nth-child(2) .nav-item-link::before {
-  content: '\f12a';
+  content: '\f17c';
 }
 .navbar .nav.nav-main .nav-item:nth-child(3) .nav-item-link::before {
   content: '\f153';
@@ -2353,6 +2353,9 @@ pre .javascript .function {
   content: '\f12c';
 }
 .navbar .nav.nav-main .nav-item:nth-child(6) .nav-item-link::before {
+  content: '\f15c';
+}
+.navbar .nav.nav-main .nav-item:nth-child(7) .nav-item-link::before {
   content: '\f15a';
 }
 .navbar-bottom {
