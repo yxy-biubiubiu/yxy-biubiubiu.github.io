@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-21T11:53:28.771Z</updated>
+  <updated>2020-05-22T02:15:13.756Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,19 +17,25 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>test</title>
-    <link href="http://yoursite.com/2020/05/21/test/"/>
-    <id>http://yoursite.com/2020/05/21/test/</id>
-    <published>2020-05-21T11:51:11.000Z</published>
-    <updated>2020-05-21T11:53:28.771Z</updated>
+    <title>Windows10下的Linux子系统启用及JupyterNotebook入门</title>
+    <link href="http://yoursite.com/2020/05/21/wsl-and-jupyternotebook/"/>
+    <id>http://yoursite.com/2020/05/21/wsl-and-jupyternotebook/</id>
+    <published>2020-05-21T13:48:03.000Z</published>
+    <updated>2020-05-22T02:15:13.756Z</updated>
     
     <summary type="html">
     
-      有东西被加密了, 请输入密码查看.
+      &lt;p&gt;介绍Windows10系统如何启用Linux子系统，以及安装conda、python(各种库)，并介绍一个非常好用非常推荐的脚本编辑运行应用——JupyterNotebook。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="article" scheme="http://yoursite.com/categories/article/"/>
+    
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
   </entry>
   
@@ -98,6 +104,27 @@
     
     
       <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DELL大型机使用Jupyter Notebook</title>
+    <link href="http://yoursite.com/1899/11/30/test/"/>
+    <id>http://yoursite.com/1899/11/30/test/</id>
+    <published>1899-11-29T15:55:00.000Z</published>
+    <updated>2020-05-22T02:59:12.380Z</updated>
+    
+    <summary type="html">
+    
+      有东西被加密了, 请输入密码查看.
+    
+    </summary>
+    
+    
+    
+      <category term="Pro.Zeng&#39;s Group" scheme="http://yoursite.com/tags/Pro-Zeng-s-Group/"/>
+    
+      <category term="hide" scheme="http://yoursite.com/tags/hide/"/>
     
   </entry>
   

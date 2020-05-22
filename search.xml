@@ -1,99 +1,384 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>test</title>
-      <link href="/2020/05/21/test/"/>
-      <url>/2020/05/21/test/</url>
-      
-        <content type="html"><![CDATA[<div id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容."><div class="hbe-input-container"><input type="password" id="hbePass" placeholder="您好, 这里需要密码." /><label>您好, 这里需要密码.</label><div class="bottom-line"></div></div><script id="hbeData" type="hbeData" data-hmacdigest="05672719fe885f5dcd64aa8497c432ceb6aca4bd00408852ef7e934f4d9debe7">2996b73eeeb6ef11605b778de93ac17d</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Linear Baroclinic Model(线性斜压模式，LBM)初探</title>
-      <link href="/2020/05/18/LBM/"/>
-      <url>/2020/05/18/LBM/</url>
-      
-        <content type="html"><![CDATA[<p>介绍Linear Baroclinic Model(线性斜压模式，LBM)的安装与运行方法。LBM模式可以计算大气对规定强迫的稳定线性响应、特征分析，旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。</p><a id="more"></a><h1 id="一、LBM模式简介"><a href="#一、LBM模式简介" class="headerlink" title="一、LBM模式简介"></a>一、LBM模式简介</h1><p>LBM模式是为了研究大气中的线性动力学而建立的，例如计算对规定强迫的稳定线性响应、特征分析等等。</p><p>完全非线性的气候模型，如大气环流模型(AGCMs)，得到了越来越多的改进，它们可以用来模拟和理解当前的气候，其中包括一些反馈过程。然而，这样的模型已经足够复杂了，如果不对输出结果进行彻底的分析，就很难对模型进行解释。而LBM中包含的线性大气模型旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。该模型简化了动力学框架，结果易于解释。此外，该模型提供了处理线性动力学的多种技术，这可能有助于研究大规模大气环流的各个方面。</p><p>官网链接：<a href="https://ccsr.aori.u-tokyo.ac.jp/~lbm/sub/lbm.html" target="_blank" rel="noopener">LBM官网</a></p><p>官方文档<a href="https://ccsr.aori.u-tokyo.ac.jp/~lbm/lbm/doc2.2.pdf" target="_blank" rel="noopener">下载</a></p><p>该模式由日本学者开发，而且是非开源的，因此需要下载安装包和模式数据的还是需要给作者发送邮件，表明目的，经作者授权后才能获得下载账户，去官网下载响应package。</p><p>作者邮箱：<a href="mailto:michiyah@hawaii.edu">michiyah@hawaii.edu</a></p><p>LBM模式推荐理由：全球气候模式比如CAM等等使用较为复杂(不论是移植还是运行)，而且受限于大型机，对于个人的使用不友好，而LBM模式可以进行快速验证，且在个人PC即可使用，相对较为容易，且模拟时间短(往往几分钟即可生成结果)。当然了，一分价钱一分货，论知名度和准确性当然还是远远差于CAM模式的。</p><h1 id="二、编译"><a href="#二、编译" class="headerlink" title="二、编译"></a>二、编译</h1><h2 id="2-1-解压，设置环境变量"><a href="#2-1-解压，设置环境变量" class="headerlink" title="2.1 解压，设置环境变量"></a>2.1 解压，设置环境变量</h2><p>下载到压缩包后首先解压压缩包：</p><img src="/image/image-20200519095137865.png" alt="image-20200519095137865" style="zoom:67%;" /><p>将ln_solver目录声明至环境变量：</p><p>建议直接修永久改环境变量：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure><p>在其中加入：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LNHOME=/解压目录/ln_solver</span><br></pre></td></tr></table></figure><p>之后重新加载环境变量</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure><p>尝试：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME</span><br></pre></td></tr></table></figure><p>检查是否环境变量修改成功。</p><h2 id="2-2-配置分辨率"><a href="#2-2-配置分辨率" class="headerlink" title="2.2 配置分辨率"></a>2.2 配置分辨率</h2><p>修改$LNHOME/Lmake.inc文件，选择需要的水平分辨率和垂直分辨率(我使用的T42L20)。</p><p>Model type默认为tintgr。其余详细设置可参考文档。</p><h2 id="2-3-编译模式依赖"><a href="#2-3-编译模式依赖" class="headerlink" title="2.3 编译模式依赖"></a>2.3 编译模式依赖</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/model/src</span><br><span class="line">make lib</span><br></pre></td></tr></table></figure><p>之后会在$LNHOME/model/lib/???/文件夹下生成一个liblbmtxxmxxc.a的文件(xx为设置的分辨率格式)。</p><p>如果之后需要修改模式分辨率，则只需：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/model/src</span><br><span class="line">make clean</span><br><span class="line">make lib</span><br></pre></td></tr></table></figure><h1 id="三、生成初始场"><a href="#三、生成初始场" class="headerlink" title="三、生成初始场"></a>三、生成初始场</h1><p>将从官网下载的两个数据包解压缩在$LNHOME文件夹下，之后编译初始场生成指令文件：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/solver/util</span><br><span class="line">make bs</span><br></pre></td></tr></table></figure><p>这回导致生成两个新的指令</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./ncepsbs</span><br><span class="line"><span class="meta">#</span><span class="bash">or</span></span><br><span class="line">./ecmsbs</span><br></pre></td></tr></table></figure><p>这两个指令分别用来生成NCEP的初值场和EC的初值场，根据自己需要选择即可。</p><p>设置初始场的选项位于$LNHOME/solver/util/SETPAR文件</p><p>NCEP:</p><img src="/image/image-20200519150909181.png" alt="image-20200519150909181" style="zoom:67%;" /><p>EC:</p><img src="/image/image-20200519150953985.png" alt="image-20200519150953985" style="zoom:70%;" /><p>其中，kmo指开始月份，navg指平均时期，如kmo=6,navg=3，指夏季平均状态。</p><h1 id="四、生成强迫"><a href="#四、生成强迫" class="headerlink" title="四、生成强迫"></a>四、生成强迫</h1><p>LBM模式的时间积分分支(time integration)的运行只需要处置场和强迫即可，不需要边界条件的设置。</p><p>同样，修改$LNHOME/solver/util/SETPAR文件，设置相关参数即可生成响应的强迫文件。</p><img src="/image/image-20200519151736163.png" alt="image-20200519151736163" style="zoom:67%;" /><img src="/image/image-20200519151750314.png" alt="image-20200519151750314" style="zoom:67%;" /><p>cfm,cfg为输出的强迫文件，nmvar为强迫变量，mnhpr为水平强迫设置，nmvpr为垂直强迫设置。</p><p>具体的参数信息可参见$LNHOME/solver/util/param_list文件。</p><p>这里列出一些简要信息：</p><img src="/image/image-20200519152018418.png" alt="image-20200519152018418" style="zoom:67%;" /><p>修改好强迫配置后，输入以下命令生成强迫文件：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/solver/util</span><br><span class="line">make clean</span><br><span class="line">make</span><br><span class="line">./mkfrcng</span><br></pre></td></tr></table></figure><p>make clean指令仅在第一次生成时使用即可。</p><h1 id="五、-运行"><a href="#五、-运行" class="headerlink" title="五、 运行"></a>五、 运行</h1><p>$LNHOME/model/sh/tintgr/文件夹下存放了很多运行不同模式方案的csh命令文件，主要靠可参考linear-run.classic.csh文件，将其中的分辨率修改为自己所用方案，将初值场和强迫场的存放路径与自己统一。</p><p>路径参数如下：</p><img src="/image/image-20200519152454674.png" alt="image-20200519152454674" style="zoom:67%;" /><p>一般运行时间设置为20天左右，30天后斜压波会异常增长从而导致模式结果的异常。</p><p>注：经测试，tend并不是运行的时间，比如tend = 51，模式会运行20天，tend = 59模式会运行27天。具体还需自己测试。</p><p>运行模式的方法：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/model/sh/tintgr/</span><br><span class="line">csh ***.csh</span><br></pre></td></tr></table></figure><h1 id="六、-后处理"><a href="#六、-后处理" class="headerlink" title="六、 后处理"></a>六、 后处理</h1><p>干模式输出结果包括u,v,t,z,w,p,psi,chi，湿模式还包括了q,dt,dq(我没用过湿模式)。</p><p>输出结果位于$LNHOME/data/out/ ,是.grd格式文件</p><p>建议使用CDO工具的</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo -f nc import_binary out.ctl out.nc</span><br></pre></td></tr></table></figure><p>命令将其转为.nc格式。使用更加方便。</p><h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>感谢我的本科同学hhy大佬，在大佬的耐心指点下终于理清了LBM模式的安装和基本使用方法。感激！</p><p>最后的最后，给出一个我测试结果：尝试在巴伦支海上空加入了一个大气热源，模拟了20天后的大气异常。</p><p><img src="/image/image-20200519161417186.png" alt="results"></p>]]></content>
-      
-      
+<search>
+  <entry>
+    <title>从无到有搭建一个属于自己的网站</title>
+    <url>/2020/05/12/1-building/</url>
+    <content><![CDATA[<p>从萌生想法到成功搭建自己的网站前前后后花了大概半个月的时间，终于成功搭建一块了属于自己的地盘。第一篇文章就记录下搭建个人网站的全部过程吧。</p>
+<p>大家感兴趣的话完全可以尝试文中操作，免费创建属于自己的主页或者博客。</p>
+<a id="more"></a>
+
+<p>搭建自己的网站有两种方式，一种是直接部署在github上，这种是免费的，但是github属于外网控制，网速以及其他问题大家都懂的。另一种则是自己注册并购买域名，不过这种仍然推荐与github同时使用。根据自己需要选择一个合适的方案。</p>
+<h3 id="1、购买域名，备案（如果仅是通过github部署，可直接跳过1）"><a href="#1、购买域名，备案（如果仅是通过github部署，可直接跳过1）" class="headerlink" title="1、购买域名，备案（如果仅是通过github部署，可直接跳过1）"></a>1、购买域名，备案（如果仅是通过github部署，可直接跳过1）</h3><p>想要搭建属于自己的网站当然要先购买一个域名，直接百度搜索进入阿里云注册一个账号，选择购买域名，输入一个自己喜欢的域名，如果还没有被注册的话那就可以直接买下来了。购买后，按照提示的流程进行备案，通常需要三部分，第一步是阿里云账号的实名认证(秒通过)，第二步是阿里云对域名购买的人工审核(大概1天内收到回复)，第三部则是阿里云提交国家的管局进行备案(一般是20个工作日内，我大概8天就收到了短信通知备案通过)。</p>
+<p>在等待备案通过期间，完全可以同时进行其他的部分(比如文章的撰写，网站的搭建等等)，不用干等着备案的通知。</p>
+<h3 id="2、通过HEXO搭建网站"><a href="#2、通过HEXO搭建网站" class="headerlink" title="2、通过HEXO搭建网站"></a>2、通过HEXO搭建网站</h3><p>Hexo是一款基于Node.js的静态博客框架，可以方便的生成静态网页托管在GitHub和Coding上，非常推荐入坑使用。官网入口：<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo官网</a>。（PS：Hexo对中文很友好。）</p>
+<h4 id="2-1-安装GIT"><a href="#2-1-安装GIT" class="headerlink" title="2.1 安装GIT"></a>2.1 安装GIT</h4><p>Git是目前世界上最先进的分布式版本控制系统，可以有效、高速的管理hexo博客文章，并上传到GitHub。</p>
+<p>Windows安装：</p>
+<p>到git官网上下载, <a href="https://gitforwindows.org/" target="_blank" rel="noopener">Download here</a>  ,安装后使用其中的git bash端口来使用Git(使用方法就类似于windows的WSL)。</p>
+<p>Linux安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<p>使用 git –version 来查看版本，检查是否安装成功。</p>
+<h4 id="2-2-安装nodejs"><a href="#2-2-安装nodejs" class="headerlink" title="2.2 安装nodejs"></a>2.2 安装nodejs</h4><p>Hexo是基于nodeJS框架的，所以需要安装nodeJs和其中的npm。</p>
+<p>Windows安装：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">选择LTS版本即可</a></p>
+<p>Linux安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure>
+
+<p>安装后使用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>来检查是否安装成功和相应版本。</p>
+<h4 id="2-3-安装Hexo"><a href="#2-3-安装Hexo" class="headerlink" title="2.3 安装Hexo"></a>2.3 安装Hexo</h4><p>在自己想保存博客(网站)源码的位置新建一个文件夹，比如文件夹名为blog，进入该文件夹后右建，选择git bash。输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+
+
+<p>完成安装。</p>
+<p>接下来初始化hexo：(blogname为博客名，这个并不重要，随意起即可)</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init blogname</span><br><span class="line">cd myblog </span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>看到cd命令，熟悉linux的小伙伴都懂了，所以说把git bash理解为一个虚拟的linux环境也没啥太大的问题。</p>
+<p>新建完成后，指定文件夹目录下有：</p>
+<ul>
+<li>node_modules: 依赖包</li>
+<li>scaffolds：生成文章的一些模板</li>
+<li>source：用来存放你的文章</li>
+<li>themes：主题</li>
+<li>** _config.yml: 博客的配置文件**</li>
+<li>*** 一些其他的文件</li>
+</ul>
+<p>之后使用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>生成博客，并在本地预览，浏览器中输入localhost:4000即可看到。git bash中输入ctrl+c即可断开连接。</p>
+<h3 id="3、GitHub创建个人仓库"><a href="#3、GitHub创建个人仓库" class="headerlink" title="3、GitHub创建个人仓库"></a>3、GitHub创建个人仓库</h3><p>首先去Github注册个人账户，之后在首页点击New repository创建新仓库，仓库名为<strong>***</strong>.github.io，  <strong>***</strong>为github的用户名，只有这样创建，将来部署到GitHub page的时候，才会被直接识别。</p>
+<h3 id="4、生成SSH并添加到GitHub"><a href="#4、生成SSH并添加到GitHub" class="headerlink" title="4、生成SSH并添加到GitHub"></a>4、生成SSH并添加到GitHub</h3><p>在git bash中输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name "name"</span><br><span class="line">git config --global user.email "email"</span><br></pre></td></tr></table></figure>
+
+
+
+<p>其中name为github用户名，email为github邮箱。</p>
+<p>之后输入：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config user.name</span><br><span class="line">git config user.email</span><br></pre></td></tr></table></figure>
+
+<p>注：这两条直接复制输入，不要把user换成自己的用户名和邮箱。</p>
+<p>然后创建ssh私钥和公钥。创建过程全部回车即可，但是如果以前创建过，那就要注意，中间会有提示是否覆盖以前的秘钥，一定不要确定！！！跳过这步即可，使用以前生成的秘钥就行。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "email"</span><br></pre></td></tr></table></figure>
+
+<p>进入端口提示的文件夹查看，id_rsa是你这台电脑的私人秘钥，一定要保存好，且不要泄露，id_rsa.pub是公钥，需要上传到GitHub上，这样当你链接GitHub账户时，公钥私钥进行匹配，才能够顺利的通过git上传文件到GitHub上。</p>
+<p>进入GitHub的setting中，找到SSH keys的设置选项，点击New SSH key把公钥的内容复制进去即可。</p>
+<h3 id="5、把Hexo部署到GitHub"><a href="#5、把Hexo部署到GitHub" class="headerlink" title="5、把Hexo部署到GitHub"></a>5、把Hexo部署到GitHub</h3><p>现在就需要把刚刚在本地创建好的博客部署到github上，也就是让大家都看到。打开blog/blogname/下的配置文件 <code>_config.yml</code>，把最后的那部分修改为</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/YourgithubName/***.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>***替换为注册的GitHub用户名。</p>
+<p>之后安装部署命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>接着：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>clean是清除先前缓存的配置，g(generate)生成新的配置文件，deploy部署到github上。</p>
+<p>git bash没有报错的话，恭喜你，过一会大家伙就可以在http://***.github.io这个网站看到你的个人博客了。</p>
+<h3 id="6、解析域名并与github进行hook"><a href="#6、解析域名并与github进行hook" class="headerlink" title="6、解析域名并与github进行hook"></a>6、解析域名并与github进行hook</h3><p>http://***.github.io这个网站可能很长，而且不好记，如果通过第1步的方式购买了域名，那么就有一个通俗常见的.com网址了(或是其他的)。进入阿里云控制台中进行解析，将解析后的域名，在github中的settings中找到webhook，将解析的域名与之前的进行捆绑，重新使用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>进行推送即可。</p>
+<h3 id="7、推送文章"><a href="#7、推送文章" class="headerlink" title="7、推送文章"></a>7、推送文章</h3><p>输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new newpapername</span><br></pre></td></tr></table></figure>
+
+<p>创建一个新博文，然后在source/_post中打开markdown文件，就可以开始编辑了。</p>
+<p>这里我推荐使用Typora软件去编辑博文，十分方便。</p>
+<p>写完后重复第6步的三行指令，即可完成推送。</p>
+<p>感兴趣的话完全可以尝试2-5和第7步的操作，创建属于自己的主页或者博客，不花一分钱噢。</p>
+]]></content>
       <categories>
-          
-          <category> article </category>
-          
+        <category>article</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> model </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>批量下载气象数据(EC;NCEP;CMIP)</title>
-      <link href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/"/>
-      <url>/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/</url>
-      
-        <content type="html"><![CDATA[<p>介绍如何使用python批量下载EC数据以及使用wget批量下载NCEP/NCAR以及CMIP资料。</p><a id="more"></a><h3 id="1、使用python批量下载ECMWF数据-以EI数据为例"><a href="#1、使用python批量下载ECMWF数据-以EI数据为例" class="headerlink" title="1、使用python批量下载ECMWF数据(以EI数据为例)"></a>1、使用python批量下载ECMWF数据(以EI数据为例)</h3><p>​        首先在EC官网注册账号并登录。</p><p>​        点击进入<a href="https://confluence.ecmwf.int//display/WEBAPI/Access+ECMWF+Public+Datasets" target="_blank" rel="noopener">EC公共数据集获取流程</a>，根据提示进行以下的操作。</p><h5 id="1-安装ECMWF-key"><a href="#1-安装ECMWF-key" class="headerlink" title="1. 安装ECMWF key"></a>1. 安装ECMWF key</h5><p>​        (Recommended) Save your API key credentials into a file</p><p>​        将秘钥复制并保存为一个名为<strong>.ecmwfapirc</strong>的文件中。并将文件保存在根目录中。Linux的话直接输入</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd</span><br></pre></td></tr></table></figure><p>​        进入。</p><p>​        windows的话位于C:\Users&lt;USERNAME&gt;\下。注意，文件是无格式文件，文件名为<strong>.ecmwfapirc</strong>！</p><p>​        秘钥内容参考：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;url&quot;: &quot;https:&#x2F;&#x2F;api.ecmwf.int&#x2F;v1&quot;,</span><br><span class="line">  &quot;email&quot;: &quot;*********@***.com&quot;,</span><br><span class="line">  &quot;key&quot;: &quot;**************************&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>​        (如果是linux，还可以通过声明环境变量的方式建立key。)</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export ECMWF_API_URL&#x3D;&quot;https:&#x2F;&#x2F;api.ecmwf.int&#x2F;v1&quot;</span><br><span class="line">export ECMWF_API_KEY&#x3D;&quot;*****************&quot;</span><br><span class="line">export ECMWF_API_EMAIL&#x3D;&quot;**********@***.com&quot;</span><br></pre></td></tr></table></figure><p>​        这个和建立<strong>.ecmwfapirc</strong>二选一即可(仅限linux)。</p><p>​        再或者将以下内容包含在py脚本内(我使用的是第一种方法，建立好以后都不用再去管了，比较方便，迁移电        脑只需要拷贝秘钥文件即可)</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server = ECMWFDataServer(url=<span class="string">"https://api.ecmwf.int/v1"</span>,key=<span class="string">"*******"</span>,email=<span class="string">"******@****.com"</span>)</span><br></pre></td></tr></table></figure><h5 id="2-安装依赖库"><a href="#2-安装依赖库" class="headerlink" title="2. 安装依赖库"></a>2. 安装依赖库</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install ecmwf-api-client</span><br><span class="line"><span class="meta">#</span><span class="bash">或者</span></span><br><span class="line">conda install -c conda-forge ecmwf-api-client</span><br></pre></td></tr></table></figure><p>​        推荐第二种，使用conda统一管理最为方便，不会出现库混乱的情况。</p><p>​        尝试</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ecmwfapi <span class="keyword">import</span> ECMWFDataServer</span><br></pre></td></tr></table></figure><p>​        检查是否安装成功。</p><p>​        完成这两步后，就可以开始批量下载数据了。</p><h5 id="3-下载数据"><a href="#3-下载数据" class="headerlink" title="3. 下载数据"></a>3. 下载数据</h5><p>​        回到<a href="https://apps.ecmwf.int/datasets/" target="_blank" rel="noopener">数据集选择</a>页面选择需要的数据集(这里以EI的daily资料为例)，挑选变量和时间后选择</p><p>​                                                            <strong>View data retrieval request</strong></p><p>​        就进入一个新页面，包含有下载选取数据的py代码。在本地新建一个py脚本，复制这些代码到本地脚本。然        后进行一些编辑即可。</p><h5 id="4-脚本语法"><a href="#4-脚本语法" class="headerlink" title="4. 脚本语法"></a>4. 脚本语法</h5><p>​        脚本主要是以一个字典类型去设计的。初始提供了一些参数，还有一些其他的参数我们可以去额外添加,在这        里我补充完整以供参考。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> ecmwfapi <span class="keyword">import</span> ECMWFDataServer</span><br><span class="line">server = ECMWFDataServer()</span><br><span class="line">server.retrieve(&#123;</span><br><span class="line">   <span class="string">"class"</span>: <span class="string">"ei"</span>,</span><br><span class="line">   <span class="string">"dataset"</span>: <span class="string">"interim"</span>,</span><br><span class="line">   <span class="string">"date"</span>: <span class="string">"19970101/19970201/19970301/19970401/19970501/19970601/19970701"</span>,</span><br><span class="line">   <span class="string">"expver"</span>: <span class="string">"1"</span>,</span><br><span class="line">   <span class="string">"grid"</span>: <span class="string">"1.0/1.0"</span>,</span><br><span class="line">   <span class="string">"levelist"</span>: <span class="string">"/200/500/700/850/1000"</span>,</span><br><span class="line">   <span class="string">"levtype"</span>: <span class="string">"pl"</span>,</span><br><span class="line">   <span class="string">"param"</span>: <span class="string">"129.128/130.128/131.128/132.128"</span>,</span><br><span class="line">   <span class="string">"stream"</span>: <span class="string">"moda"</span>,</span><br><span class="line">   <span class="string">"type"</span>: <span class="string">"an"</span>,</span><br><span class="line">   <span class="string">"area"</span>  : <span class="string">"90/-180/0/180"</span>,</span><br><span class="line">   <span class="string">"format"</span> :<span class="string">"netcdf"</span>,</span><br><span class="line">   <span class="string">"target"</span>    : <span class="string">"1997levle.nc"</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>我们进行逐条的分析<strong>“class”: “ei”，”dataset”: “interim”</strong>表明是EI资料集；<strong>“date”</strong>表明了资料日期；<strong>“grid”</strong>表明水平分辨率；<strong>“levelist”</strong>代表层数；<strong>“levtype”</strong>代表高度类型，pl代表pressure level，sfc则是地面层等等；<strong>“param”</strong>为变量代码，<strong>“stream”</strong>为场的类型，moda代表monthly means of daily means月平均；<strong>“type”</strong>中an代表再分析，地面层有一些数据则是预测量，是不同于an的；<strong>“area”</strong>代表资料的范围，上/左/下/右 的顺序。最后两个一个是下载文件格式，一个是文件路径+文件名，默认是脚本路径。</p><p>弄清楚了代码含义，就可以进行修改，自定义自己想下载的数据了。尤其是关于时间部分，比如想下载1979-2018年的全部数据，那么就在整个脚本外层套一个循环，把日期和输出部分格式化替换，或者就是利用pandas，timedate等库建立一个对应格式的时间字符串即可。</p><p>而关于日数据在时间设置上更为方便，直接修改为<strong>19790101/to/20181231</strong>即可，月数据不能使用的原因是他只识别<strong>year+month+01</strong>。</p><h3 id="2、使用wget批量下载NCEP-NCAR等数据"><a href="#2、使用wget批量下载NCEP-NCAR等数据" class="headerlink" title="2、使用wget批量下载NCEP/NCAR等数据"></a>2、使用wget批量下载NCEP/NCAR等数据</h3><p>Linux系统中的wget是一个下载文件的工具，它用在命令行下。Windows10用户想使用wget只需开启WSL功能即可。</p><p><a href="https://psl.noaa.gov/data/gridded/index.html" target="_blank" rel="noopener">NOAA</a>提供了大量数据的下载，比如最常用的<strong>NCEP/NCAR Reanalysis 1</strong>数据集。</p><p>但是很多数据都被分为很多个文件(每年一个)来下载，一个一个点实在是麻烦，同时点很多又可能导致下载失败。仔细的话就会发现下载链接是有规律的。比如逐日位势高度资料</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ftp:&#x2F;&#x2F;ftp2.psl.noaa.gov&#x2F;Datasets&#x2F;ncep.reanalysis.dailyavgs&#x2F;pressure&#x2F;hgt.1948.nc</span><br></pre></td></tr></table></figure><p>所有的都一样，唯独hgt.1948.nc的年份部分发生了区别。</p><p>进入bash，只需要最简单wget命令即可下载该文件:</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.1948.nc</span><br></pre></td></tr></table></figure><p>这时，我们只需要设计一个循环，来使年份部分发生变化即可。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for (( i = 1948; i &lt; 2020; i++))</span><br><span class="line">do</span><br><span class="line">    wget ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.$&#123;i&#125;.nc    </span><br><span class="line">done</span><br></pre></td></tr></table></figure><p>对于CMIP资料的下载也是同样的道理。前些日子被CMIP资料下载搞的有些崩溃，很多模式一个变量能分成几十上百个小文件，一个一个手点很不现实。最后就用类似的循环和索引实现了自动化的批量下载。</p>]]></content>
-      
-      
+      <tags>
+        <tag>other</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows10下的Linux子系统启用及JupyterNotebook入门</title>
+    <url>/2020/05/21/wsl-and-jupyternotebook/</url>
+    <content><![CDATA[<p>介绍Windows10系统如何启用Linux子系统，以及安装conda、python(各种库)，并介绍一个非常好用非常推荐的脚本编辑运行应用——JupyterNotebook。</p>
+<a id="more"></a>
+
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>作为气象专业的一员，是离不开Linux系统的，无论是各类数值模式，还是各种编程语言还是超级计算机的使用，都依赖于Linux系统(即使python可以在windows系统运行，但仍有很多库并不能很好的兼容windows系统)。如果在自己的计算机安装双系统或者虚拟机，显然有些大题小做并且十分麻烦，对于windows10的伙伴来说，启用Linux子系统就势在必得了。win10独有的Linux子系统功能(Windows Subsystem for Linux，简称WSL) 会给你的科研之路带来全新的体验。</p>
+<h3 id="1-启用WSL"><a href="#1-启用WSL" class="headerlink" title="1. 启用WSL"></a>1. 启用WSL</h3><p>首先在控制面板里打开“程序和功能”，选择“启用或关闭Windows功能”，然后勾选“适用于Linux的Windows子系统(beta)”。然后系统就会提示你是否重新启动以启用更新。重启之后，WSL功能已经打开，但linux子系统还未安装。</p>
+<img src="/image/image-20200521220133123.png" alt="image-20200521220133123" style="zoom:50%;" />
+
+<img src="/image/image-20200521220149246.png" alt="image-20200521220149246" style="zoom:50%;" />
+
+<p>1703版之后的win10把Ubuntu作为一个软件放在了应用商店。打开应用商店，直接下载Ubuntu。</p>
+<p>下载完成之后打开Ubuntu就自动下载了。然后就是设置密码用户名(建议不要以admin,root这类用户名作为自己的用户名，后续使用中容易出现权限问题)。</p>
+<p>至此，WSL就启用成功了。</p>
+<h3 id="2-安装Miniconda"><a href="#2-安装Miniconda" class="headerlink" title="2. 安装Miniconda"></a>2. 安装Miniconda</h3><p>进入<a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank" rel="noopener">miniconda官网下载地址</a>，找到Linux安装文件(如下图),选择python3.7版本，右建选择复制下载链接:</p>
+<p><img src="/image/image-20200521220528952.png" alt="image-20200521220528952"></p>
+<p>之后，打开Ubuntu进入WSL交互端口，键入wget+空格+右建，如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+
+
+<p>回车即可下载。下载完成后，输入bash+空格+<strong>***</strong>.sh (<strong>***</strong>为刚刚下载的文件名)进行安装。如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bash Miniconda3-latest-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+<p>conda安装完成后，输入指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda create --name 123 python=3.7</span><br></pre></td></tr></table></figure>
+
+<p>来创建一个名叫123的基于python3.7语言的环境(123可以任意改名)。</p>
+<p>通俗的讲，可以将WSL当做是一个公寓，conda相当于一个管理员，而创建的每个环境都是一个独立的房间，你可以通过conda去管理每一个房间，如果一个房间遭到了破坏，那么重建它，而不会影响其他的房间。那么接下来请将自己代入conda这个管理员的身份，来使用你的环境，也就是说，我们尽可能的通过conda去设计房间(安装各种软件，依赖库，python库等等)，不经过管理员就私自改造房间，容易造成混乱。</p>
+<p>我们每次开启WSL(打开Ubuntu)后也就是进入了公寓后，需要先进入我们工作的房间，指令如下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda activate 123</span><br></pre></td></tr></table></figure>
+
+<p>那么比如说我们只使用一个房间，有没有办法打开公寓大门就能直接进入房间呢？有的，修改环境变量就好了(但是不建议)。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在末尾添加：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">source activate 123</span><br></pre></td></tr></table></figure>
+
+<p>之后重启Ubuntu即可，再次打开就会发现用户名前出现了“(123)”。</p>
+<p>房间盖好了，接下来我们要装修了，也就是说安装各种常用的python库，比如numpy, pandas, scipy, xarray, cartopy等等等等。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda install numpy</span><br><span class="line">conda install pandas</span><br><span class="line">conda install Scipy</span><br><span class="line">conda install -c conda-forge xarray</span><br><span class="line">conda install -c conda-forge cartopy</span><br></pre></td></tr></table></figure>
+
+<p>-c表明 chanel的意思，表明这个包在conda-forge的安装频道。</p>
+<p>接下来，尝试下是否安装成功了。首先输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python</span><br></pre></td></tr></table></figure>
+
+<p>进入交互，然后尝试：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br></pre></td></tr></table></figure>
+
+<p>检查是否安装成功。</p>
+<h3 id="3-安装Jupyter-Notebook及其插件"><a href="#3-安装Jupyter-Notebook及其插件" class="headerlink" title="3. 安装Jupyter Notebook及其插件"></a>3. 安装Jupyter Notebook及其插件</h3><h4 id="3-1-安装"><a href="#3-1-安装" class="headerlink" title="3.1 安装"></a>3.1 安装</h4><p>同样的，我们还是通过conda安装一系列Jupyter Notebook的插件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">conda install jupyter notebook </span><br><span class="line">python -m ipykernel install --user</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions </span><br><span class="line">conda install jupyterthemes</span><br></pre></td></tr></table></figure>
+
+<p>以上四条分别代表安装jupyter notebook ，为环境添加内核，安装jupyter插件功能，安装jupyter主题功能。</p>
+<p>安装完成后，在终端输入jupyter notebook ，回车后会出现一串地址</p>
+<img src="/image/image-20200522090912077.png" alt="image-20200522090912077" style="zoom:150%;" />
+
+<p>将其复制在浏览器地址栏即可(推荐使用Chrome浏览器)。</p>
+<p>可以看到其主界面是这样子的：</p>
+<p><img src="/image/image-20200522091232007.png" alt="image-20200522091232007"></p>
+<p>1：根目录列表</p>
+<p>2：当前正在运行这什么东西</p>
+<p>3：忽略这个东西，用不到的</p>
+<p>4：扩展插件，这个非常有用，就是刚刚第三条语句安装的辅助插件，后边详细介绍</p>
+<p>5：上传文件，WSL目录与windows目录是有些区别的，在一定程度上相当于开辟了一个独立空间，使用upload可以将其他位置的文件传至这里，但是WSL是可以调用windows下的文件的。</p>
+<p>6：新建一项任务，python3就是新建python3脚本，通过其他设置，还可以使notebook支持其他语言(NCL是不行的)这里不做过多介绍。</p>
+<h4 id="3-2-插件设置"><a href="#3-2-插件设置" class="headerlink" title="3.2 插件设置"></a>3.2 插件设置</h4><p>点击进入NBextension，有这么几项功能是一定要添加的：</p>
+<img src="/image/image-20200522092213561.png" alt="image-20200522092213561" style="zoom:150%;" />
+
+<p>AutoSaveTime:自动保存时间，指定间隔时间自动保存</p>
+<p>Table of Contents:支持生成markdown目录，让代码结构清晰，更有条理</p>
+<p>Variable Inspector: 变量追踪，查看目前已使用过的变量的相关信息(名，大小，形状，值)</p>
+<p>Execute Time：记录代码块运行时间</p>
+<p>其余插件根据自己需要自行添加即可。</p>
+<h4 id="3-3-主题设置"><a href="#3-3-主题设置" class="headerlink" title="3.3 主题设置"></a>3.3 主题设置</h4><p>主题指的是可视化界面的主题，比如你不喜欢白色的界面，想换深色背景，或者调整字体，字体颜色等等，都通过主题插件进行设置。</p>
+<p>终端执行命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jt -t xxx -f xxx -fs xxx -cellw xx% -ofs xx -dfs xx -T -T</span><br></pre></td></tr></table></figure>
+
+<p>-t 主题 -f(字体) -fs(字体大小) -cellw(占屏比或宽度) -ofs(输出段的字号) -T(显示工具栏) -T(显示自己主机名)</p>
+<p>如果设置出现问题，那么输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jt -r</span><br></pre></td></tr></table></figure>
+
+<p>进行初始化。</p>
+<p>点击这里查看：<a href="https://github.com/dunovank/jupyter-themes" target="_blank" rel="noopener">主题字体大全</a>。</p>
+<h3 id="4-使用Jupyter-Notebook"><a href="#4-使用Jupyter-Notebook" class="headerlink" title="4. 使用Jupyter Notebook"></a>4. 使用Jupyter Notebook</h3><p>参照3.1，点击new新建一个python3脚本进入编辑界面：</p>
+<p><img src="/image/image-20200522094237828.png" alt="image-20200522094237828"></p>
+<p>这便是一个ipy脚本的可视化界面了。</p>
+<p><u><strong><em>红色框内是菜单栏，对脚本的设置、编辑等选项均在此处选择。</em></strong></u></p>
+<p><strong>File</strong>中主要为文件保存，下载等等</p>
+<p><strong>Edit</strong>十分常用，包括删除，还原，复制，剪切，合并cell，也就是代码块</p>
+<p><strong>View</strong>主要是可视化界面的调整</p>
+<p><strong>Insert</strong>为插入代码块，插入标题等等</p>
+<p><strong>Cell</strong>主要为代码块的运行，停止，代码块类型设置等等</p>
+<p><strong>Kernel</strong>为该内核的重启，中断，重运行等等</p>
+<p><strong>Help</strong>主要是各类参考，建议使用前阅读</p>
+<p><strong>*<u>绿色框内是工具栏，存放了一些快捷工具的按钮。</u>*</strong></p>
+<p>鼠标在按钮上停留就会展示该按钮的作用，在此不一一介绍。</p>
+<p><strong>*<u>蓝色框就是脚本主体了，一个灰色的块叫一个CELL，也叫一个代码块，就是在此处进行编程。</u>*</strong></p>
+<p>之所以推荐JupyterNotebook，很大原因就是由于这个代码块的设计理念，你可以将一个脚本拆分为很多个代码块，比如说加载库，读数据，数据处理，绘图分别存放在四个代码块里，这样在debug时只需要修改运行有Bug的代码块，而耗时很长的加载库，读数据都只需要运行一次即可，同样，最终绘图时，只需要调整绘图指令，而不需要将全部脚本重新运行，这样大大节省了运行时间，提高工作效率。</p>
+<p>另外需要说明的一点，Jupyter Notebook支持快捷键的使用，熟练掌握常用快捷键可以获得更好的使用体验。快捷键使用在help-&gt;Keyboard Shortcuts中查看和编辑。</p>
+<p>如有问题或遇到BUG，请在评论区留言反馈。</p>
+]]></content>
       <categories>
-          
-          <category> article </category>
-          
+        <category>article</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-            <tag> Shell </tag>
-            
-            <tag> Data </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>从无到有搭建一个属于自己的网站</title>
-      <link href="/2020/05/12/1-building/"/>
-      <url>/2020/05/12/1-building/</url>
-      
-        <content type="html"><![CDATA[<p>从萌生想法到成功搭建自己的网站前前后后花了大概半个月的时间，终于成功搭建一块了属于自己的地盘。第一篇文章就记录下搭建个人网站的全部过程吧。</p><p>大家感兴趣的话完全可以尝试文中操作，免费创建属于自己的主页或者博客。</p><a id="more"></a><p>搭建自己的网站有两种方式，一种是直接部署在github上，这种是免费的，但是github属于外网控制，网速以及其他问题大家都懂的。另一种则是自己注册并购买域名，不过这种仍然推荐与github同时使用。根据自己需要选择一个合适的方案。</p><h3 id="1、购买域名，备案（如果仅是通过github部署，可直接跳过1）"><a href="#1、购买域名，备案（如果仅是通过github部署，可直接跳过1）" class="headerlink" title="1、购买域名，备案（如果仅是通过github部署，可直接跳过1）"></a>1、购买域名，备案（如果仅是通过github部署，可直接跳过1）</h3><p>想要搭建属于自己的网站当然要先购买一个域名，直接百度搜索进入阿里云注册一个账号，选择购买域名，输入一个自己喜欢的域名，如果还没有被注册的话那就可以直接买下来了。购买后，按照提示的流程进行备案，通常需要三部分，第一步是阿里云账号的实名认证(秒通过)，第二步是阿里云对域名购买的人工审核(大概1天内收到回复)，第三部则是阿里云提交国家的管局进行备案(一般是20个工作日内，我大概8天就收到了短信通知备案通过)。</p><p>在等待备案通过期间，完全可以同时进行其他的部分(比如文章的撰写，网站的搭建等等)，不用干等着备案的通知。</p><h3 id="2、通过HEXO搭建网站"><a href="#2、通过HEXO搭建网站" class="headerlink" title="2、通过HEXO搭建网站"></a>2、通过HEXO搭建网站</h3><p>Hexo是一款基于Node.js的静态博客框架，可以方便的生成静态网页托管在GitHub和Coding上，非常推荐入坑使用。官网入口：<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo官网</a>。（PS：Hexo对中文很友好。）</p><h4 id="2-1-安装GIT"><a href="#2-1-安装GIT" class="headerlink" title="2.1 安装GIT"></a>2.1 安装GIT</h4><p>Git是目前世界上最先进的分布式版本控制系统，可以有效、高速的管理hexo博客文章，并上传到GitHub。</p><p>Windows安装：</p><p>到git官网上下载, <a href="https://gitforwindows.org/" target="_blank" rel="noopener">Download here</a>  ,安装后使用其中的git bash端口来使用Git(使用方法就类似于windows的WSL)。</p><p>Linux安装：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure><p>使用 git –version 来查看版本，检查是否安装成功。</p><h4 id="2-2-安装nodejs"><a href="#2-2-安装nodejs" class="headerlink" title="2.2 安装nodejs"></a>2.2 安装nodejs</h4><p>Hexo是基于nodeJS框架的，所以需要安装nodeJs和其中的npm。</p><p>Windows安装：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">选择LTS版本即可</a></p><p>Linux安装：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure><p>安装后使用</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure><p>来检查是否安装成功和相应版本。</p><h4 id="2-3-安装Hexo"><a href="#2-3-安装Hexo" class="headerlink" title="2.3 安装Hexo"></a>2.3 安装Hexo</h4><p>在自己想保存博客(网站)源码的位置新建一个文件夹，比如文件夹名为blog，进入该文件夹后右建，选择git bash。输入命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure><p>完成安装。</p><p>接下来初始化hexo：(blogname为博客名，这个并不重要，随意起即可)</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init blogname</span><br><span class="line">cd myblog </span><br><span class="line">npm install</span><br></pre></td></tr></table></figure><p>看到cd命令，熟悉linux的小伙伴都懂了，所以说把git bash理解为一个虚拟的linux环境也没啥太大的问题。</p><p>新建完成后，指定文件夹目录下有：</p><ul><li>node_modules: 依赖包</li><li>scaffolds：生成文章的一些模板</li><li>source：用来存放你的文章</li><li>themes：主题</li><li>** _config.yml: 博客的配置文件**</li><li>*** 一些其他的文件</li></ul><p>之后使用</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure><p>生成博客，并在本地预览，浏览器中输入localhost:4000即可看到。git bash中输入ctrl+c即可断开连接。</p><h3 id="3、GitHub创建个人仓库"><a href="#3、GitHub创建个人仓库" class="headerlink" title="3、GitHub创建个人仓库"></a>3、GitHub创建个人仓库</h3><p>首先去Github注册个人账户，之后在首页点击New repository创建新仓库，仓库名为<strong>***</strong>.github.io，  <strong>***</strong>为github的用户名，只有这样创建，将来部署到GitHub page的时候，才会被直接识别。</p><h3 id="4、生成SSH并添加到GitHub"><a href="#4、生成SSH并添加到GitHub" class="headerlink" title="4、生成SSH并添加到GitHub"></a>4、生成SSH并添加到GitHub</h3><p>在git bash中输入</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name "name"</span><br><span class="line">git config --global user.email "email"</span><br></pre></td></tr></table></figure><p>其中name为github用户名，email为github邮箱。</p><p>之后输入：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name</span><br><span class="line">git config user.email</span><br></pre></td></tr></table></figure><p>注：这两条直接复制输入，不要把user换成自己的用户名和邮箱。</p><p>然后创建ssh私钥和公钥。创建过程全部回车即可，但是如果以前创建过，那就要注意，中间会有提示是否覆盖以前的秘钥，一定不要确定！！！跳过这步即可，使用以前生成的秘钥就行。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "email"</span><br></pre></td></tr></table></figure><p>进入端口提示的文件夹查看，id_rsa是你这台电脑的私人秘钥，一定要保存好，且不要泄露，id_rsa.pub是公钥，需要上传到GitHub上，这样当你链接GitHub账户时，公钥私钥进行匹配，才能够顺利的通过git上传文件到GitHub上。</p><p>进入GitHub的setting中，找到SSH keys的设置选项，点击New SSH key把公钥的内容复制进去即可。</p><h3 id="5、把Hexo部署到GitHub"><a href="#5、把Hexo部署到GitHub" class="headerlink" title="5、把Hexo部署到GitHub"></a>5、把Hexo部署到GitHub</h3><p>现在就需要把刚刚在本地创建好的博客部署到github上，也就是让大家都看到。打开blog/blogname/下的配置文件 <code>_config.yml</code>，把最后的那部分修改为</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/YourgithubName/***.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure><p>***替换为注册的GitHub用户名。</p><p>之后安装部署命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure><p>接着：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure><p>clean是清除先前缓存的配置，g(generate)生成新的配置文件，deploy部署到github上。</p><p>git bash没有报错的话，恭喜你，过一会大家伙就可以在http://***.github.io这个网站看到你的个人博客了。</p><h3 id="6、解析域名并与github进行hook"><a href="#6、解析域名并与github进行hook" class="headerlink" title="6、解析域名并与github进行hook"></a>6、解析域名并与github进行hook</h3><p>http://***.github.io这个网站可能很长，而且不好记，如果通过第1步的方式购买了域名，那么就有一个通俗常见的.com网址了(或是其他的)。进入阿里云控制台中进行解析，将解析后的域名，在github中的settings中找到webhook，将解析的域名与之前的进行捆绑，重新使用</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure><p>进行推送即可。</p><h3 id="7、推送文章"><a href="#7、推送文章" class="headerlink" title="7、推送文章"></a>7、推送文章</h3><p>输入</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new newpapername</span><br></pre></td></tr></table></figure><p>创建一个新博文，然后在source/_post中打开markdown文件，就可以开始编辑了。</p><p>这里我推荐使用Typora软件去编辑博文，十分方便。</p><p>写完后重复第6步的三行指令，即可完成推送。</p><p>感兴趣的话完全可以尝试2-5和第7步的操作，创建属于自己的主页或者博客，不花一分钱噢。</p>]]></content>
-      
-      
+      <tags>
+        <tag>python</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linear Baroclinic Model(线性斜压模式，LBM)初探</title>
+    <url>/2020/05/18/LBM/</url>
+    <content><![CDATA[<p>介绍Linear Baroclinic Model(线性斜压模式，LBM)的安装与运行方法。LBM模式可以计算大气对规定强迫的稳定线性响应、特征分析，旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。</p>
+<a id="more"></a>
+
+<h1 id="一、LBM模式简介"><a href="#一、LBM模式简介" class="headerlink" title="一、LBM模式简介"></a>一、LBM模式简介</h1><p>LBM模式是为了研究大气中的线性动力学而建立的，例如计算对规定强迫的稳定线性响应、特征分析等等。</p>
+<p>完全非线性的气候模型，如大气环流模型(AGCMs)，得到了越来越多的改进，它们可以用来模拟和理解当前的气候，其中包括一些反馈过程。然而，这样的模型已经足够复杂了，如果不对输出结果进行彻底的分析，就很难对模型进行解释。而LBM中包含的线性大气模型旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。该模型简化了动力学框架，结果易于解释。此外，该模型提供了处理线性动力学的多种技术，这可能有助于研究大规模大气环流的各个方面。</p>
+<p>官网链接：<a href="https://ccsr.aori.u-tokyo.ac.jp/~lbm/sub/lbm.html" target="_blank" rel="noopener">LBM官网</a></p>
+<p>官方文档<a href="https://ccsr.aori.u-tokyo.ac.jp/~lbm/lbm/doc2.2.pdf" target="_blank" rel="noopener">下载</a></p>
+<p>该模式由日本学者开发，而且是非开源的，因此需要下载安装包和模式数据的还是需要给作者发送邮件，表明目的，经作者授权后才能获得下载账户，去官网下载响应package。</p>
+<p>作者邮箱：<a href="mailto:michiyah@hawaii.edu">michiyah@hawaii.edu</a></p>
+<p>LBM模式推荐理由：全球气候模式比如CAM等等使用较为复杂(不论是移植还是运行)，而且受限于大型机，对于个人的使用不友好，而LBM模式可以进行快速验证，且在个人PC即可使用，相对较为容易，且模拟时间短(往往几分钟即可生成结果)。当然了，一分价钱一分货，论知名度和准确性当然还是远远差于CAM模式的。</p>
+<h1 id="二、编译"><a href="#二、编译" class="headerlink" title="二、编译"></a>二、编译</h1><h2 id="2-1-解压，设置环境变量"><a href="#2-1-解压，设置环境变量" class="headerlink" title="2.1 解压，设置环境变量"></a>2.1 解压，设置环境变量</h2><p>下载到压缩包后首先解压压缩包：</p>
+<img src="/image/image-20200519095137865.png" alt="image-20200519095137865" style="zoom:67%;" />
+
+<p>将ln_solver目录声明至环境变量：</p>
+<p>建议直接修永久改环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在其中加入：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export LNHOME=/解压目录/ln_solver</span><br></pre></td></tr></table></figure>
+
+<p>之后重新加载环境变量</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>尝试：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $LNHOME</span><br></pre></td></tr></table></figure>
+
+<p>检查是否环境变量修改成功。</p>
+<h2 id="2-2-配置分辨率"><a href="#2-2-配置分辨率" class="headerlink" title="2.2 配置分辨率"></a>2.2 配置分辨率</h2><p>修改$LNHOME/Lmake.inc文件，选择需要的水平分辨率和垂直分辨率(我使用的T42L20)。</p>
+<p>Model type默认为tintgr。其余详细设置可参考文档。</p>
+<h2 id="2-3-编译模式依赖"><a href="#2-3-编译模式依赖" class="headerlink" title="2.3 编译模式依赖"></a>2.3 编译模式依赖</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $LNHOME/model/src</span><br><span class="line">make lib</span><br></pre></td></tr></table></figure>
+
+<p>之后会在$LNHOME/model/lib/???/文件夹下生成一个liblbmtxxmxxc.a的文件(xx为设置的分辨率格式)。</p>
+<p>如果之后需要修改模式分辨率，则只需：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $LNHOME/model/src</span><br><span class="line">make clean</span><br><span class="line">make lib</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="三、生成初始场"><a href="#三、生成初始场" class="headerlink" title="三、生成初始场"></a>三、生成初始场</h1><p>将从官网下载的两个数据包解压缩在$LNHOME文件夹下，之后编译初始场生成指令文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $LNHOME/solver/util</span><br><span class="line">make bs</span><br></pre></td></tr></table></figure>
+
+<p>这回导致生成两个新的指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./ncepsbs</span><br><span class="line"><span class="meta">#</span><span class="bash">or</span></span><br><span class="line">./ecmsbs</span><br></pre></td></tr></table></figure>
+
+<p>这两个指令分别用来生成NCEP的初值场和EC的初值场，根据自己需要选择即可。</p>
+<p>设置初始场的选项位于$LNHOME/solver/util/SETPAR文件</p>
+<p>NCEP:</p>
+<img src="/image/image-20200519150909181.png" alt="image-20200519150909181" style="zoom:67%;" />
+
+<p>EC:</p>
+<img src="/image/image-20200519150953985.png" alt="image-20200519150953985" style="zoom:70%;" />
+
+<p>其中，kmo指开始月份，navg指平均时期，如kmo=6,navg=3，指夏季平均状态。</p>
+<h1 id="四、生成强迫"><a href="#四、生成强迫" class="headerlink" title="四、生成强迫"></a>四、生成强迫</h1><p>LBM模式的时间积分分支(time integration)的运行只需要处置场和强迫即可，不需要边界条件的设置。</p>
+<p>同样，修改$LNHOME/solver/util/SETPAR文件，设置相关参数即可生成响应的强迫文件。</p>
+<img src="/image/image-20200519151736163.png" alt="image-20200519151736163" style="zoom:67%;" />
+
+<img src="/image/image-20200519151750314.png" alt="image-20200519151750314" style="zoom:67%;" />
+
+<p>cfm,cfg为输出的强迫文件，nmvar为强迫变量，mnhpr为水平强迫设置，nmvpr为垂直强迫设置。</p>
+<p>具体的参数信息可参见$LNHOME/solver/util/param_list文件。</p>
+<p>这里列出一些简要信息：</p>
+<img src="/image/image-20200519152018418.png" alt="image-20200519152018418" style="zoom:67%;" />
+
+<p>修改好强迫配置后，输入以下命令生成强迫文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $LNHOME/solver/util</span><br><span class="line">make clean</span><br><span class="line">make</span><br><span class="line">./mkfrcng</span><br></pre></td></tr></table></figure>
+
+<p>make clean指令仅在第一次生成时使用即可。</p>
+<h1 id="五、-运行"><a href="#五、-运行" class="headerlink" title="五、 运行"></a>五、 运行</h1><p>$LNHOME/model/sh/tintgr/文件夹下存放了很多运行不同模式方案的csh命令文件，主要靠可参考linear-run.classic.csh文件，将其中的分辨率修改为自己所用方案，将初值场和强迫场的存放路径与自己统一。</p>
+<p>路径参数如下：</p>
+<img src="/image/image-20200519152454674.png" alt="image-20200519152454674" style="zoom:67%;" />
+
+<p>一般运行时间设置为20天左右，30天后斜压波会异常增长从而导致模式结果的异常。</p>
+<p>注：经测试，tend并不是运行的时间，比如tend = 51，模式会运行20天，tend = 59模式会运行27天。具体还需自己测试。</p>
+<p>运行模式的方法：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $LNHOME/model/sh/tintgr/</span><br><span class="line">csh ***.csh</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="六、-后处理"><a href="#六、-后处理" class="headerlink" title="六、 后处理"></a>六、 后处理</h1><p>干模式输出结果包括u,v,t,z,w,p,psi,chi，湿模式还包括了q,dt,dq(我没用过湿模式)。</p>
+<p>输出结果位于$LNHOME/data/out/ ,是.grd格式文件</p>
+<p>建议使用CDO工具的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cdo -f nc import_binary out.ctl out.nc</span><br></pre></td></tr></table></figure>
+
+<p>命令将其转为.nc格式。使用更加方便。</p>
+<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>感谢我的本科同学hhy大佬，在大佬的耐心指点下终于理清了LBM模式的安装和基本使用方法。感激！</p>
+<p>最后的最后，给出一个我测试结果：尝试在巴伦支海上空加入了一个大气热源，模拟了20天后的大气异常。</p>
+<p><img src="/image/image-20200519161417186.png" alt="results"></p>
+]]></content>
       <categories>
-          
-          <category> article </category>
-          
+        <category>article</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> other </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-  
-  
+      <tags>
+        <tag>model</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>批量下载气象数据(EC;NCEP;CMIP)</title>
+    <url>/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<p>介绍如何使用python批量下载EC数据以及使用wget批量下载NCEP/NCAR以及CMIP资料。</p>
+<a id="more"></a>
+
+<h3 id="1、使用python批量下载ECMWF数据-以EI数据为例"><a href="#1、使用python批量下载ECMWF数据-以EI数据为例" class="headerlink" title="1、使用python批量下载ECMWF数据(以EI数据为例)"></a>1、使用python批量下载ECMWF数据(以EI数据为例)</h3><p>​        首先在EC官网注册账号并登录。</p>
+<p>​        点击进入<a href="https://confluence.ecmwf.int//display/WEBAPI/Access+ECMWF+Public+Datasets" target="_blank" rel="noopener">EC公共数据集获取流程</a>，根据提示进行以下的操作。</p>
+<h5 id="1-安装ECMWF-key"><a href="#1-安装ECMWF-key" class="headerlink" title="1. 安装ECMWF key"></a>1. 安装ECMWF key</h5><p>​        (Recommended) Save your API key credentials into a file</p>
+<p>​        将秘钥复制并保存为一个名为<strong>.ecmwfapirc</strong>的文件中。并将文件保存在根目录中。Linux的话直接输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd</span><br></pre></td></tr></table></figure>
+
+<p>​        进入。</p>
+<p>​        windows的话位于C:\Users&lt;USERNAME&gt;\下。注意，文件是无格式文件，文件名为<strong>.ecmwfapirc</strong>！</p>
+<p>​        秘钥内容参考：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;url&quot;: &quot;https:&#x2F;&#x2F;api.ecmwf.int&#x2F;v1&quot;,</span><br><span class="line">  &quot;email&quot;: &quot;*********@***.com&quot;,</span><br><span class="line">  &quot;key&quot;: &quot;**************************&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        (如果是linux，还可以通过声明环境变量的方式建立key。)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ECMWF_API_URL&#x3D;&quot;https:&#x2F;&#x2F;api.ecmwf.int&#x2F;v1&quot;</span><br><span class="line">export ECMWF_API_KEY&#x3D;&quot;*****************&quot;</span><br><span class="line">export ECMWF_API_EMAIL&#x3D;&quot;**********@***.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​        这个和建立<strong>.ecmwfapirc</strong>二选一即可(仅限linux)。</p>
+<p>​        再或者将以下内容包含在py脚本内(我使用的是第一种方法，建立好以后都不用再去管了，比较方便，迁移电        脑只需要拷贝秘钥文件即可)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">server = ECMWFDataServer(url=<span class="string">"https://api.ecmwf.int/v1"</span>,key=<span class="string">"*******"</span>,email=<span class="string">"******@****.com"</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="2-安装依赖库"><a href="#2-安装依赖库" class="headerlink" title="2. 安装依赖库"></a>2. 安装依赖库</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install ecmwf-api-client</span><br><span class="line"><span class="meta">#</span><span class="bash">或者</span></span><br><span class="line">conda install -c conda-forge ecmwf-api-client</span><br></pre></td></tr></table></figure>
+
+<p>​        推荐第二种，使用conda统一管理最为方便，不会出现库混乱的情况。</p>
+<p>​        尝试</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> ecmwfapi <span class="keyword">import</span> ECMWFDataServer</span><br></pre></td></tr></table></figure>
+
+<p>​        检查是否安装成功。</p>
+<p>​        完成这两步后，就可以开始批量下载数据了。</p>
+<h5 id="3-下载数据"><a href="#3-下载数据" class="headerlink" title="3. 下载数据"></a>3. 下载数据</h5><p>​        回到<a href="https://apps.ecmwf.int/datasets/" target="_blank" rel="noopener">数据集选择</a>页面选择需要的数据集(这里以EI的daily资料为例)，挑选变量和时间后选择</p>
+<p>​                                                            <strong>View data retrieval request</strong></p>
+<p>​        就进入一个新页面，包含有下载选取数据的py代码。在本地新建一个py脚本，复制这些代码到本地脚本。然        后进行一些编辑即可。</p>
+<h5 id="4-脚本语法"><a href="#4-脚本语法" class="headerlink" title="4. 脚本语法"></a>4. 脚本语法</h5><p>​        脚本主要是以一个字典类型去设计的。初始提供了一些参数，还有一些其他的参数我们可以去额外添加,在这        里我补充完整以供参考。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">from</span> ecmwfapi <span class="keyword">import</span> ECMWFDataServer</span><br><span class="line">server = ECMWFDataServer()</span><br><span class="line">server.retrieve(&#123;</span><br><span class="line">   <span class="string">"class"</span>: <span class="string">"ei"</span>,</span><br><span class="line">   <span class="string">"dataset"</span>: <span class="string">"interim"</span>,</span><br><span class="line">   <span class="string">"date"</span>: <span class="string">"19970101/19970201/19970301/19970401/19970501/19970601/19970701"</span>,</span><br><span class="line">   <span class="string">"expver"</span>: <span class="string">"1"</span>,</span><br><span class="line">   <span class="string">"grid"</span>: <span class="string">"1.0/1.0"</span>,</span><br><span class="line">   <span class="string">"levelist"</span>: <span class="string">"/200/500/700/850/1000"</span>,</span><br><span class="line">   <span class="string">"levtype"</span>: <span class="string">"pl"</span>,</span><br><span class="line">   <span class="string">"param"</span>: <span class="string">"129.128/130.128/131.128/132.128"</span>,</span><br><span class="line">   <span class="string">"stream"</span>: <span class="string">"moda"</span>,</span><br><span class="line">   <span class="string">"type"</span>: <span class="string">"an"</span>,</span><br><span class="line">   <span class="string">"area"</span>  : <span class="string">"90/-180/0/180"</span>,</span><br><span class="line">   <span class="string">"format"</span> :<span class="string">"netcdf"</span>,</span><br><span class="line">   <span class="string">"target"</span>    : <span class="string">"1997levle.nc"</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>我们进行逐条的分析<strong>“class”: “ei”，”dataset”: “interim”</strong>表明是EI资料集；<strong>“date”</strong>表明了资料日期；<strong>“grid”</strong>表明水平分辨率；<strong>“levelist”</strong>代表层数；<strong>“levtype”</strong>代表高度类型，pl代表pressure level，sfc则是地面层等等；<strong>“param”</strong>为变量代码，<strong>“stream”</strong>为场的类型，moda代表monthly means of daily means月平均；<strong>“type”</strong>中an代表再分析，地面层有一些数据则是预测量，是不同于an的；<strong>“area”</strong>代表资料的范围，上/左/下/右 的顺序。最后两个一个是下载文件格式，一个是文件路径+文件名，默认是脚本路径。</p>
+<p>弄清楚了代码含义，就可以进行修改，自定义自己想下载的数据了。尤其是关于时间部分，比如想下载1979-2018年的全部数据，那么就在整个脚本外层套一个循环，把日期和输出部分格式化替换，或者就是利用pandas，timedate等库建立一个对应格式的时间字符串即可。</p>
+<p>而关于日数据在时间设置上更为方便，直接修改为<strong>19790101/to/20181231</strong>即可，月数据不能使用的原因是他只识别<strong>year+month+01</strong>。</p>
+<h3 id="2、使用wget批量下载NCEP-NCAR等数据"><a href="#2、使用wget批量下载NCEP-NCAR等数据" class="headerlink" title="2、使用wget批量下载NCEP/NCAR等数据"></a>2、使用wget批量下载NCEP/NCAR等数据</h3><p>Linux系统中的wget是一个下载文件的工具，它用在命令行下。Windows10用户想使用wget只需开启WSL功能即可。</p>
+<p><a href="https://psl.noaa.gov/data/gridded/index.html" target="_blank" rel="noopener">NOAA</a>提供了大量数据的下载，比如最常用的<strong>NCEP/NCAR Reanalysis 1</strong>数据集。</p>
+<p>但是很多数据都被分为很多个文件(每年一个)来下载，一个一个点实在是麻烦，同时点很多又可能导致下载失败。仔细的话就会发现下载链接是有规律的。比如逐日位势高度资料</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ftp:&#x2F;&#x2F;ftp2.psl.noaa.gov&#x2F;Datasets&#x2F;ncep.reanalysis.dailyavgs&#x2F;pressure&#x2F;hgt.1948.nc</span><br></pre></td></tr></table></figure>
+
+<p>所有的都一样，唯独hgt.1948.nc的年份部分发生了区别。</p>
+<p>进入bash，只需要最简单wget命令即可下载该文件:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.1948.nc</span><br></pre></td></tr></table></figure>
+
+<p>这时，我们只需要设计一个循环，来使年份部分发生变化即可。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">for (( i = 1948; i &lt; 2020; i++))</span><br><span class="line">do</span><br><span class="line">    wget ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.$&#123;i&#125;.nc    </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>对于CMIP资料的下载也是同样的道理。前些日子被CMIP资料下载搞的有些崩溃，很多模式一个变量能分成几十上百个小文件，一个一个手点很不现实。最后就用类似的循环和索引实现了自动化的批量下载。</p>
+]]></content>
+      <categories>
+        <category>article</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Shell</tag>
+        <tag>Data</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DELL大型机使用Jupyter Notebook</title>
+    <url>/1899/11/30/test/</url>
+    <content><![CDATA[<div id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容."><div class="hbe-input-container"><input type="password" id="hbePass" placeholder="您好, 这里需要密码." /><label>您好, 这里需要密码.</label><div class="bottom-line"></div></div><script id="hbeData" type="hbeData" data-hmacdigest="a0cdd003571c4b12e588fc624608cf4f1e7fd6ba29c5f8fe3feb4c76a5edf9e1">5514aebe607f0294a7f2cd7683159f3c8d6670142fff249811eea44b2b52bbeef5cddb37416414bcdd2a38297e54238c2882499e90f086710fe9aac19c96acfcd71d2ded9f6b4078784c4e926b6098ca98117a32741a5456f19a2b18cd7c5ec6e2d100f12181cf6852480ac33ae7627dbccaa0585796e106a21901fa44da04ead110eb0c70c28109e2eff304db67a8d16c1ca38453b275898bd94985247ca2cf5be5389f9a3fe79d9b942959450feb6e71d9b016b3abcf7627e045b6d795cf514a8015338490859ac5a32cce2c741f3239ec72aebc634a677cf74e38a98dff93191a80c3a6abaeb58c36ca32cb4ae00d23670972be356f1ba42691bc3e19ed2457da3e82167d331124eaf1469a7df9c45e2fb504f1202efe9849d98d3ad33882712a52d5e033d0c73b49279ce7a2383f3df3cce0c301fff2b18e36598cc7d5596f45abbf346286822f64cd25df02087ddcc80431f64a55bce015bf39da946fec367b001383f31230305eb4b3207c9c5071920742595e331dc3fc10df4f7ffe106d8a186967bfae7eeeb6ea8db787dc1cc4ab8d4979467ea9ec77308669cb46ec7ac32f9df8824077a09f494778508eebcf9b27f7d08d75338a1f78b6408b9ccf9ace444cdecd18bab2cfc8738823f55e40e41b4a92729c404fe427365a5c4fddd99b0fe8bed5379c36088c4883e2a7caaab8a0dc70456870cc56ce6309632d5cecf822b40cfc2a0f5182993a6f00bf3c267ae550db64f96a49b6069481b5e69ba5556a0dd569ba23e8e8e5efd46680f28aa5181f27a5ada01b34b767df5128c5fc553db35532b02f1adf3a7bb62cd978a09f28cee342d831e3b2fb70612c2a38e780cfc5625effee3eef6dbde040c2622ba1db1bfc0a5d0860f07f7091f1cf071c2b86e85cfbac1664a2eb4ea53a8126fc60ed8ffc53a566d5b862b0f8395435292ff174d35b30cee4b6146ab5d1f10543f9b20ba3dbecd4fa761c6871ebe64f8955a766386c555d36f880e2e3f4f76341bbd41713c074e61358b0b52231d3be02c8b6a8d9e5403ae9c62c4b33b502dc60aadf5ee39d709353f16304094a50aa0aaa8be651e9dbf8add3af8ade5cab06535b351b54da938c7cf7ba540a5c0bac1c8c197414d3f65dcc01ca6b3abe21730f16672e8bdd9ce75adcdf5324aa0fe0a62e806edebb6d4bf7195361ab06e1c6ded0c8e6dbaee50114791964ded7720a997b523c9c8658b0513d540524e7713a81bc551f7092c8c0c94d6f06ac22def755419dffa919377e617197b6da7e7be902db669d62043c5cd23fbf68607188c69017c35d6bac2a4e077a23c75a58927c867bb90e07f816b797bf3d4a654aaee79816e819caa9e31ee2d65929ace72685030c8c06e0a72209c75fb81a7070e4ae497184abe20a412fe108f275cc73cda6e32271f44234c96f4f3c19c91a59bb3d469320b5c67f29652256a31dfaeb69a605aa4ce1e89494e66f105b4342ce35e2f35dc304b811bad5e3163b009fe4977be59d0bd1372885ff2107e9bcd1e1aeb72dd0fc248984ed0584ca2c0bdb40648020463b00035f63192b44703ad5bb1ffd33b4939657797fd87202174e8912951675f60905ac6e3e50fd0b8633a3c6aa9fde5dbef8c6b0a381b2758c6c147e70cd8484925527f7e37371b48f5561a528b4b89b767c5e675b7ea937a850155e8f7f79265d7ccb8ca281c92261fa02455ecd952bdc36b9b47c33ec9b4fc21dfbc4c281e03d2a32f50d707dd9830a40cf1d4d70e84aa4181790284eef8bcf20df9a4854f978977be04d9001feb10afc09365905308eef3f2cc0bde767e5c7c1ae6ef1ce1e1c8c586df248ffd3cc7a77f66f97e18f630b2b5fb5945297e397d4640d9b0cbaba87fc669974c1ae93c0f5e80505b08f529bb01179181298741a1c443b3213af4d9e010c5c49904d51f7cae94cce741ad1c80f359f948c6bc7660eed60e77049d0acd0808c2d682b7db7425c9137c7cdfb6ba0d3f44a72050cb6659997d936eee786746567267580256c489b0805b92415878c8da913995ece3ff258fad62667085ce778ea3689e4e3e4ce6a32392c5d2d2a71a3fe9a376ce540245e2e2ace728e8e348dbb47a5c5d7942ad7311c6c465ec10ac477004f4236b8f8f6a7f19bcd80aeb54bb39ce1672fd74c6af890042c3a2fdd0b95ca95b70350b0b968903dc452b0165f5c4cff14b9d44a6eee186904cdecaaca3f27103b89e4d893c2b1bd74fe82974335c14c2e120d796301b3f533529a477b37e360de36404d93707896ed43000b5f9f21fe0a7e482c5b6fcf5f30b3afc2a8f3986b578583a087276157efc248fca0747954ff97988e7d264349e0a415f077c90a6c3da65baa9fb7d55bae78ac32059f26d9e083822bf9867c130f31073ee6eeca82d9a25e4feb3693756667c7d024aa873254969b4f5a46be23022c83244b750eeca796168e403c9a5366f53c3e9ed95779f2d220b39758ce9f511d1dabb2f5dbf1633167a50c24293a6472c8eb7a3980f1397d94ab0e0f8a356016fefda3045d9c30bce6ef9e2415f961afa115868e0fe34df4e61e9b2baa28215d5309052cd761968ff2582845a67c0d525b24cd1b7138404858860f765bbf3109305e79e977227b9be1c594cb569f54eada5dadba9c1737fced04135d01a02a2f7c3442a63cf4eaa1867f7963ea315ab1dfaca7f5dc40c03a940598c191c468550070e35c70d387453f9b811c89dbd95ef58cf8f4c40d8a9118768799591f8b02e2eca2d3efad57d343867ab4b4d841965825e2c312428ad24f39a7f60de960453569810ee20698efd89dec4b6fa27acaee9e5a957ab9b541cdbdafbcdc42789886907b6e00fac4a16480752ce677242a9c7a8fb400976a2df09f17f861394405c814af5a8ea9e016a48375778bcf0d600d9102255c9dce96d3ba65409bbad96c742ebe713f24699a87abb5f6988508082c6bc5135fcc7c37bd22e8eaf1cdbb07222759bdfb634e3a1c90b6b87f8fe675bd808ded496674bd07e26c134b896378e8222790af9f30cbc98d5b03a4add682513570abb7bc6bb7c95e608a57e9c10c184b9a6b211eb44ed60b3537e338e33e5597f0f99e23dc34c5d53049f3a5ac62ee04f4e792cfb7668e33e712b350ddade87f860dd76bbc53d8016f621ccf908dc9f7bcc05fb3f7bea138d2889209fde744a1c863e1bf8a1628cd3b4592780d81a28f4d2d7720daab50cb2315b4acae6b7e9275326d2ac81fe4a35cb9e6e917f672d947d8cf0cf6889c115a95ddf5da455a0779b8d67685cd74a2df5521c492e3682b5d8a98c77526c8539b02c92322d9c8697dc4fa80e8355c68f40a2040ca813051402d8cd09f33ef93e99a984a33b68214e94828510d971b9169b746db801e1d05c3febfea10f5590f464e36a66d0b7b3a623e5da1d1c240987d8d71d90cba3dcc79dddbe1ddc1c89c3a9e01be55d0780296600f5b005c8e07d6adcb</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+      <tags>
+        <tag>Pro.Zeng&#39;s Group</tag>
+        <tag>hide</tag>
+      </tags>
+  </entry>
 </search>
