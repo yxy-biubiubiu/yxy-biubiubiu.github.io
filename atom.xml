@@ -487,9 +487,9 @@
     
       <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
-      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
-    
       <category term="Shell" scheme="http://yoursite.com/tags/Shell/"/>
+    
+      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
     
   </entry>
   
