@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-23T08:19:03.288Z</updated>
+  <updated>2020-05-27T08:00:48.260Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>功率谱</title>
+    <link href="http://yoursite.com/2020/05/27/f1-4-1-1/"/>
+    <id>http://yoursite.com/2020/05/27/f1-4-1-1/</id>
+    <published>2020-05-27T07:42:20.000Z</published>
+    <updated>2020-05-27T08:00:48.260Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>常用绘图类型</title>
@@ -44,7 +69,7 @@
     <link href="http://yoursite.com/2020/05/23/TaylorDiagram/"/>
     <id>http://yoursite.com/2020/05/23/TaylorDiagram/</id>
     <published>2020-05-23T07:25:57.000Z</published>
-    <updated>2020-05-23T07:49:38.082Z</updated>
+    <updated>2020-05-27T07:41:18.957Z</updated>
     
     <summary type="html">
     
@@ -448,7 +473,7 @@
     <link href="http://yoursite.com/2020/05/15/method1/"/>
     <id>http://yoursite.com/2020/05/15/method1/</id>
     <published>2020-05-15T01:19:58.000Z</published>
-    <updated>2020-05-23T08:18:55.430Z</updated>
+    <updated>2020-05-27T07:44:47.455Z</updated>
     
     <summary type="html">
     
@@ -490,28 +515,6 @@
       <category term="Shell" scheme="http://yoursite.com/tags/Shell/"/>
     
       <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从无到有搭建一个属于自己的网站</title>
-    <link href="http://yoursite.com/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
-    <id>http://yoursite.com/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</id>
-    <published>2020-05-12T03:05:44.000Z</published>
-    <updated>2020-05-22T10:05:07.258Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;从萌生想法到成功搭建自己的网站前前后后花了大概半个月的时间，终于成功搭建一块了属于自己的地盘。第一篇文章就记录下搭建个人网站的全部过程吧。&lt;/p&gt;
-&lt;p&gt;大家感兴趣的话完全可以尝试文中操作，免费创建属于自己的主页或者博客。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
-    
-    
-      <category term="Other" scheme="http://yoursite.com/tags/Other/"/>
     
   </entry>
   
