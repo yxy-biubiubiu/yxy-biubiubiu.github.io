@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-28T08:18:56.559Z</updated>
+  <updated>2020-06-01T11:04:33.573Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>利用Cartopy绘制带有地图投影的图形</title>
+    <link href="http://yoursite.com/2020/06/01/geoplot/"/>
+    <id>http://yoursite.com/2020/06/01/geoplot/</id>
+    <published>2020-06-01T10:38:28.000Z</published>
+    <updated>2020-06-01T11:04:33.573Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;从NCL转向python绘图后，最迷茫的一点恐怕就是地理绘图了，网络上流传了大量的python绘图教程，但是很少是关于地理方面的，包括各类投影坐标系，地理地形，界线shp的绘制等等。这篇文章以Cartopy为主，介绍如何通过Matplotlib结合Cartopy来灵活的绘制带有地图投影的图像。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
+    
+      <category term="Cartopy" scheme="http://yoursite.com/tags/Cartopy/"/>
+    
+  </entry>
   
   <entry>
     <title>一张图看懂matplotlib的绘图结构</title>
@@ -488,31 +513,6 @@
     
     
       <category term="Model" scheme="http://yoursite.com/tags/Model/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>常用气候统计方法(含源码及示例)</title>
-    <link href="http://yoursite.com/2020/05/15/method1/"/>
-    <id>http://yoursite.com/2020/05/15/method1/</id>
-    <published>2020-05-15T01:19:58.000Z</published>
-    <updated>2020-05-27T07:44:47.455Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;整理了常用的气候统计方法，包括源码及示例。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Other" scheme="http://yoursite.com/categories/Other/"/>
-    
-    
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
-      <category term="Method" scheme="http://yoursite.com/tags/Method/"/>
-    
-      <category term="Statistical" scheme="http://yoursite.com/tags/Statistical/"/>
     
   </entry>
   
