@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-01T11:04:33.573Z</updated>
+  <updated>2020-06-01T12:35:31.210Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>经验正交函数分解(EOF)</title>
+    <link href="http://yoursite.com/2020/06/01/f1-5-1-1/"/>
+    <id>http://yoursite.com/2020/06/01/f1-5-1-1/</id>
+    <published>2020-06-01T11:06:08.000Z</published>
+    <updated>2020-06-01T12:35:31.210Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;EOF分析在气象分析中十分常见，幸运的是有前辈已经利用Python实现了EOF分析并且发布在&lt;a href=&quot;https://github.com/ajdawson/eofs&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Function" scheme="http://yoursite.com/tags/Function/"/>
+    
+  </entry>
   
   <entry>
     <title>利用Cartopy绘制带有地图投影的图形</title>
@@ -492,27 +517,6 @@
     
       <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>Linear Baroclinic Model(线性斜压模式，LBM)初探</title>
-    <link href="http://yoursite.com/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/"/>
-    <id>http://yoursite.com/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/</id>
-    <published>2020-05-18T07:20:24.000Z</published>
-    <updated>2020-05-22T10:04:55.468Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍Linear Baroclinic Model(线性斜压模式，LBM)的安装与运行方法。LBM模式可以计算大气对规定强迫的稳定线性响应、特征分析，旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
-    
-    
-      <category term="Model" scheme="http://yoursite.com/tags/Model/"/>
     
   </entry>
   

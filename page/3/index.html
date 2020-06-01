@@ -80,6 +80,78 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-1-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/19/f1-1-1-1/">均值</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/19/f1-1-1-1/" class="article-date">
+  <time datetime="2020-05-19T13:19:11.000Z" itemprop="datePublished">2020-05-19</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>均值用来描述某一变量的平均水平。numpy库中提供了直接的函数用来计算变量均值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">np.mean(a, axis=<span class="literal">None</span>, dtype=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">np.nanmean(a, axis=<span class="literal">None</span>, dtype=<span class="literal">None</span>) <span class="comment">#np.nanmean() 默认略过缺测值进行计算</span></span><br></pre></td></tr></table></figure>
+
+<p>a : 输入数据，数组或序列；</p>
+<p>axis : 指定计算平均的轴，默认为全部数据的平均。如 axis=0;axis=(0,1)等；</p>
+<p>dtype : 指定数据类型，默认为’float64’。</p>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]])</span><br><span class="line">print(np.mean(data))</span><br><span class="line">print(np.mean(data,axis = <span class="number">0</span>))</span><br><span class="line">print(np.mean(data,axis = (<span class="number">0</span>,<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3.5</span><br><span class="line">[2.5 3.5 4.5]</span><br><span class="line">3.5</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data2 = np.array([<span class="number">1</span>,np.nan,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</span><br><span class="line">print(np.mean(data2))</span><br><span class="line">print(np.nanmean(data2))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nan</span><br><span class="line">3.8</span><br></pre></td></tr></table></figure>
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-1-1/" data-id="ckake6xuk0002isvxd7tbc7vv" class="article-share-link">
+                                            分享
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-LBM模式初探" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
