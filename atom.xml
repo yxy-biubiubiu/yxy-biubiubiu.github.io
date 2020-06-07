@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-06T10:19:30.667Z</updated>
+  <updated>2020-06-07T05:54:41.278Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CDO简介及常用语法</title>
+    <link href="http://yoursite.com/2020/06/07/cdo/"/>
+    <id>http://yoursite.com/2020/06/07/cdo/</id>
+    <published>2020-06-07T01:36:42.000Z</published>
+    <updated>2020-06-07T05:54:41.278Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Climate Data Operators (CDO) 是用来处理气候数据的软件，可以在linux环境下直接对数据文件进行处理，通过筛选，删除，修改等操作从原始数据文件中得到自己所需的资料格式，配合Python，NCL等语言的使用十分方便。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+      <category term="Other" scheme="http://yoursite.com/tags/Other/"/>
+    
+      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
+    
+  </entry>
   
   <entry>
     <title>Python绘图如何自定义或使用NCL中的colormap</title>
@@ -480,32 +503,6 @@
         
           &lt;p&gt;距平表示变量偏离平均水平的量。numpy中并没有直接的函数可以计算某变量的距平，然而我们可以通过对均值函数的灵活运用加以实现。除此以外，scipy库中的去趋势函数也可以计算数据的距平，具体将在去趋势一节中介绍。&lt;/p&gt;
 &lt;p&gt;将以下内容复制进A.py文件，与使用脚本放在同一
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>百分位数</title>
-    <link href="http://yoursite.com/2020/05/19/f1-1-1-2/"/>
-    <id>http://yoursite.com/2020/05/19/f1-1-1-2/</id>
-    <published>2020-05-19T13:30:27.000Z</published>
-    <updated>2020-05-22T09:16:03.895Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;将变量从小到大排序，计算相应的累计百分位，某一百分位对应的变量值为该百分位的百分位数(中位数即为50百分位数)。气候研究中计算极端事件的所用阈值法便可通过此函数实现。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
         
       
     
