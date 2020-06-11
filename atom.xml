@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-07T06:01:22.090Z</updated>
+  <updated>2020-06-11T01:37:30.256Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>(Random Forest,RF)随机森林模型</title>
+    <link href="http://yoursite.com/2020/06/10/randomforest/"/>
+    <id>http://yoursite.com/2020/06/10/randomforest/</id>
+    <published>2020-06-10T08:47:39.000Z</published>
+    <updated>2020-06-11T01:37:30.256Z</updated>
+    
+    <summary type="html">
+    
+      有东西被加密了, 请输入密码查看.
+    
+    </summary>
+    
+    
+      <category term="Group" scheme="http://yoursite.com/categories/Group/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>等高线图、填色图</title>
+    <link href="http://yoursite.com/2020/06/10/ContourDiagram/"/>
+    <id>http://yoursite.com/2020/06/10/ContourDiagram/</id>
+    <published>2020-06-10T08:44:05.000Z</published>
+    <updated>2020-06-10T08:47:21.971Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>CDO简介及常用语法</title>
@@ -451,58 +487,6 @@
         
         
           &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>标准差与方差</title>
-    <link href="http://yoursite.com/2020/05/19/f1-1-2-2/"/>
-    <id>http://yoursite.com/2020/05/19/f1-1-2-2/</id>
-    <published>2020-05-19T13:32:39.000Z</published>
-    <updated>2020-05-22T09:16:45.114Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;标准差：&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>距平</title>
-    <link href="http://yoursite.com/2020/05/19/f1-1-2-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-1-2-1/</id>
-    <published>2020-05-19T13:31:35.000Z</published>
-    <updated>2020-05-22T09:16:24.979Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;距平表示变量偏离平均水平的量。numpy中并没有直接的函数可以计算某变量的距平，然而我们可以通过对均值函数的灵活运用加以实现。除此以外，scipy库中的去趋势函数也可以计算数据的距平，具体将在去趋势一节中介绍。&lt;/p&gt;
-&lt;p&gt;将以下内容复制进A.py文件，与使用脚本放在同一
         
       
     
