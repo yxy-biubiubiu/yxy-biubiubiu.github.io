@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-11T01:37:30.256Z</updated>
+  <updated>2020-07-02T08:18:35.359Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>经纬度-时间分布图</title>
+    <link href="http://yoursite.com/2020/07/02/lat-time-lev/"/>
+    <id>http://yoursite.com/2020/07/02/lat-time-lev/</id>
+    <published>2020-07-02T07:54:54.000Z</published>
+    <updated>2020-07-02T08:18:35.359Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;气象绘图中，等值线图包含很多种类，其中一种就是以经纬度，和时间或者高度为xy轴的等值线分布图。其与普通等值线图的区别主要体现在xy轴格式不统一上。以纬度-时间分布图为例，分享绘制这类图形的方法：&lt;/p&gt;
+&lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>(Random Forest,RF)随机森林模型</title>
@@ -201,7 +227,7 @@
     <link href="http://yoursite.com/2020/05/23/plot/"/>
     <id>http://yoursite.com/2020/05/23/plot/</id>
     <published>2020-05-23T07:52:08.000Z</published>
-    <updated>2020-05-23T08:19:03.288Z</updated>
+    <updated>2020-07-02T08:23:10.463Z</updated>
     
     <summary type="html">
     
@@ -454,31 +480,6 @@
     <id>http://yoursite.com/2020/05/19/f1-1-3-2/</id>
     <published>2020-05-19T13:34:28.000Z</published>
     <updated>2020-05-22T09:19:49.930Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>皮尔逊相关系数</title>
-    <link href="http://yoursite.com/2020/05/19/f1-1-3-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-1-3-1/</id>
-    <published>2020-05-19T13:33:49.000Z</published>
-    <updated>2020-05-22T09:17:10.504Z</updated>
     
     <summary type="html">
     
