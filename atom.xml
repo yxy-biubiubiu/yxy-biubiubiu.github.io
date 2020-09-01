@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-02T08:26:13.158Z</updated>
+  <updated>2020-09-01T08:47:09.501Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,109 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>zhexian4</title>
+    <link href="http://yoursite.com/2020/09/01/zhexian4/"/>
+    <id>http://yoursite.com/2020/09/01/zhexian4/</id>
+    <published>2020-09-01T08:40:16.000Z</published>
+    <updated>2020-09-01T08:47:09.501Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;非等比例坐标轴折线图主要是指将y轴换为对数坐标轴或是其他格式。对于对数坐标轴来说，matplotlib提供了两种格式可供选择，分别是”symlog”以及”log”，就使用感觉而言，个人认为”symlog”更加方便(主要是坐标刻度ticklabels的设置更加方便)。&lt;/p&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>多y轴折线图</title>
+    <link href="http://yoursite.com/2020/09/01/zhexian3/"/>
+    <id>http://yoursite.com/2020/09/01/zhexian3/</id>
+    <published>2020-09-01T08:37:41.000Z</published>
+    <updated>2020-09-01T08:40:04.848Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;多y轴折线图只具有3条甚至更多不同区间的y轴的折线图，不同于双y轴的绘制方法，多y轴绘制的要点在于创建多条依赖于同一axes的寄生轴。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>双y轴折线图</title>
+    <link href="http://yoursite.com/2020/09/01/zhexian2/"/>
+    <id>http://yoursite.com/2020/09/01/zhexian2/</id>
+    <published>2020-09-01T08:34:03.000Z</published>
+    <updated>2020-09-01T08:37:33.393Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;绘制双y轴折线图的要点在于将y轴的右轴变为一个兄弟轴(twin axis)&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>基本折线图(单变量，多变量)</title>
+    <link href="http://yoursite.com/2020/09/01/zhexian1/"/>
+    <id>http://yoursite.com/2020/09/01/zhexian1/</id>
+    <published>2020-09-01T08:22:39.000Z</published>
+    <updated>2020-09-01T08:33:47.024Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;一、单变量折线图&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>经纬度-时间分布图</title>
@@ -227,7 +330,7 @@
     <link href="http://yoursite.com/2020/05/23/plot/"/>
     <id>http://yoursite.com/2020/05/23/plot/</id>
     <published>2020-05-23T07:52:08.000Z</published>
-    <updated>2020-07-02T08:23:10.463Z</updated>
+    <updated>2020-09-01T08:49:08.876Z</updated>
     
     <summary type="html">
     
@@ -385,109 +488,6 @@
         
           &lt;p&gt;滑动平均是趋势拟合的基础方法，也相当于一个滤波器，比如使用九点滑动平均来分析时间序列的年代际变化。 python的常用算法库中并未给出直接计算滑动平均的函数。但是numpy库中给出了一个更加强大更加基础的函数，卷积numpy.convolve()。&lt;/p&gt;
 &lt;figure
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>去趋势</title>
-    <link href="http://yoursite.com/2020/05/19/f1-2-3-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-2-3-1/</id>
-    <published>2020-05-19T13:40:11.000Z</published>
-    <updated>2020-05-22T09:18:43.585Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;去趋势主要指的是去除带有趋势的序列中的线性趋势。scipy库提供了对应的函数以实现这一目的。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>滤波(Butterworth滤波器)</title>
-    <link href="http://yoursite.com/2020/05/19/f1-2-4-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-2-4-1/</id>
-    <published>2020-05-19T13:40:07.000Z</published>
-    <updated>2020-05-22T09:19:06.181Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;分析气候变化趋势中常用的方法还有滤波技术，主要分为低通滤波，高通滤波以及带通滤波。Scipy库中提供了构造Butterworth滤波器的函数。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>数据标准化</title>
-    <link href="http://yoursite.com/2020/05/19/f1-1-4-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-1-4-1/</id>
-    <published>2020-05-19T13:35:24.000Z</published>
-    <updated>2020-05-22T09:18:01.478Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;将以下内容复制进A.py文件，与使用脚本放在同一文件夹内，通过import A 调用。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>线性回归系数</title>
-    <link href="http://yoursite.com/2020/05/19/f1-1-3-2/"/>
-    <id>http://yoursite.com/2020/05/19/f1-1-3-2/</id>
-    <published>2020-05-19T13:34:28.000Z</published>
-    <updated>2020-05-22T09:19:49.930Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
         
       
     

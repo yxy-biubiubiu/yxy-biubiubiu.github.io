@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    经纬度-时间分布图 |
+    双y轴折线图 |
     
     ZSYXY Meteorological workshop</title>
   
@@ -47,7 +47,7 @@
 <body>
 <main class="content">
   <section class="outer">
-  <article id="post-lat-time-lev" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+  <article id="post-zhexian2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
         
@@ -55,7 +55,7 @@
                 
   
     <h1 class="article-title" itemprop="name">
-      经纬度-时间分布图
+      双y轴折线图
     </h1>
   
   
@@ -68,8 +68,8 @@
 
                 
                     <div class="article-meta">
-                        <a href="/2020/07/02/lat-time-lev/" class="article-date">
-  <time datetime="2020-07-02T07:54:54.000Z" itemprop="datePublished">2020-07-02</time>
+                        <a href="/2020/09/01/zhexian2/" class="article-date">
+  <time datetime="2020-09-01T08:34:03.000Z" itemprop="datePublished">2020-09-01</time>
 </a>
                             
   <div class="article-category">
@@ -94,17 +94,17 @@
                                             
 
                                                 
-                                                                    <p>气象绘图中，等值线图包含很多种类，其中一种就是以经纬度，和时间或者高度为xy轴的等值线分布图。其与普通等值线图的区别主要体现在xy轴格式不统一上。以纬度-时间分布图为例，分享绘制这类图形的方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">f = xr.open_dataset(<span class="string">'./data.nc'</span>)</span><br><span class="line">z = f[<span class="string">'hgt'</span>].loc[<span class="string">'2005-01-01'</span>:<span class="string">'2005-12-01'</span>,<span class="number">500</span>,:,<span class="number">120</span>]</span><br><span class="line">time = z.time</span><br><span class="line">lat = z.lat</span><br><span class="line"><span class="comment">#创建Figure</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">16</span>, <span class="number">13</span>))</span><br><span class="line"><span class="comment">#绘制500hPa位势高度场</span></span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">#绘制等值线</span></span><br><span class="line">q1 = ax1.contour(range(time.shape[<span class="number">0</span>]), lat, z.T)</span><br><span class="line"><span class="comment">#设置y轴为对数轴，并设置相关标签</span></span><br><span class="line">ax1.set_xticks(np.arange(<span class="number">0</span>,<span class="number">12</span>,<span class="number">1</span>))</span><br><span class="line">ax1.set_yticks(np.arange(<span class="number">-90</span>,<span class="number">120</span>,<span class="number">30</span>))</span><br><span class="line">ax1.yaxis.set_major_formatter(cticker.LatitudeFormatter())</span><br><span class="line"><span class="comment">#设置x轴标签</span></span><br><span class="line">ax1.set_xlim(<span class="number">0</span>,<span class="number">11</span>)</span><br><span class="line">ax1.set_xticks(np.arange(<span class="number">0</span>,<span class="number">12</span>,<span class="number">1</span>))</span><br><span class="line">ax1.set_xticklabels(pd.date_range(start=<span class="string">'2005-01'</span>,periods=<span class="number">12</span>,freq=<span class="string">'M'</span>).date )</span><br><span class="line"><span class="comment">#添加图题</span></span><br><span class="line">ax1.set_title(<span class="string">'2005 500hPa Z'</span>,loc=<span class="string">'center'</span>,fontsize=<span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+                                                                    <p>绘制双y轴折线图的要点在于将y轴的右轴变为一个兄弟轴(twin axis)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">ao = pd.read_csv(<span class="string">"AO.txt"</span>,sep=<span class="string">'\s+'</span>,header=<span class="literal">None</span>, names=[<span class="string">'year'</span>,<span class="string">'month'</span>,<span class="string">'AO'</span>])  </span><br><span class="line">ao_jan = ao[ao.month==<span class="number">1</span>]</span><br><span class="line">ao_feb = ao[ao.month==<span class="number">2</span>]</span><br><span class="line"><span class="comment">#创建Figure</span></span><br><span class="line">fig = plt.figure()</span><br><span class="line"><span class="comment">#绘制单y轴折线图</span></span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">ax1.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_jan.AO,<span class="string">'ko-'</span>,label=<span class="string">'Jan'</span>)</span><br><span class="line">ax1.set_ylabel(<span class="string">'January'</span>,c=<span class="string">'r'</span>)</span><br><span class="line">ax1.set_title(<span class="string">'1950-2019 AO Index'</span>)</span><br><span class="line"><span class="comment">#创建第二根y轴</span></span><br><span class="line">ax2 = ax1.twinx()  </span><br><span class="line">ax2.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_feb.AO,<span class="string">'rs-'</span>,label=<span class="string">'Feb'</span>)</span><br><span class="line">ax2.set_ylim(<span class="number">-4</span>,<span class="number">4</span>)</span><br><span class="line">ax2.set_ylabel(<span class="string">'February'</span>,c=<span class="string">'k'</span>)</span><br></pre></td></tr></table></figure>
 
 <p>输出图形如下：</p>
-<p><img src="/image/image-20200702161610554.png" alt="image-20200702161610554"></p>
-<p>其中z数组代表2005年逐月120°E经线上500hPa位势高度场演变(只做示例，不考虑绘图意义)</p>
+<p><img src="/image/zhexian2-1.png" alt="image-20200702161610554"></p>
+<p>测试数据下载地址：<a href="/image/AO.txt">点此下载</a></p>
 
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/07/02/lat-time-lev/" data-id="ckc4iuyv3000024vxdvdgfkxk" class="article-share-link">
+                                        <a data-url="http://yoursite.com/2020/09/01/zhexian2/" data-id="ckejpky920001iovxem6qbhj1" class="article-share-link">
                                             分享
                                         </a>
                                         
@@ -116,19 +116,19 @@
         
   <nav class="article-nav">
     
-      <a href="/2020/09/01/zhexian1/" class="article-nav-link">
+      <a href="/2020/09/01/zhexian3/" class="article-nav-link">
         <strong class="article-nav-caption">前一篇</strong>
         <div class="article-nav-title">
           
-            基本折线图(单变量，多变量)
+            多y轴折线图
           
         </div>
       </a>
     
     
-      <a href="/2020/06/10/randomforest/" class="article-nav-link">
+      <a href="/2020/09/01/zhexian1/" class="article-nav-link">
         <strong class="article-nav-caption">后一篇</strong>
-        <div class="article-nav-title">(Random Forest,RF)随机森林模型</div>
+        <div class="article-nav-title">基本折线图(单变量，多变量)</div>
       </a>
     
   </nav>
