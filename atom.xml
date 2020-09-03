@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-01T08:47:09.501Z</updated>
+  <updated>2020-09-03T07:00:18.814Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,112 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>zhexian5</title>
+    <link href="http://yoursite.com/2020/09/03/zhexian5/"/>
+    <id>http://yoursite.com/2020/09/03/zhexian5/</id>
+    <published>2020-09-03T06:49:48.000Z</published>
+    <updated>2020-09-03T07:00:18.814Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;这类图同常用填色区间表示折线的误差(标准差)区间，或是用于鲜明地表现出两条折线的差异。&lt;/p&gt;
+&lt;p&gt;绘制填色区间的关键函数为：&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>堆叠柱状图</title>
+    <link href="http://yoursite.com/2020/09/03/bar3/"/>
+    <id>http://yoursite.com/2020/09/03/bar3/</id>
+    <published>2020-09-03T06:45:35.000Z</published>
+    <updated>2020-09-03T06:49:35.128Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;(纵向)堆叠柱状图主要是用于横向对比累计分布。绘制方法如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>多变量柱状图</title>
+    <link href="http://yoursite.com/2020/09/03/bar2/"/>
+    <id>http://yoursite.com/2020/09/03/bar2/</id>
+    <published>2020-09-03T06:42:59.000Z</published>
+    <updated>2020-09-03T06:45:26.470Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;数据同样利用折线图示例中所使用的AO.txt&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>单变量柱状图</title>
+    <link href="http://yoursite.com/2020/09/03/bar1/"/>
+    <id>http://yoursite.com/2020/09/03/bar1/</id>
+    <published>2020-09-03T06:33:43.000Z</published>
+    <updated>2020-09-03T06:39:38.888Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;同样使用折线图示例中使用过的数据&lt;/p&gt;
+&lt;p&gt;最基础的柱状图绘制如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>zhexian4</title>
@@ -330,7 +436,7 @@
     <link href="http://yoursite.com/2020/05/23/plot/"/>
     <id>http://yoursite.com/2020/05/23/plot/</id>
     <published>2020-05-23T07:52:08.000Z</published>
-    <updated>2020-09-01T08:49:08.876Z</updated>
+    <updated>2020-09-03T07:00:48.608Z</updated>
     
     <summary type="html">
     
@@ -394,108 +500,6 @@
       <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>曼-肯德尔(Mann-Kendall)检验</title>
-    <link href="http://yoursite.com/2020/05/21/f1-3-2-1/"/>
-    <id>http://yoursite.com/2020/05/21/f1-3-2-1/</id>
-    <published>2020-05-21T01:06:17.000Z</published>
-    <updated>2020-05-22T09:17:16.669Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>滑动t检验</title>
-    <link href="http://yoursite.com/2020/05/21/f1-3-1-1/"/>
-    <id>http://yoursite.com/2020/05/21/f1-3-1-1/</id>
-    <published>2020-05-21T01:06:12.000Z</published>
-    <updated>2020-05-22T09:19:21.945Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>线性倾向估计(一元线性回归)</title>
-    <link href="http://yoursite.com/2020/05/19/f1-2-1-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-2-1-1/</id>
-    <published>2020-05-19T13:40:18.000Z</published>
-    <updated>2020-05-22T09:18:17.914Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;除1.132节介绍的的线性回归系数可用来计算线性回归外，sklearn库中也有相关的函数用来计算一元线性回归，同时还可以输出回归线，为数据可视化提供了便利。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>滑动平均</title>
-    <link href="http://yoursite.com/2020/05/19/f1-2-2-1/"/>
-    <id>http://yoursite.com/2020/05/19/f1-2-2-1/</id>
-    <published>2020-05-19T13:40:14.000Z</published>
-    <updated>2020-05-22T09:18:31.178Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;滑动平均是趋势拟合的基础方法，也相当于一个滤波器，比如使用九点滑动平均来分析时间序列的年代际变化。 python的常用算法库中并未给出直接计算滑动平均的函数。但是numpy库中给出了一个更加强大更加基础的函数，卷积numpy.convolve()。&lt;/p&gt;
-&lt;figure
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
     
   </entry>
   
