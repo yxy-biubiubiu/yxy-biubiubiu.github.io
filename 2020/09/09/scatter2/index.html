@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    常用绘图类型 |
+    带地图投影的散点图(站点分布图) |
     
     ZSYXY Meteorological workshop</title>
   
@@ -47,7 +47,7 @@
 <body>
 <main class="content">
   <section class="outer">
-  <article id="post-plot" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+  <article id="post-scatter2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
         
@@ -55,7 +55,7 @@
                 
   
     <h1 class="article-title" itemprop="name">
-      常用绘图类型
+      带地图投影的散点图(站点分布图)
     </h1>
   
   
@@ -68,12 +68,12 @@
 
                 
                     <div class="article-meta">
-                        <a href="/2020/05/23/plot/" class="article-date">
-  <time datetime="2020-05-23T07:52:08.000Z" itemprop="datePublished">2020-05-23</time>
+                        <a href="/2020/09/09/scatter2/" class="article-date">
+  <time datetime="2020-09-09T08:32:49.000Z" itemprop="datePublished">2020-09-09</time>
 </a>
                             
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Other/">Other</a>
+    <a class="article-category-link" href="/categories/Plot/">Plot</a>
   </div>
 
                     </div>
@@ -94,46 +94,21 @@
                                             
 
                                                 
-                                                                    <p>整理了常用的气候统计方法，包括源码及示例。</p>
-<a id="more"></a>
+                                                                    <p>散点图另一种常用的形式往往要结合地图投影来实现，也就是站点数据分布图的绘制。</p>
+<p>关于地图投影，请见<a href="/2020/09/09/map/">Cartopy地图投影绘制</a></p>
+<p>比如在这里，绘制了中国825气象站站点的三维分布图(经纬度，颜色代表海拔高度)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="keyword">import</span> cartopy.io.shapereader <span class="keyword">as</span> shpreader</span><br><span class="line">data = pd.read_csv(<span class="string">"./825station.txt"</span>,sep=<span class="string">'\s+'</span>,header=<span class="literal">None</span>, names=[<span class="string">'stat'</span>,<span class="string">'lat'</span>,<span class="string">'lon'</span>,<span class="string">'high'</span>])  </span><br><span class="line">fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">8</span>))</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,projection = ccrs.PlateCarree(central_longitude=<span class="number">105</span>) )</span><br><span class="line"><span class="comment">#设置图形范围及刻度</span></span><br><span class="line">ax1.set_extent([<span class="number">70</span>,<span class="number">140</span>,<span class="number">0</span>,<span class="number">60</span>], crs=ccrs.PlateCarree())</span><br><span class="line">ax1.set_xticks(np.arange(<span class="number">70</span>,<span class="number">120</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax1.set_yticks(np.arange(<span class="number">30</span>,<span class="number">70</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax1.xaxis.set_major_formatter(cticker.LongitudeFormatter())</span><br><span class="line">ax1.yaxis.set_major_formatter(cticker.LatitudeFormatter())</span><br><span class="line"><span class="comment">#绘制站点分布</span></span><br><span class="line">s = ax1.scatter(data.lon,data.lat,s = <span class="number">5</span>,c = data.high,cmap=<span class="string">'jet'</span>,transform=ccrs.PlateCarree())</span><br><span class="line"><span class="comment">#添加色标，fraction参数设置色标缩放比例</span></span><br><span class="line">fig.colorbar(s,ax=ax1,fraction=<span class="number">0.034</span>)</span><br><span class="line"><span class="comment">#添加海岸线等特征</span></span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'/data/home/zenggang/yxy/shp/bou2_4l.dbf'</span>).geometries()</span><br><span class="line">ax1.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p>def函数使用方法如下：</p>
-<p>第一种：将代码内容复制在脚本最前部，函数用法参考代码说明。</p>
-<p>第二种：将代码保存复制存进A.py，与所要编辑脚本放在同一文件夹内，在脚本内 import A 即可。通过help(A)查看函数用法(A可任意替换，不冲突即可)。</p>
-<p>一、折线图</p>
-<ol>
-<li><a href="/2020/09/01/zhexian1/">基本折线图(单变量，多变量)</a></li>
-<li><a href="/2020/09/01/zhexian2/">双y轴折线图</a></li>
-<li><a href="/2020/09/01/zhexian3/">多y轴折线图</a></li>
-<li><a href="/2020/09/01/zhexian4/">非等比例坐标折线图</a></li>
-<li><a href="/2020/09/03/zhexian5/">折线间颜色填充</a></li>
-</ol>
-<p>二、柱状图</p>
-<ol>
-<li><a href="/2020/09/03/bar1/">单变量柱状图</a></li>
-<li><a href="/2020/09/03/bar2/">多变量柱状图</a></li>
-<li><a href="/2020/09/03/bar3/">堆叠柱状图</a></li>
-</ol>
-<p>三、散点图</p>
-<ol>
-<li><a href="/2020/09/09/scatter1/">简单散点图</a></li>
-<li><a href="/2020/09/09/scatter2/">带地图投影的散点图(站点分布图)</a></li>
-</ol>
-<p>四、其他</p>
-<ol>
-<li><a href="/2020/05/23/TaylorDiagram/">泰勒图</a></li>
-<li><a href="/2020/07/02/lat-time-lev/">经纬度-时间分布图</a></li>
-</ol>
+<p>输出图形如下：</p>
+<p><img src="/image/scatter2-1.png" alt="image-20200702161610554"></p>
 
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/23/plot/" data-id="ckake6xv70011isvxgkf48546" class="article-share-link">
+                                        <a data-url="http://yoursite.com/2020/09/09/scatter2/" data-id="ckev81yaq0003rkvx8xgp42fg" class="article-share-link">
                                             分享
                                         </a>
                                         
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
-
                                     </footer>
 
     </div>
@@ -142,19 +117,19 @@
         
   <nav class="article-nav">
     
-      <a href="/2020/05/27/f1-4-1-1/" class="article-nav-link">
+      <a href="/2020/09/09/map/" class="article-nav-link">
         <strong class="article-nav-caption">前一篇</strong>
         <div class="article-nav-title">
           
-            功率谱
+            Cartopy地图投影绘制
           
         </div>
       </a>
     
     
-      <a href="/2020/05/23/TaylorDiagram/" class="article-nav-link">
+      <a href="/2020/09/09/scatter1/" class="article-nav-link">
         <strong class="article-nav-caption">后一篇</strong>
-        <div class="article-nav-title">泰勒图</div>
+        <div class="article-nav-title">简单散点图</div>
       </a>
     
   </nav>
