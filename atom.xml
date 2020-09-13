@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-09T10:09:07.959Z</updated>
+  <updated>2020-09-13T02:13:49.702Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小波变换(测试中)</title>
+    <link href="http://yoursite.com/2020/09/13/wavelet/"/>
+    <id>http://yoursite.com/2020/09/13/wavelet/</id>
+    <published>2020-09-13T01:17:36.000Z</published>
+    <updated>2020-09-13T02:13:49.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;该方法仍在测试中，欢迎大家使用，如有问题请及时与我联系，联系方式详见右侧边栏about页面。&lt;/p&gt;
+&lt;p&gt;算法主体：&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Cartopy地图投影绘制</title>
@@ -478,31 +505,6 @@
       <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
       <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>功率谱</title>
-    <link href="http://yoursite.com/2020/05/27/f1-4-1-1/"/>
-    <id>http://yoursite.com/2020/05/27/f1-4-1-1/</id>
-    <published>2020-05-27T07:42:20.000Z</published>
-    <updated>2020-05-27T08:00:48.260Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
-    
     
   </entry>
   
