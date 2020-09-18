@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-13T02:19:18.136Z</updated>
+  <updated>2020-09-18T03:04:13.600Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CMA热带气旋最佳路径数据集读取与绘制</title>
+    <link href="http://yoursite.com/2020/09/18/cma-tc-best-path/"/>
+    <id>http://yoursite.com/2020/09/18/cma-tc-best-path/</id>
+    <published>2020-09-18T02:51:43.000Z</published>
+    <updated>2020-09-18T03:04:13.600Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以前在简书分享过一个路径绘制的方法，然而对于更多情况的路径绘制来说(比如台风路径)，每次的路径长度都是不一致的，同时也需要从一个数据文件里很复杂的读取。这次分享一个可以方便读取CMA热带气旋最佳路径数据集的方法。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+      <category term="data" scheme="http://yoursite.com/tags/data/"/>
+    
+  </entry>
   
   <entry>
     <title>小波变换(测试中)</title>
@@ -482,29 +503,6 @@
       <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
     
       <category term="Cartopy" scheme="http://yoursite.com/tags/Cartopy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一张图看懂matplotlib的绘图结构</title>
-    <link href="http://yoursite.com/2020/05/28/%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%BC%84%E6%87%82matplotlib/"/>
-    <id>http://yoursite.com/2020/05/28/%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%BC%84%E6%87%82matplotlib/</id>
-    <published>2020-05-28T06:43:38.000Z</published>
-    <updated>2020-05-28T08:18:56.559Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍matplotlib绘图基础结构，绘图基础流程，以及绘图通用属性设置。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
-    
-    
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
-      <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
     
   </entry>
   
