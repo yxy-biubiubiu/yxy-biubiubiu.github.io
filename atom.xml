@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-04-22T09:32:06.112Z</updated>
+  <updated>2021-04-22T10:02:24.471Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>contourf1</title>
+    <title>带显著性检验的填色图</title>
     <link href="http://yoursite.com/2021/04/22/contourf1/"/>
     <id>http://yoursite.com/2021/04/22/contourf1/</id>
     <published>2021-04-22T09:04:48.000Z</published>
-    <updated>2021-04-22T09:32:06.112Z</updated>
+    <updated>2021-04-22T10:02:24.471Z</updated>
     
     <summary type="html">
     
@@ -44,11 +44,11 @@
   </entry>
   
   <entry>
-    <title>huitufengzhuang</title>
+    <title>绘图函数封装</title>
     <link href="http://yoursite.com/2021/04/22/huitufengzhuang/"/>
     <id>http://yoursite.com/2021/04/22/huitufengzhuang/</id>
     <published>2021-04-22T09:04:48.000Z</published>
-    <updated>2021-04-22T09:32:04.606Z</updated>
+    <updated>2021-04-22T10:02:05.914Z</updated>
     
     <summary type="html">
     
