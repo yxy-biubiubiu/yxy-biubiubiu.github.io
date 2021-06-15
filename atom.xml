@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-06-15T03:14:18.194Z</updated>
+  <updated>2021-06-15T09:09:30.751Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>浅谈绘图思路(入门向，持续更新)</title>
+    <link href="http://yoursite.com/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/"/>
+    <id>http://yoursite.com/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/</id>
+    <published>2021-06-15T09:05:44.000Z</published>
+    <updated>2021-06-15T09:09:30.751Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有大半年没有打开简书了(愧对各位默默关注我的读者)，得空看了下简书后台的评论，整理了下发现很多新入坑的伙伴的主要问题还是针对绘图和数据处理的（比如很多小伙伴不知道自己要画什么图，或者知道自己要画什么但是不知道怎么把手中的数据变成需要的图），这里就一并合在一起谈谈我对数据处理和绘图思路的理解(主要是思路)，若有不妥还请指正。主要是针对新入门的，大佬就别浪费时间阅读了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
+    
+  </entry>
   
   <entry>
     <title>多轨迹绘制</title>
@@ -486,29 +509,6 @@
     
       <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>CDO简介及常用语法</title>
-    <link href="http://yoursite.com/2020/06/07/cdo/"/>
-    <id>http://yoursite.com/2020/06/07/cdo/</id>
-    <published>2020-06-07T01:36:42.000Z</published>
-    <updated>2020-06-07T06:01:22.090Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Climate Data Operators (CDO) 是用来处理气候数据的软件，可以在linux环境下直接对数据文件进行处理，通过筛选，删除，修改等操作从原始数据文件中得到自己所需的资料格式，配合Python，NCL等语言的使用十分方便。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
-    
-    
-      <category term="Other" scheme="http://yoursite.com/tags/Other/"/>
-    
-      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
     
   </entry>
   
