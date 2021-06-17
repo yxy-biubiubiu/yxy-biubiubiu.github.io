@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-06-15T09:09:30.751Z</updated>
+  <updated>2021-06-17T08:30:24.808Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python调用CDO及其它系统指令(下载资料)</title>
+    <link href="http://yoursite.com/2021/06/17/cdoinpython/"/>
+    <id>http://yoursite.com/2021/06/17/cdoinpython/</id>
+    <published>2021-06-17T07:58:42.000Z</published>
+    <updated>2021-06-17T08:30:24.808Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前一篇文章简单介绍了Climate Data Operators (CDO) 如何处理气候数据的软件，并提到配合Python可以方便的使用，这里就再进一步讲解如何在Python中调用CDO，以及其它系统指令。虽然CDO发布了Python-cdo提供了直接使用的方法,但是这里给一些不能安装python-cdo或者其它原因不使用这个库的用户一个其它的方法。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+      <category term="Other" scheme="http://yoursite.com/tags/Other/"/>
+    
+      <category term="Data" scheme="http://yoursite.com/tags/Data/"/>
+    
+  </entry>
   
   <entry>
     <title>浅谈绘图思路(入门向，持续更新)</title>
@@ -491,23 +514,6 @@
     
     
       <category term="Group" scheme="http://yoursite.com/categories/Group/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>等高线图、填色图</title>
-    <link href="http://yoursite.com/2020/06/10/ContourDiagram/"/>
-    <id>http://yoursite.com/2020/06/10/ContourDiagram/</id>
-    <published>2020-06-10T08:44:05.000Z</published>
-    <updated>2020-06-10T08:47:21.971Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-      <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
     
     
   </entry>
