@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-06-17T08:30:24.808Z</updated>
+  <updated>2021-06-23T02:12:54.973Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python vs NCL</title>
+    <link href="http://yoursite.com/2021/06/23/NCL.vs.Python/"/>
+    <id>http://yoursite.com/2021/06/23/NCL.vs.Python/</id>
+    <published>2021-06-23T02:00:44.000Z</published>
+    <updated>2021-06-23T02:12:54.973Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;通过示例对比Python和NCL，感受两种语言的区别。&lt;/p&gt;
+&lt;p&gt;NCL语言大概是从2018年开始，陪伴我走过了一年的时间，也帮助我发表了自己的第一篇文章。后来由于自己需要实现的算法过于复杂，自己无力编写，在朋友的诱惑下不得不转投Python，靠网上各路大神的帖子东拼西凑满足自己的科研需求。说卸磨杀驴也有点不合适，但在适应了Python之后，我确实基本没有再打开过NCL了。最近整理文件，找到了自己发表第一篇学术垃圾时候的NCL脚本，心血来潮的想再用Python实现一遍。也算是对评论里很多读者的一个回应吧(貌似气象家园帖子下边第一个评论就是希望我写一个两者对比的文章，被我鸽到现在，咕咕咕)。注：编程水平仅限于能跑就行，warning不管，冗杂语句请忽视。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
+    
+  </entry>
   
   <entry>
     <title>Python调用CDO及其它系统指令(下载资料)</title>
@@ -495,25 +519,6 @@
     
     
       <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>(Random Forest,RF)随机森林模型</title>
-    <link href="http://yoursite.com/2020/06/10/randomforest/"/>
-    <id>http://yoursite.com/2020/06/10/randomforest/</id>
-    <published>2020-06-10T08:47:39.000Z</published>
-    <updated>2020-06-11T01:37:30.256Z</updated>
-    
-    <summary type="html">
-    
-      有东西被加密了, 请输入密码查看.
-    
-    </summary>
-    
-    
-      <category term="Group" scheme="http://yoursite.com/categories/Group/"/>
     
     
   </entry>
