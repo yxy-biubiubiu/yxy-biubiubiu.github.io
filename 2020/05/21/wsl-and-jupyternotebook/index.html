@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Windows10下的Linux子系统启用及JupyterNotebook入门 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-wsl-and-jupyternotebook" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      Windows10下的Linux子系统启用及JupyterNotebook入门
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/21/wsl-and-jupyternotebook/" class="article-date">
+  <time datetime="2020-05-21T13:48:03.000Z" itemprop="datePublished">2020-05-21</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>介绍Windows10系统如何启用Linux子系统，以及安装conda、python(各种库)，并介绍一个非常好用非常推荐的脚本编辑运行应用——JupyterNotebook。</p>
+<a id="more"></a>
+
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>作为气象专业的一员，是离不开Linux系统的，无论是各类数值模式，还是各种编程语言还是超级计算机的使用，都依赖于Linux系统(即使python可以在windows系统运行，但仍有很多库并不能很好的兼容windows系统)。如果在自己的计算机安装双系统或者虚拟机，显然有些大题小做并且十分麻烦，对于windows10的伙伴来说，启用Linux子系统就势在必得了。win10独有的Linux子系统功能(Windows Subsystem for Linux，简称WSL) 会给你的科研之路带来全新的体验。</p>
+<h3 id="1-启用WSL"><a href="#1-启用WSL" class="headerlink" title="1. 启用WSL"></a>1. 启用WSL</h3><p>首先在控制面板里打开“程序和功能”，选择“启用或关闭Windows功能”，然后勾选“适用于Linux的Windows子系统(beta)”。然后系统就会提示你是否重新启动以启用更新。重启之后，WSL功能已经打开，但linux子系统还未安装。</p>
+<img src="/image/image-20200521220133123.png" alt="image-20200521220133123" style="zoom:50%;" />
+
+<img src="/image/image-20200521220149246.png" alt="image-20200521220149246" style="zoom:50%;" />
+
+<p>1703版之后的win10把Ubuntu作为一个软件放在了应用商店。打开应用商店，直接下载Ubuntu。</p>
+<p>下载完成之后打开Ubuntu就自动下载了。然后就是设置密码用户名(建议不要以admin,root这类用户名作为自己的用户名，后续使用中容易出现权限问题)。</p>
+<p>至此，WSL就启用成功了。</p>
+<h3 id="2-安装Miniconda"><a href="#2-安装Miniconda" class="headerlink" title="2. 安装Miniconda"></a>2. 安装Miniconda</h3><p>进入<a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank" rel="noopener">miniconda官网下载地址</a>，找到Linux安装文件(如下图),选择python3.7版本，右建选择复制下载链接:</p>
+<p><img src="/image/image-20200521220528952.png" alt="image-20200521220528952"></p>
+<p>之后，打开Ubuntu进入WSL交互端口，键入wget+空格+右建，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+
+
+<p>回车即可下载。下载完成后，输入bash+空格+<strong>***</strong>.sh (<strong>***</strong>为刚刚下载的文件名)进行安装。如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash Miniconda3-latest-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+<p>conda安装完成后，输入指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create --name 123 python=3.7</span><br></pre></td></tr></table></figure>
+
+<p>来创建一个名叫123的基于python3.7语言的环境(123可以任意改名)。</p>
+<p>通俗的讲，可以将WSL当做是一个公寓，conda相当于一个管理员，而创建的每个环境都是一个独立的房间，你可以通过conda去管理每一个房间，如果一个房间遭到了破坏，那么重建它，而不会影响其他的房间。那么接下来请将自己代入conda这个管理员的身份，来使用你的环境，也就是说，我们尽可能的通过conda去设计房间(安装各种软件，依赖库，python库等等)，不经过管理员就私自改造房间，容易造成混乱。</p>
+<p>我们每次开启WSL(打开Ubuntu)后也就是进入了公寓后，需要先进入我们工作的房间，指令如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate 123</span><br></pre></td></tr></table></figure>
+
+<p>那么比如说我们只使用一个房间，有没有办法打开公寓大门就能直接进入房间呢？有的，修改环境变量就好了(但是不建议)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在末尾添加：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source activate 123</span><br></pre></td></tr></table></figure>
+
+<p>之后重启Ubuntu即可，再次打开就会发现用户名前出现了“(123)”。</p>
+<p>房间盖好了，接下来我们要装修了，也就是说安装各种常用的python库，比如numpy, pandas, scipy, xarray, cartopy等等等等。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conda install numpy</span><br><span class="line">conda install pandas</span><br><span class="line">conda install Scipy</span><br><span class="line">conda install -c conda-forge xarray</span><br><span class="line">conda install -c conda-forge cartopy</span><br></pre></td></tr></table></figure>
+
+<p>-c表明 chanel的意思，表明这个包在conda-forge的安装频道。</p>
+<p>接下来，尝试下是否安装成功了。首先输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python</span><br></pre></td></tr></table></figure>
+
+<p>进入交互，然后尝试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br></pre></td></tr></table></figure>
+
+<p>检查是否安装成功。</p>
+<h3 id="3-安装Jupyter-Notebook及其插件"><a href="#3-安装Jupyter-Notebook及其插件" class="headerlink" title="3. 安装Jupyter Notebook及其插件"></a>3. 安装Jupyter Notebook及其插件</h3><h4 id="3-1-安装"><a href="#3-1-安装" class="headerlink" title="3.1 安装"></a>3.1 安装</h4><p>同样的，我们还是通过conda安装一系列Jupyter Notebook的插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conda install jupyter notebook </span><br><span class="line">python -m ipykernel install --user</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions </span><br><span class="line">conda install jupyterthemes</span><br></pre></td></tr></table></figure>
+
+<p>以上四条分别代表安装jupyter notebook ，为环境添加内核，安装jupyter插件功能，安装jupyter主题功能。</p>
+<p>安装完成后，在终端输入jupyter notebook ，回车后会出现一串地址</p>
+<img src="/image/image-20200522090912077.png" alt="image-20200522090912077" style="zoom:150%;" />
+
+<p>将其复制在浏览器地址栏即可(推荐使用Chrome浏览器)。</p>
+<p>可以看到其主界面是这样子的：</p>
+<p><img src="/image/image-20200522091232007.png" alt="image-20200522091232007"></p>
+<p>1：根目录列表</p>
+<p>2：当前正在运行这什么东西</p>
+<p>3：忽略这个东西，用不到的</p>
+<p>4：扩展插件，这个非常有用，就是刚刚第三条语句安装的辅助插件，后边详细介绍</p>
+<p>5：上传文件，WSL目录与windows目录是有些区别的，在一定程度上相当于开辟了一个独立空间，使用upload可以将其他位置的文件传至这里，但是WSL是可以调用windows下的文件的。</p>
+<p>6：新建一项任务，python3就是新建python3脚本，通过其他设置，还可以使notebook支持其他语言(NCL是不行的)这里不做过多介绍。</p>
+<h4 id="3-2-插件设置"><a href="#3-2-插件设置" class="headerlink" title="3.2 插件设置"></a>3.2 插件设置</h4><p>点击进入NBextension，有这么几项功能是一定要添加的：</p>
+<img src="/image/image-20200522092213561.png" alt="image-20200522092213561" style="zoom:150%;" />
+
+<p>AutoSaveTime:自动保存时间，指定间隔时间自动保存</p>
+<p>Table of Contents:支持生成markdown目录，让代码结构清晰，更有条理</p>
+<p>Variable Inspector: 变量追踪，查看目前已使用过的变量的相关信息(名，大小，形状，值)</p>
+<p>Execute Time：记录代码块运行时间</p>
+<p>其余插件根据自己需要自行添加即可。</p>
+<h4 id="3-3-主题设置"><a href="#3-3-主题设置" class="headerlink" title="3.3 主题设置"></a>3.3 主题设置</h4><p>主题指的是可视化界面的主题，比如你不喜欢白色的界面，想换深色背景，或者调整字体，字体颜色等等，都通过主题插件进行设置。</p>
+<p>终端执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jt -t xxx -f xxx -fs xxx -cellw xx% -ofs xx -dfs xx -T -T</span><br></pre></td></tr></table></figure>
+
+<p>-t 主题 -f(字体) -fs(字体大小) -cellw(占屏比或宽度) -ofs(输出段的字号) -T(显示工具栏) -T(显示自己主机名)</p>
+<p>如果设置出现问题，那么输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jt -r</span><br></pre></td></tr></table></figure>
+
+<p>进行初始化。</p>
+<p>点击这里查看：<a href="https://github.com/dunovank/jupyter-themes" target="_blank" rel="noopener">主题字体大全</a>。</p>
+<h3 id="4-使用Jupyter-Notebook"><a href="#4-使用Jupyter-Notebook" class="headerlink" title="4. 使用Jupyter Notebook"></a>4. 使用Jupyter Notebook</h3><p>参照3.1，点击new新建一个python3脚本进入编辑界面：</p>
+<p><img src="/image/image-20200522094237828.png" alt="image-20200522094237828"></p>
+<p>这便是一个ipy脚本的可视化界面了。</p>
+<p><u><strong><em>红色框内是菜单栏，对脚本的设置、编辑等选项均在此处选择。</em></strong></u></p>
+<p><strong>File</strong>中主要为文件保存，下载等等</p>
+<p><strong>Edit</strong>十分常用，包括删除，还原，复制，剪切，合并cell，也就是代码块</p>
+<p><strong>View</strong>主要是可视化界面的调整</p>
+<p><strong>Insert</strong>为插入代码块，插入标题等等</p>
+<p><strong>Cell</strong>主要为代码块的运行，停止，代码块类型设置等等</p>
+<p><strong>Kernel</strong>为该内核的重启，中断，重运行等等</p>
+<p><strong>Help</strong>主要是各类参考，建议使用前阅读</p>
+<p><strong>*<u>绿色框内是工具栏，存放了一些快捷工具的按钮。</u>*</strong></p>
+<p>鼠标在按钮上停留就会展示该按钮的作用，在此不一一介绍。</p>
+<p><strong>*<u>蓝色框就是脚本主体了，一个灰色的块叫一个CELL，也叫一个代码块，就是在此处进行编程。</u>*</strong></p>
+<p>之所以推荐JupyterNotebook，很大原因就是由于这个代码块的设计理念，你可以将一个脚本拆分为很多个代码块，比如说加载库，读数据，数据处理，绘图分别存放在四个代码块里，这样在debug时只需要修改运行有Bug的代码块，而耗时很长的加载库，读数据都只需要运行一次即可，同样，最终绘图时，只需要调整绘图指令，而不需要将全部脚本重新运行，这样大大节省了运行时间，提高工作效率。</p>
+<p>另外需要说明的一点，Jupyter Notebook支持快捷键的使用，熟练掌握常用快捷键可以获得更好的使用体验。快捷键使用在help-&gt;Keyboard Shortcuts中查看和编辑。</p>
+<p>如有问题或遇到BUG，请在评论区留言反馈。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/21/wsl-and-jupyternotebook/" data-id="cljmaen97003maoih702w2os2" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/05/23/TaylorDiagram/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            泰勒图
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/21/f1-3-2-1/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">曼-肯德尔(Mann-Kendall)检验</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

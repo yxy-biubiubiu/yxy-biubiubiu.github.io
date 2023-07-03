@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    常用气候统计方法(含源码及示例) |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-method1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      常用气候统计方法(含源码及示例)
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/15/method1/" class="article-date">
+  <time datetime="2020-05-15T01:19:58.000Z" itemprop="datePublished">2020-05-15</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>整理了常用的气候统计方法，包括源码及示例。</p>
+<a id="more"></a>
+
+<p>def函数使用方法如下：</p>
+<p>第一种：将代码内容复制在脚本最前部，函数用法参考代码说明。</p>
+<p>第二种：将代码保存复制存进A.py，与所要编辑脚本放在同一文件夹内，在脚本内 import A 即可。通过help(A)查看函数用法(A可任意替换，不冲突即可)。</p>
+<h2 id="1-基本气候状态的统计量"><a href="#1-基本气候状态的统计量" class="headerlink" title="1 基本气候状态的统计量"></a>1 基本气候状态的统计量</h2><h3 id="1-1-中心趋势统计量"><a href="#1-1-中心趋势统计量" class="headerlink" title="1.1 中心趋势统计量"></a>1.1 中心趋势统计量</h3><ol>
+<li><a href="/2020/05/19/f1-1-1-1">均值</a></li>
+<li><a href="/2020/05/19/f1-1-1-2">分位数</a></li>
+</ol>
+<h3 id="1-2-变化幅度统计量"><a href="#1-2-变化幅度统计量" class="headerlink" title="1.2 变化幅度统计量"></a>1.2 变化幅度统计量</h3><ol start="3">
+<li><p><a href="/2020/05/19/f1-1-2-1">距平</a></p>
+</li>
+<li><p><a href="/2020/05/19/f1-1-2-2">方差与标准差</a></p>
+</li>
+</ol>
+<h3 id="1-3-相关统计量"><a href="#1-3-相关统计量" class="headerlink" title="1.3 相关统计量"></a>1.3 相关统计量</h3><ol start="5">
+<li><a href="/2020/05/19/f1-1-3-1">皮尔逊相关系数</a></li>
+<li><a href="/2020/05/19/f1-1-3-2">线性回归系数</a></li>
+</ol>
+<h3 id="1-4-数据标准化"><a href="#1-4-数据标准化" class="headerlink" title="1.4 数据标准化"></a>1.4 数据标准化</h3><ol start="7">
+<li><a href="/2020/05/19/f1-1-4-1">数据标准化</a></li>
+</ol>
+<h2 id="2-气候变化趋势分析"><a href="#2-气候变化趋势分析" class="headerlink" title="2 气候变化趋势分析"></a>2 气候变化趋势分析</h2><ol start="8">
+<li><a href="/2020/05/19/f1-2-1-1">线性倾向估计(一元线性回归)</a></li>
+<li><a href="/2020/05/19/f1-2-2-1">滑动平均</a></li>
+<li><a href="/2020/05/19/f1-2-3-1">去趋势</a></li>
+<li><a href="/2020/05/19/f1-2-4-1">滤波(Butterworth滤波器)</a></li>
+</ol>
+<h2 id="3-气候突变检测"><a href="#3-气候突变检测" class="headerlink" title="3 气候突变检测"></a>3 气候突变检测</h2><ol start="12">
+<li><a href="/2020/05/21/f1-3-1-1">滑动t检验</a></li>
+<li><a href="/2020/05/21/f1-3-2-1">曼-肯德尔(Mann-Kebdall)检验</a></li>
+</ol>
+<h2 id="4-气候序列的频谱分析"><a href="#4-气候序列的频谱分析" class="headerlink" title="4 气候序列的频谱分析"></a>4 气候序列的频谱分析</h2><ol start="14">
+<li><a href="/2020/05/27/f1-4-1-1">功率谱</a></li>
+<li><a href="/2020/09/13/wavelet">小波变换</a></li>
+</ol>
+<h2 id="5-气候变量场时空结构的分离"><a href="#5-气候变量场时空结构的分离" class="headerlink" title="5 气候变量场时空结构的分离"></a>5 气候变量场时空结构的分离</h2><ol start="16">
+<li><a href="/2020/06/01/f1-5-1-1">经验正交函数分解(EOF)</a></li>
+<li><a href="/2022/11/27/f1-5-1-2">奇异值分解(SVD)</a></li>
+</ol>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/15/method1/" data-id="cljmaen960038aoih5wrh0q0w" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Method/" rel="tag">Method</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Statistical/" rel="tag">Statistical</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            Linear Baroclinic Model(线性斜压模式，LBM)初探
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">批量下载气象数据(EC;NCEP;CMIP)</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

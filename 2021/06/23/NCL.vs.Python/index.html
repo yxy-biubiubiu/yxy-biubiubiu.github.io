@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Python vs NCL |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-NCL.vs.Python" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      Python vs NCL
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2021/06/23/NCL.vs.Python/" class="article-date">
+  <time datetime="2021-06-23T02:00:44.000Z" itemprop="datePublished">2021-06-23</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>通过示例对比Python和NCL，感受两种语言的区别。</p>
+<p>NCL语言大概是从2018年开始，陪伴我走过了一年的时间，也帮助我发表了自己的第一篇文章。后来由于自己需要实现的算法过于复杂，自己无力编写，在朋友的诱惑下不得不转投Python，靠网上各路大神的帖子东拼西凑满足自己的科研需求。说卸磨杀驴也有点不合适，但在适应了Python之后，我确实基本没有再打开过NCL了。最近整理文件，找到了自己发表第一篇学术垃圾时候的NCL脚本，心血来潮的想再用Python实现一遍。也算是对评论里很多读者的一个回应吧(貌似气象家园帖子下边第一个评论就是希望我写一个两者对比的文章，被我鸽到现在，咕咕咕)。注：编程水平仅限于能跑就行，warning不管，冗杂语句请忽视。</p>
+<a id="more"></a>
+
+
+
+<h2 id="示例1（EOF）"><a href="#示例1（EOF）" class="headerlink" title="示例1（EOF）"></a>示例1（EOF）</h2><p>选择EOF的原因是图片内容较为丰富，同时方法较为常用</p>
+<p>由于原始数据过大，只提供处理好的数据方便测试(数据为每年的寒潮路径的概率密度分布，为39年×90纬度×360经度，由FLEXPART模式追踪后通过高斯核密度估计算法Gaussian KDE得到。</p>
+<p>测试数据和代码如下：</p>
+<ol>
+<li><p><a href="/image/out.nc">测试数据</a>          2. <a href="/image/nvp1_n.txt">NCL代码</a>      3.  <a href="/image/nvp1_p.txt">Python代码</a></p>
+<p>先对比下出图效果(两种语言对图形的渲染有差异，EOF算法可能也有些差异，但是结果是基本相同的，图只经过了基础的调整，并不是很好看)。</p>
+<p><img src="/image/nclvspython.png" alt="NCL vs Python"></p>
+</li>
+</ol>
+<h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h3><p><strong>NCL</strong>：在引入一些特殊函数(NCL本体不具备的函数)时，通常会加上类似于以下语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load &quot;$NCARG_ROOT&#x2F;lib&#x2F;ncarg&#x2F;nclscripts&#x2F;csm&#x2F;contributed.ncl&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python</strong>：引入各个模块(库)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contour_map</span><span class="params">(fig,img_extent,spec)</span>:</span></span><br><span class="line">    fig.set_extent(img_extent, crs=ccrs.PlateCarree())</span><br><span class="line">    fig.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">    fig.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">    fig.set_xticks(np.arange(leftlon,rightlon+spec,spec), crs=ccrs.PlateCarree())</span><br><span class="line">    fig.set_yticks(np.arange(lowerlat,upperlat+spec,spec), crs=ccrs.PlateCarree())</span><br><span class="line">    lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">    lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line">    fig.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">    fig.yaxis.set_major_formatter(lat_formatter)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-数据读取"><a href="#2-数据读取" class="headerlink" title="2 数据读取"></a>2 数据读取</h3><p><strong>NCL</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f&#x3D;addfile(&quot;out.nc&quot;,&quot;r&quot;);读取文件</span><br><span class="line">dot&#x3D;f-&gt;cspath(:,:,&#123;0:180&#125;);读入变量</span><br><span class="line">dot:&#x3D;dot(lat|:,lon|:,year|:);调整变量维度顺序(EOF函数对维度顺序有要求)</span><br><span class="line">x&#x3D;ispan(1979,2017,1);时间</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python</strong>：利用Xarray库读取NC文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f = xr.open_dataset(<span class="string">"out.nc"</span> )</span><br><span class="line">dot = np.array(f[<span class="string">'cspath'</span>].loc[:,<span class="number">0</span>:<span class="number">90</span>,:])</span><br><span class="line">lat = f[<span class="string">'lat'</span>].loc[<span class="number">0</span>:<span class="number">90</span>]</span><br><span class="line">lon = f[<span class="string">'lon'</span>]</span><br><span class="line">years = range(<span class="number">1979</span>, <span class="number">2018</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-EOF"><a href="#3-EOF" class="headerlink" title="3 EOF"></a>3 EOF</h3><p><strong>NCL</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">eof&#x3D;eofunc_Wrap(dot,3,False)</span><br><span class="line">pc&#x3D;eofunc_ts_Wrap(dot,eof,False)</span><br><span class="line">pc&#x3D;dim_standardize_n(eof_ts,1,1)</span><br><span class="line">copy_VarMeta(dot(:,:,0),eof1);将维度信息重新赋值给新数组</span><br><span class="line">copy_VarMeta(dot(:,:,0),eof2)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python</strong>：利用EOF库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solver = Eof(dot)</span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">2</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">2</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-绘图：建立画布"><a href="#4-1-绘图：建立画布" class="headerlink" title="4.1 绘图：建立画布"></a>4.1 绘图：建立画布</h3><p>NCL的有些绘图参数并不是必要的，由于年代久远，我记不清起每条语句对应的详细功能了。</p>
+<p><strong>NCL</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wks&#x3D;gsn_open_wks(&quot;pdf&quot;,&quot;tmp&quot;)</span><br><span class="line">res                            &#x3D; True            </span><br><span class="line">res@gsnMaximize                &#x3D; False</span><br><span class="line">res@gsnDraw                    &#x3D; False</span><br><span class="line">res@gsnFrame                   &#x3D; False</span><br><span class="line">res@gsnDraw&#x3D;False</span><br><span class="line">res@gsnFrame&#x3D;False</span><br><span class="line">respc&#x3D;res;实际上是设置PC图形的基础绘图参数</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-绘图：绘制EOF"><a href="#4-2-绘图：绘制EOF" class="headerlink" title="4.2 绘图：绘制EOF"></a>4.2 绘图：绘制EOF</h3><p><strong>NCL</strong>：其绘图思路是每一条语句指定一个绘图效果，通过不断的”叠BUFF“实现全部要素的叠加，先将共同要素叠给res，然后通过res1=res, res2=res赋值后，再对res1和res2分别添加各自的属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">res@mpMaxLatF&#x3D;90;设置经纬度边界</span><br><span class="line">res@mpMinLatF&#x3D;0</span><br><span class="line">res@mpMaxLonF&#x3D;160</span><br><span class="line">res@mpMinLonF&#x3D;0</span><br><span class="line">res@mpFillOn &#x3D;False;地图设置</span><br><span class="line">res@mpOutlineOn &#x3D; True</span><br><span class="line">res@mpDataBaseVersion         &#x3D; &quot;MediumRes&quot;             </span><br><span class="line">res@mpDataSetName              &#x3D; &quot;&#x2F;data&#x2F;home&#x2F;Earth..4&quot;</span><br><span class="line">res@cnFillPalette               &#x3D; &quot;MPL_bwr&quot;</span><br><span class="line">res@cnFillOn                   &#x3D; True</span><br><span class="line">res@cnFillDrawOrder            &#x3D; &quot;PreDraw&quot;</span><br><span class="line">res@cnLinesOn                  &#x3D; False</span><br><span class="line">res@cnLineLabelsOn             &#x3D; False</span><br><span class="line">res@gsnLeftString&#x3D;&quot;&quot;</span><br><span class="line">res@pmTickMarkDisplayMode      &#x3D; &quot;Always&quot;  </span><br><span class="line">res@cnLevelSelectionMode&#x3D;&quot;ExplicitLevels&quot;</span><br><span class="line">res@cnLevels            &#x3D;(&#x2F;-0.05,-0.04,-0.03,-0.02,-0.01,0,0.01,0.02,0.03,0.04,0.05&#x2F;)</span><br><span class="line">res1&#x3D;res</span><br><span class="line">res2&#x3D;res</span><br><span class="line">res1@gsnRightString              &#x3D; &quot;41.84%&quot;</span><br><span class="line">res1@gsnLeftString              &#x3D; &quot;EOF1&quot;</span><br><span class="line">res1@lbLabelBarOn&#x3D;False </span><br><span class="line">res2@gsnRightString              &#x3D; &quot;14.59%&quot;</span><br><span class="line">res2@gsnLeftString              &#x3D; &quot;EOF2&quot;</span><br><span class="line">res2@lbLabelBarOn&#x3D;True</span><br><span class="line">map1 &#x3D; gsn_csm_contour_map(wks,eof1,res1) ;绘图</span><br><span class="line">map2 &#x3D; gsn_csm_contour_map(wks,eof2,res2)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python</strong>：与NCL相似的地方在于需要对每个axes添加参数，不同的地方在于其一条指令可以包含多个效果(比如将所有设置填色绘图的参数全部加在f_ax1.contourf里)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">80</span>) <span class="comment">#投影</span></span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">0</span>,<span class="number">160</span>,<span class="number">10</span>,<span class="number">90</span>) <span class="comment">#地图边界</span></span><br><span class="line">img_extent = [leftlon, rightlon, lowerlat, upperlat]</span><br><span class="line">f_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.32</span>, <span class="number">0.3</span>, <span class="number">0.4</span>],projection = proj)<span class="comment">#EOF1</span></span><br><span class="line">contour_map(f_ax1,img_extent,<span class="number">20</span>) <span class="comment">#利用前边自定义的绘图函数，目的是省去绘制相同图形时需要再次设置地形，湖泊，轴刻度等参数</span></span><br><span class="line">f_ax1.set_title(<span class="string">'(a) EOF1'</span>,loc=<span class="string">'left'</span>)<span class="comment">#左标题</span></span><br><span class="line">f_ax1.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">0</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>)<span class="comment">#右标题，解释方差</span></span><br><span class="line">f_ax1.contourf(lon,lat, eof[<span class="number">0</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend=<span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)<span class="comment">#绘制填色</span></span><br><span class="line">f_ax2 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.3</span>, <span class="number">0.4</span>],projection = proj)<span class="comment">#EOF2</span></span><br><span class="line">contour_map(f_ax2,img_extent,<span class="number">20</span>)</span><br><span class="line">f_ax2.set_title(<span class="string">'(c) EOf'</span>,loc=<span class="string">'left'</span>)</span><br><span class="line">f_ax2.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">1</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>)</span><br><span class="line">c2=f_ax2.contourf(lon,lat, eof[<span class="number">1</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend=<span class="string">'both'</span>, transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"><span class="comment">#绘制色标</span></span><br><span class="line">position=fig.add_axes([<span class="number">0.1</span>, <span class="number">0.17</span>, <span class="number">0.3</span>, <span class="number">0.017</span>])</span><br><span class="line">fig.colorbar(c2,cax=position,orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%.1f'</span>,)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-绘图：绘制PC"><a href="#4-3-绘图：绘制PC" class="headerlink" title="4.3 绘图：绘制PC"></a>4.3 绘图：绘制PC</h3><p><strong>NCL</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">respc@gsnYRefLine&#x3D;0</span><br><span class="line">respc@trYMinF&#x3D;-3</span><br><span class="line">respc@trYMaxF&#x3D;3</span><br><span class="line">res9 &#x3D; respc</span><br><span class="line">respc@tmYLLabelDeltaF&#x3D;-1</span><br><span class="line">respc@trXMinF&#x3D;1979</span><br><span class="line">respc@trXMaxF&#x3D;2017</span><br><span class="line">respc@tiYAxisOn&#x3D;False</span><br><span class="line">respc@tmXTOn &#x3D;False</span><br><span class="line">respc@tmYROn &#x3D; False</span><br><span class="line">respc@vpHeightF&#x3D;0.39</span><br><span class="line">respc@vpWidthF&#x3D;0.6</span><br><span class="line">respc@gsnLeftStringOrthogonalPosF &#x3D;  0.04</span><br><span class="line">respc1 &#x3D; respc</span><br><span class="line">respc1@gsnLeftString              &#x3D; &quot;PC1&quot;</span><br><span class="line">respc2 &#x3D; respc</span><br><span class="line">respc2@gsnLeftString              &#x3D; &quot;PC2&quot;</span><br><span class="line">pc1&#x3D; gsn_csm_xy(wks,x,eoft1,respc1)</span><br><span class="line">pc2&#x3D; gsn_csm_xy(wks,x,eoft2,respc2)</span><br><span class="line">pc1_9 &#x3D; runave_n_Wrap(eoft1, 9, 0, 0);9年滑动平均</span><br><span class="line">pc2_9 &#x3D; runave_n_Wrap(eoft2, 9, 0, 0)</span><br><span class="line">res9@xyLineColor &#x3D; &quot;red&quot;</span><br><span class="line">res9@xyLineThicknesses &#x3D; 4</span><br><span class="line">plotpc9_1 &#x3D; gsn_csm_xy(wks, x, pc1_9, res9)</span><br><span class="line">plotpc9_2 &#x3D; gsn_csm_xy(wks, x, pc2_9, res9)</span><br><span class="line">overlay(pc1, plotpc9_1);叠加</span><br><span class="line">overlay(pc2, plotpc9_2)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Python</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">f_ax3 = fig.add_axes([<span class="number">0.45</span>, <span class="number">0.44</span>, <span class="number">0.3</span>, <span class="number">0.156</span>])<span class="comment">#绘制PC1</span></span><br><span class="line">f_ax3.set_title(<span class="string">'(b) PC1'</span>,loc=<span class="string">'left'</span>)</span><br><span class="line">f_ax3.set_ylim(<span class="number">-3</span>,<span class="number">3</span>)<span class="comment">#y轴上下限</span></span><br><span class="line">f_ax3.axhline(<span class="number">0</span>,linestyle=<span class="string">"-"</span>,c=<span class="string">'k'</span>)<span class="comment">#水平参考线</span></span><br><span class="line">f_ax3.plot(years,pc[:,<span class="number">0</span>],c=<span class="string">'k'</span>)<span class="comment">#绘制折线</span></span><br><span class="line">pc1_9 = np.convolve(pc[:,<span class="number">0</span>], np.repeat(<span class="number">1</span>/<span class="number">9</span>, <span class="number">9</span>), mode=<span class="string">'valid'</span>)<span class="comment">#计算九年滑动平均</span></span><br><span class="line">f_ax3.plot(years[<span class="number">4</span>:<span class="number">-4</span>],pc1_9,c=<span class="string">'r'</span>,lw=<span class="number">2</span>)<span class="comment">#绘制滑动平均</span></span><br><span class="line">f_ax4 = fig.add_axes([<span class="number">0.45</span>, <span class="number">0.22</span>, <span class="number">0.3</span>, <span class="number">0.156</span>])<span class="comment">#绘制PC2</span></span><br><span class="line">f_ax4.set_title(<span class="string">'(d) PC2'</span>,loc=<span class="string">'left'</span>)</span><br><span class="line">f_ax4.set_ylim(<span class="number">-3</span>,<span class="number">3</span>)</span><br><span class="line">f_ax4.axhline(<span class="number">0</span>,linestyle=<span class="string">"-"</span>,c=<span class="string">'k'</span>)</span><br><span class="line">f_ax4.plot(years,pc[:,<span class="number">1</span>],c=<span class="string">'k'</span>)</span><br><span class="line">pc2_9 = np.convolve(pc[:,<span class="number">1</span>], np.repeat(<span class="number">1</span>/<span class="number">9</span>, <span class="number">9</span>), mode=<span class="string">'valid'</span>)</span><br><span class="line">f_ax4.plot(years[<span class="number">4</span>:<span class="number">-4</span>],pc2_9,c=<span class="string">'r'</span>,lw=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-收尾工作"><a href="#5-收尾工作" class="headerlink" title="5 收尾工作"></a>5 收尾工作</h3><p><strong>NCL</strong>：将各个子图组合起来，并整体添加色标。由于NCL在一开始建立画布时就指定了输出文件和格式，因此这里不再需要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resp&#x3D;True</span><br><span class="line">resp@gsnPanelRowSpec&#x3D;True</span><br><span class="line">resp@gsnPanelFigureStrings&#x3D;(&#x2F;&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;&#x2F;)</span><br><span class="line">resp@gsnPanelFigureStringsFontHeightF&#x3D;0.01</span><br><span class="line">resp@amJust&#x3D;&quot;TopLeft&quot;</span><br><span class="line">gsn_panel(wks,(&#x2F;map1,pc1,map2,pc2&#x2F;),(&#x2F;2,2&#x2F;),resp)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Python</strong>：图形输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#plt.show()</span></span><br><span class="line">plt.savefig(<span class="string">"eof.pdf"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-小节"><a href="#6-小节" class="headerlink" title="6 小节"></a>6 小节</h3><p>就个人感觉而言，Python语言还是会更简洁，思路更清晰一些，尤其是在指定各个绘图参数的时候。由于这个示例并不涉及复杂数据处理部分，因此没有很好的体现python的优势。但是就图形本身而言，NCL毕竟作为专业的绘图工具还是有优势的，当然从审美的角度来看各花入个眼，看个人风格喜好吧。本来想的是可以将代码块分成两个纵列，逐条对比，但是首先MD编辑器不允许代码块分列，其次两种语言的差异也没办法逐条对比，最终只能妥协成现在这样。后边<strong>有时间的话</strong>会继续补充一些其它的示例，从数据处理等其它方面继续对比一下两种语言的差异。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2021/06/23/NCL.vs.Python/" data-id="cljmaen8j0003aoihddvx5oa8" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2022/11/27/f1-5-1-2/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            奇异值分解(SVD)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/06/17/cdoinpython/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">Python调用CDO及其它系统指令(下载资料)</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

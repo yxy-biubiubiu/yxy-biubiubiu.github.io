@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    利用Cartopy绘制带有地图投影的图形 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-geoplot" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      利用Cartopy绘制带有地图投影的图形
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/01/geoplot/" class="article-date">
+  <time datetime="2020-06-01T10:38:28.000Z" itemprop="datePublished">2020-06-01</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>从NCL转向python绘图后，最迷茫的一点恐怕就是地理绘图了，网络上流传了大量的python绘图教程，但是很少是关于地理方面的，包括各类投影坐标系，地理地形，界线shp的绘制等等。这篇文章以Cartopy为主，介绍如何通过Matplotlib结合Cartopy来灵活的绘制带有地图投影的图像。</p>
+<a id="more"></a>
+
+<p>本部分需要使用Cartopy库，通过：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge cartopy</span><br><span class="line"><span class="meta">#</span><span class="bash">or</span></span><br><span class="line">pip install cartopy</span><br></pre></td></tr></table></figure>
+
+<p>安装。</p>
+<h3 id="一、Cartopy投影坐标系"><a href="#一、Cartopy投影坐标系" class="headerlink" title="一、Cartopy投影坐标系"></a>一、Cartopy投影坐标系</h3><p>在绘图前首先要选择适合的投影方式，目前cartopy提供了超过三十种的投影方式，其中也包含我们所熟悉的极地投影，墨卡托投影，兰伯特投影等等。下面，将介绍几种常用的投影方式的设置及使用。</p>
+<h4 id="1、-PlateCarree-无坐标转换"><a href="#1、-PlateCarree-无坐标转换" class="headerlink" title="1、 PlateCarree (无坐标转换)"></a>1、 PlateCarree (无坐标转换)</h4><p>PlateCarree是一种基础的投影方式，其计算方法是将经纬度网格设置成等距网格，实际上数据并没有进行坐标转换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cartopy.crs.PlateCarree(central_longitude=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数： central_longitude ： GeoAxes中心的经度,默认为0°</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.PlateCarree())</span><br><span class="line">ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, projection=ccrs.PlateCarree(central_longitude = <span class="number">120</span>))</span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200601184415711.png" alt="image-20200601184415711"></p>
+<h4 id="2、圆锥兰伯特投影-LambertConformal"><a href="#2、圆锥兰伯特投影-LambertConformal" class="headerlink" title="2、圆锥兰伯特投影 LambertConformal"></a>2、圆锥兰伯特投影 LambertConformal</h4><p>LambertConformal(正形兰伯特投影)，也就是常说的正轴圆锥投影。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cartopy.crs.LambertConformal(central_longitude=<span class="number">-96.0</span>, central_latitude=<span class="number">39.0</span>, false_easting=<span class="number">0.0</span>, false_northing=<span class="number">0.0</span>, secant_latitudes=<span class="literal">None</span>, standard_parallels=<span class="literal">None</span>, cutoff=<span class="number">-30</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数： central_longitude ： GeoAxes中心的经度,默认为96°W</p>
+<p>central_latitude ：GeoAxes中心的纬度，默认为39°N</p>
+<p>false_easting ： 东伪偏移，默认为0m</p>
+<p>false_northing ：北伪偏移，默认为0m</p>
+<p>standard_parallels ： 标准平行纬度，默认为(33,45)</p>
+<p>cutoff ： 截止纬度，即最南边界纬度，默认为30°S</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.LambertConformal())</span><br><span class="line">ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, projection=ccrs.LambertConformal(cutoff=<span class="number">0</span>))</span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/image/image-20200601184531410.png" alt="image-20200601184531410"></p>
+<h4 id="3、墨卡托投影-Mercator"><a href="#3、墨卡托投影-Mercator" class="headerlink" title="3、墨卡托投影 Mercator"></a>3、墨卡托投影 Mercator</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cartopy.crs.Mercator(central_longitude=<span class="number">0.0</span>, min_latitude=<span class="number">-80.0</span>, max_latitude=<span class="number">84.0</span>, latitude_true_scale=<span class="literal">None</span>, false_easting=<span class="number">0.0</span>, false_northing=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>central_longitude ： GeoAxes中心的经度,默认为0°</p>
+<p>min_latitude ：GeoAxes最南纬度，默认为80°S</p>
+<p>max_latitude ：GeoAxes最北纬度，默认为84°N</p>
+<p>latitude_true_scale ：比例尺为1的纬度，默认为赤道</p>
+<p>false_easting ： 东伪偏移，默认为0m</p>
+<p>false_northing ：北伪偏移，默认为0m</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.Mercator())</span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/image/image-20200601184730865.png" alt="image-20200601184730865"></p>
+<h4 id="4、极地投影"><a href="#4、极地投影" class="headerlink" title="4、极地投影"></a>4、极地投影</h4><p>NorthPolarStereo(北半球极射赤面投影)和SouthPolarStereo(南半球极射赤面投影)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cartopy.crs.NorthPolarStereo(central_longitude=<span class="number">0.0</span>, true_scale_latitude=<span class="literal">None</span>)</span><br><span class="line">cartopy.crs.SouthPolarStereo(central_longitude=<span class="number">0.0</span>, true_scale_latitude=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>central_longitude ： GeoAxes中心的经度,默认为0°</p>
+<p>true_scale_latitude ：比例尺为1的纬度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.NorthPolarStereo())</span><br><span class="line">ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, projection=ccrs.SouthPolarStereo())</span><br><span class="line">ax1.gridlines()</span><br><span class="line">ax2.gridlines()</span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200601184823459.png" alt="image-20200601184823459"></p>
+<h3 id="二、GeoAxes绘制"><a href="#二、GeoAxes绘制" class="headerlink" title="二、GeoAxes绘制"></a>二、GeoAxes绘制</h3><p>上篇文章讲到Axes的构成，GeoAxes简单讲就是在Axes的基础上添加了地理要素(地图投影)。那么绘制GeoAxes有哪些不同呢？</p>
+<p>我们以一个500hPa高度场的绘制为例。应大家要求，这次我裁剪了数据，控制了数据的大小，以方便大家下载。</p>
+<p>数据下载地址：<a href="https://pan.baidu.com/s/1JPoOO4y-F7JKXzONrDw6CA" target="_blank" rel="noopener">1980060106.nc（71M）</a></p>
+<p>神秘代码：k1qd</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="comment">###数据读取###</span></span><br><span class="line">f = xr.open_dataset(<span class="string">'./data/1980060106.nc'</span>)</span><br><span class="line">z = f[<span class="string">'z'</span>].loc[:,<span class="number">500</span>,:,:][<span class="number">0</span>,:,:]/<span class="number">98</span></span><br><span class="line">lat = z[<span class="string">'latitude'</span>]</span><br><span class="line">lon = z[<span class="string">'longitude'</span>]</span><br><span class="line"><span class="comment">###建立Figure###</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line"><span class="comment">###指定投影为中心经度为90°的PlateCarree###</span></span><br><span class="line">ax = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,projection = ccrs.PlateCarree(central_longitude=<span class="number">90</span>))  </span><br><span class="line"><span class="comment">###设置GeoAxes范围###</span></span><br><span class="line">ax.set_extent([<span class="number">0</span>,<span class="number">180</span>,<span class="number">0</span>,<span class="number">90</span>], crs=ccrs.PlateCarree())</span><br><span class="line"><span class="comment">###添加海岸线###</span></span><br><span class="line">ax.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line"><span class="comment">###设置坐标及刻度###</span></span><br><span class="line">ax.set_xticks(np.arange(<span class="number">0</span>,<span class="number">180</span>+<span class="number">30</span>,<span class="number">30</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax.set_yticks(np.arange(<span class="number">0</span>,<span class="number">90</span>+<span class="number">30</span>,<span class="number">30</span>), crs=ccrs.PlateCarree())</span><br><span class="line">lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line">ax.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">ax.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line"><span class="comment">###图题###</span></span><br><span class="line">ax.set_title(<span class="string">'500hPa Z'</span>,loc=<span class="string">'center'</span>,fontsize=<span class="number">18</span>)</span><br><span class="line">ax.set_title(<span class="string">'unit: dagpm'</span>,loc=<span class="string">'right'</span>,fontsize=<span class="number">18</span>)</span><br><span class="line"><span class="comment">###绘制等高线，指定坐标转换方式###</span></span><br><span class="line">c = ax.contour(lon,lat, z, zorder=<span class="number">0</span>,transform=ccrs.PlateCarree())</span><br><span class="line"><span class="comment">###添加等高线标签###</span></span><br><span class="line">ax.clabel(c, fontsize=<span class="number">9</span>, inline=<span class="number">1</span>,fmt=<span class="string">'%d'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200601185834300.png" alt="image-20200601185834300"></p>
+<p>这里对脚本中一些函数进行额外解释：</p>
+<ol>
+<li>在进行建立Axes时，要指明目标投影，使之成为GeoAxes</li>
+<li>设置GeoAxes范围时，输入范围的左右下上边界经纬度</li>
+<li>绘制等高线，指定坐标转换方式，此示例是以最为常用的PlateCarree形式展示</li>
+</ol>
+<p>大家可以使用上边介绍的其它投影格式进行替换，绘图时必须要弄清楚什么地方应该设置为数据的投影方式，什么地方设置为目标的投影方式。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/01/geoplot/" data-id="cljmaen93002kaoih7crk9q4z" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cartopy/" rel="tag">Cartopy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/06/01/f1-5-1-1/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            经验正交函数分解(EOF)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/28/%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%BC%84%E6%87%82matplotlib/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">一张图看懂matplotlib的绘图结构</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

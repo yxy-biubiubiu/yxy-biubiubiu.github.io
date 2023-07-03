@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Python绘图如何自定义或使用NCL中的colormap |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-color" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      Python绘图如何自定义或使用NCL中的colormap
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/06/color/" class="article-date">
+  <time datetime="2020-06-06T08:33:19.000Z" itemprop="datePublished">2020-06-06</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>相比于NCL，Matplotlib提供的colormap不够丰富，本文介绍Matplotlib的自带色板，并介绍Python绘图如何使用NCL中的colormap，甚至自定义色板(比如使用气象家园调色盘生成的色板)。</p>
+<a id="more"></a>
+
+<h3 id="一、Matplotlib-自带colormap"><a href="#一、Matplotlib-自带colormap" class="headerlink" title="一、Matplotlib 自带colormap"></a>一、Matplotlib 自带colormap</h3><p>在绘制等高线图也就是contourf时，需要设置合适的colormap(cmap)。下面给出Matplotlib自带的colormap。</p>
+<p>（需要说明的是，在字串末尾添加“_r”，可以反转色标，比如bwr -&gt; bwr_r）</p>
+<p>[‘viridis’, ‘plasma’, ‘inferno’, ‘magma’, ‘cividis’]</p>
+<img src="/image/sphx_glr_colormap_reference_001.png"/>
+
+<p>[‘Greys’, ‘Purples’, ‘Blues’, ‘Greens’, ‘Oranges’, ‘Reds’, ‘YlOrBr’, ‘YlOrRd’, ‘OrRd’, ‘PuRd’, ‘RdPu’, ‘BuPu’, ‘GnBu’, ‘PuBu’, ‘YlGnBu’, ‘PuBuGn’, ‘BuGn’, ‘YlGn’]</p>
+<img src="/image/sphx_glr_colormap_reference_002.png"/>
+
+<p>[‘binary’, ‘gist_yarg’, ‘gist_gray’, ‘gray’, ‘bone’, ‘pink’,<br>            ‘spring’, ‘summer’, ‘autumn’, ‘winter’, ‘cool’, ‘Wistia’,<br>            ‘hot’, ‘afmhot’, ‘gist_heat’, ‘copper’]</p>
+<img src="/image/sphx_glr_colormap_reference_003.png"/>
+
+<p>[‘PiYG’, ‘PRGn’, ‘BrBG’, ‘PuOr’, ‘RdGy’, ‘RdBu’,’RdYlBu’, ‘RdYlGn’, ‘Spectral’, ‘coolwarm’, ‘bwr’, ‘seismic’]</p>
+<img src="/image/sphx_glr_colormap_reference_004.png"/>
+
+<p>[‘twilight’, ‘twilight_shifted’, ‘hsv’]</p>
+<img src="/image/sphx_glr_colormap_reference_005.png"/>
+
+<p>[‘Pastel1’, ‘Pastel2’, ‘Paired’, ‘Accent’,’Dark2’, ‘Set1’, ‘Set2’, ‘Set3’,’tab10’, ‘tab20’, ‘tab20b’, ‘tab20c’]</p>
+<img src="/image/sphx_glr_colormap_reference_006.png"/>
+
+<p>[‘flag’, ‘prism’, ‘ocean’, ‘gist_earth’, ‘terrain’, ‘gist_stern’,’gnuplot’, ‘gnuplot2’, ‘CMRmap’, ‘cubehelix’, ‘brg’,’gist_rainbow’, ‘rainbow’, ‘jet’, ‘nipy_spectral’, ‘gist_ncar’]</p>
+<img src="/image/sphx_glr_colormap_reference_007.png"/>
+
+<h3 id="二、-颜色对应名称"><a href="#二、-颜色对应名称" class="headerlink" title="二、 颜色对应名称"></a>二、 颜色对应名称</h3><p>在绘制折线图，散点图等时，需要指定某些线的颜色，这就需要知道颜色对应的名称，这里给出列表：</p>
+<img src="/image/sphx_glr_named_colors_001.png"/>
+
+<img src="/image/sphx_glr_named_colors_002.png"/>
+
+<img src="/image/sphx_glr_named_colors_003.png"/>
+
+
+
+<h3 id="三、-使用NCL色板-使用调色盘文件思路相同"><a href="#三、-使用NCL色板-使用调色盘文件思路相同" class="headerlink" title="三、 使用NCL色板(使用调色盘文件思路相同)"></a>三、 使用NCL色板(使用调色盘文件思路相同)</h3><p>NCL的色板十分丰富，几乎可以涵盖平常所需。详见：<a href="http://www.ncl.ucar.edu/Document/Graphics/color_table_gallery.shtml" target="_blank" rel="noopener">传送门</a></p>
+<p>那么我们能否将NCL的色板用在python中呢？答案当然是可以的。</p>
+<p>我在气象家园发现了个帖子，楼主自己封装了一个包，可以在python中调用NCL的色板，详见：<a href="http://bbs.06climate.com/forum.php?mod=viewthread&tid=43521" target="_blank" rel="noopener">传送门</a></p>
+<p>其基本原理就是读取NCL色板的.rgb文件，将其信息转换为颜色数组，形成matplotlib色板。那么下面，我就根据这个思路，解释下其过程和原理。首先我将NCL已有色板.rgb文件整理上传了，下载<a href="/image/colormaps.rar">点这里</a>，下载后将压缩包内文件夹解压。</p>
+<p>.rgb文件内容如下(以3gauss.rgb为例)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ncolors &#x3D; 254</span><br><span class="line">#  r   g   b</span><br><span class="line">0 0 255</span><br><span class="line">0 0 255</span><br><span class="line">1 2 254</span><br><span class="line">2 4 253</span><br><span class="line">3 6 252</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>ncolors = 254，代表该色板有254个色号，第二行为注释内容，表明接下来的每一行，颜色存放都是red,green,blue的顺序。那么接下来我们只需要读取这个文件，将颜色存为一个[254,3]的数组，然后将数组除255即可。除255的原因是，python的颜色值位于[0,1]之间，而rgb信息位于[0,255]之间，所以除255就可以将颜色信息映射在[0,1]之间。</p>
+<p>但是！有一个问题，我查看了NCL的一些色板，这些色板的格式并不统一，有些是直接映射在[0,1]之间了，有些文件头有很多行，总之很杂乱，用之前还是需要统一格式，做好质量控制的。(我后边有时间的话考虑将这些文件统一格式再重新上传。)</p>
+<p>下面给出一个使用NCL色板的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib.colors <span class="keyword">import</span> ListedColormap</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment">#读取.rgb文件</span></span><br><span class="line">rgb = pd.read_csv(<span class="string">'./colormaps/3gauss.rgb'</span>,sep=<span class="string">'\s+'</span>,skiprows=<span class="number">2</span>,names=[<span class="string">'r'</span>,<span class="string">'g'</span>,<span class="string">'b'</span>]).values/<span class="number">255</span></span><br><span class="line"><span class="comment">#将rgb信息映射为colormap</span></span><br><span class="line">colormap = ListedColormap(rgb)</span><br><span class="line"><span class="comment">#创建100个随机数</span></span><br><span class="line">colors = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=<span class="number">100</span>)</span><br><span class="line">x,y = np.random.rand(<span class="number">100</span>),np.random.rand(<span class="number">100</span>)</span><br><span class="line"><span class="comment">#绘制散点图，使用NCL中的3gauss色板</span></span><br><span class="line">sct = plt.scatter(x, y, s=<span class="number">100</span>, c=colors,cmap=colormap,edgecolors=<span class="string">'black'</span>)</span><br><span class="line">plt.colorbar(sct)</span><br></pre></td></tr></table></figure>
+
+<img src="/image/colormap1.png"/>
+
+<p>使用调色盘软件生成的色板也是同样的思路，将生成的txt内的rgb信息读取映射，就可以使用了。</p>
+<h3 id="四、设定色板颜色，进行插值映射"><a href="#四、设定色板颜色，进行插值映射" class="headerlink" title="四、设定色板颜色，进行插值映射"></a>四、设定色板颜色，进行插值映射</h3><p>最后再介绍一种创建色板的方式，那就是挑选几种自己需要的颜色排列起来，然后进行插值，形成颜色之间的渐变，最后映射为色板。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib.colors <span class="keyword">import</span> ListedColormap</span><br><span class="line"><span class="keyword">import</span> matplotlib.colors <span class="keyword">as</span> colors</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment">#设定色板基础色为黑红橘蓝</span></span><br><span class="line">colorslist = [<span class="string">'black'</span>,<span class="string">'red'</span>,<span class="string">'orange'</span>,<span class="string">'blue'</span>]</span><br><span class="line"><span class="comment">#将四种色插值为具有300个渐变色的色板</span></span><br><span class="line">colormap = colors.LinearSegmentedColormap.from_list(<span class="string">'123'</span>,colorslist,N=<span class="number">300</span>)</span><br><span class="line"><span class="comment">#创建100个随机数</span></span><br><span class="line">colors = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,size=<span class="number">100</span>)</span><br><span class="line">x,y = np.random.rand(<span class="number">100</span>),np.random.rand(<span class="number">100</span>)</span><br><span class="line"><span class="comment">#绘制散点图，使用刚刚自定义的123色板</span></span><br><span class="line">sct = plt.scatter(x, y, s=<span class="number">100</span>, c=colors,cmap=colormap,edgecolors=<span class="string">'black'</span>)</span><br><span class="line">plt.colorbar(sct)</span><br></pre></td></tr></table></figure>
+
+<img src="/image/colormap2.png"/>
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/06/color/" data-id="cljmaen8p000qaoih50fg50ls" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/06/07/cdo/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            CDO简介及常用语法
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/06/01/f1-5-1-1/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">经验正交函数分解(EOF)</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

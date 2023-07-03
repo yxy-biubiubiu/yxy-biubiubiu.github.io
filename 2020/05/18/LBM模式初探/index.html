@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Linear Baroclinic Model(线性斜压模式，LBM)初探 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-LBM模式初探" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      Linear Baroclinic Model(线性斜压模式，LBM)初探
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/" class="article-date">
+  <time datetime="2020-05-18T07:20:24.000Z" itemprop="datePublished">2020-05-18</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>介绍Linear Baroclinic Model(线性斜压模式，LBM)的安装与运行方法。LBM模式可以计算大气对规定强迫的稳定线性响应、特征分析，旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。</p>
+<a id="more"></a>
+
+<h1 id="一、LBM模式简介"><a href="#一、LBM模式简介" class="headerlink" title="一、LBM模式简介"></a>一、LBM模式简介</h1><p>LBM模式是为了研究大气中的线性动力学而建立的，例如计算对规定强迫的稳定线性响应、特征分析等等。</p>
+<p>完全非线性的气候模型，如大气环流模型(AGCMs)，得到了越来越多的改进，它们可以用来模拟和理解当前的气候，其中包括一些反馈过程。然而，这样的模型已经足够复杂了，如果不对输出结果进行彻底的分析，就很难对模型进行解释。而LBM中包含的线性大气模型旨在通过消除动态大气过程中的非线性来帮助理解动态大气中复杂的反馈序列。该模型简化了动力学框架，结果易于解释。此外，该模型提供了处理线性动力学的多种技术，这可能有助于研究大规模大气环流的各个方面。</p>
+<p>官网链接：<a href="https://ccsr.aori.u-tokyo.ac.jp/~lbm/sub/lbm.html" target="_blank" rel="noopener">LBM官网</a></p>
+<p>官方文档<a href="https://ccsr.aori.u-tokyo.ac.jp/~lbm/lbm/doc2.2.pdf" target="_blank" rel="noopener">下载</a></p>
+<p>该模式由日本学者开发，而且是非开源的，因此需要下载安装包和模式数据的还是需要给作者发送邮件，表明目的，经作者授权后才能获得下载账户，去官网下载响应package。</p>
+<p>作者邮箱：<a href="mailto:michiyah@hawaii.edu">michiyah@hawaii.edu</a></p>
+<p>LBM模式推荐理由：全球气候模式比如CAM等等使用较为复杂(不论是移植还是运行)，而且受限于大型机，对于个人的使用不友好，而LBM模式可以进行快速验证，且在个人PC即可使用，相对较为容易，且模拟时间短(往往几分钟即可生成结果)。当然了，一分价钱一分货，论知名度和准确性当然还是远远差于CAM模式的。</p>
+<h1 id="二、编译"><a href="#二、编译" class="headerlink" title="二、编译"></a>二、编译</h1><h2 id="2-1-解压，设置环境变量"><a href="#2-1-解压，设置环境变量" class="headerlink" title="2.1 解压，设置环境变量"></a>2.1 解压，设置环境变量</h2><p>下载到压缩包后首先解压压缩包：</p>
+<img src="/image/image-20200519095137865.png" alt="image-20200519095137865" style="zoom:67%;" />
+
+<p>将ln_solver目录声明至环境变量：</p>
+<p>建议直接修永久改环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在其中加入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LNHOME=/解压目录/ln_solver</span><br></pre></td></tr></table></figure>
+
+<p>之后重新加载环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>尝试：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME</span><br></pre></td></tr></table></figure>
+
+<p>检查是否环境变量修改成功。</p>
+<h2 id="2-2-配置分辨率"><a href="#2-2-配置分辨率" class="headerlink" title="2.2 配置分辨率"></a>2.2 配置分辨率</h2><p>修改$LNHOME/Lmake.inc文件，选择需要的水平分辨率和垂直分辨率(我使用的T42L20)。</p>
+<p>Model type默认为tintgr。其余详细设置可参考文档。</p>
+<h2 id="2-3-编译模式依赖"><a href="#2-3-编译模式依赖" class="headerlink" title="2.3 编译模式依赖"></a>2.3 编译模式依赖</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/model/src</span><br><span class="line">make lib</span><br></pre></td></tr></table></figure>
+
+<p>之后会在$LNHOME/model/lib/???/文件夹下生成一个liblbmtxxmxxc.a的文件(xx为设置的分辨率格式)。</p>
+<p>如果之后需要修改模式分辨率，则只需：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/model/src</span><br><span class="line">make clean</span><br><span class="line">make lib</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="三、生成初始场"><a href="#三、生成初始场" class="headerlink" title="三、生成初始场"></a>三、生成初始场</h1><p>将从官网下载的两个数据包解压缩在$LNHOME文件夹下，之后编译初始场生成指令文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/solver/util</span><br><span class="line">make bs</span><br></pre></td></tr></table></figure>
+
+<p>这回导致生成两个新的指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./ncepsbs</span><br><span class="line"><span class="meta">#</span><span class="bash">or</span></span><br><span class="line">./ecmsbs</span><br></pre></td></tr></table></figure>
+
+<p>这两个指令分别用来生成NCEP的初值场和EC的初值场，根据自己需要选择即可。</p>
+<p>设置初始场的选项位于$LNHOME/solver/util/SETPAR文件</p>
+<p>NCEP:</p>
+<img src="/image/image-20200519150909181.png" alt="image-20200519150909181" style="zoom:67%;" />
+
+<p>EC:</p>
+<img src="/image/image-20200519150953985.png" alt="image-20200519150953985" style="zoom:70%;" />
+
+<p>其中，kmo指开始月份，navg指平均时期，如kmo=6,navg=3，指夏季平均状态。</p>
+<h1 id="四、生成强迫"><a href="#四、生成强迫" class="headerlink" title="四、生成强迫"></a>四、生成强迫</h1><p>LBM模式的时间积分分支(time integration)的运行只需要处置场和强迫即可，不需要边界条件的设置。</p>
+<p>同样，修改$LNHOME/solver/util/SETPAR文件，设置相关参数即可生成响应的强迫文件。</p>
+<img src="/image/image-20200519151736163.png" alt="image-20200519151736163" style="zoom:67%;" />
+
+<img src="/image/image-20200519151750314.png" alt="image-20200519151750314" style="zoom:67%;" />
+
+<p>cfm,cfg为输出的强迫文件，nmvar为强迫变量，mnhpr为水平强迫设置，nmvpr为垂直强迫设置。</p>
+<p>具体的参数信息可参见$LNHOME/solver/util/param_list文件。</p>
+<p>这里列出一些简要信息：</p>
+<img src="/image/image-20200519152018418.png" alt="image-20200519152018418" style="zoom:67%;" />
+
+<p>修改好强迫配置后，输入以下命令生成强迫文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/solver/util</span><br><span class="line">make clean</span><br><span class="line">make</span><br><span class="line">./mkfrcng</span><br></pre></td></tr></table></figure>
+
+<p>make clean指令仅在第一次生成时使用即可。</p>
+<h1 id="五、-运行"><a href="#五、-运行" class="headerlink" title="五、 运行"></a>五、 运行</h1><p>$LNHOME/model/sh/tintgr/文件夹下存放了很多运行不同模式方案的csh命令文件，主要靠可参考linear-run.classic.csh文件，将其中的分辨率修改为自己所用方案，将初值场和强迫场的存放路径与自己统一。</p>
+<p>路径参数如下：</p>
+<img src="/image/image-20200519152454674.png" alt="image-20200519152454674" style="zoom:67%;" />
+
+<p>一般运行时间设置为20天左右，30天后斜压波会异常增长从而导致模式结果的异常。</p>
+<p>注：经测试，tend并不是运行的时间，比如tend = 51，模式会运行20天，tend = 59模式会运行27天。具体还需自己测试。</p>
+<p>运行模式的方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $LNHOME/model/sh/tintgr/</span><br><span class="line">csh ***.csh</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="六、-后处理"><a href="#六、-后处理" class="headerlink" title="六、 后处理"></a>六、 后处理</h1><p>干模式输出结果包括u,v,t,z,w,p,psi,chi，湿模式还包括了q,dt,dq(我没用过湿模式)。</p>
+<p>输出结果位于$LNHOME/data/out/ ,是.grd格式文件</p>
+<p>建议使用CDO工具的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo -f nc import_binary out.ctl out.nc</span><br></pre></td></tr></table></figure>
+
+<p>命令将其转为.nc格式。使用更加方便。</p>
+<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>感谢我的本科同学hhy大佬，在大佬的耐心指点下终于理清了LBM模式的安装和基本使用方法。感激！</p>
+<p>最后的最后，给出一个我测试结果：尝试在巴伦支海上空加入了一个大气热源，模拟了20天后的大气异常。</p>
+<p><img src="/image/image-20200519161417186.png" alt="results"></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/18/LBM%E6%A8%A1%E5%BC%8F%E5%88%9D%E6%8E%A2/" data-id="cljmaen8h0001aoih78g05kzj" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Model/" rel="tag">Model</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/05/19/f1-1-1-1/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            均值
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/15/method1/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">常用气候统计方法(含源码及示例)</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    从无到有搭建一个属于自己的网站 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-博客搭建" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      从无到有搭建一个属于自己的网站
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="article-date">
+  <time datetime="2020-05-12T03:05:44.000Z" itemprop="datePublished">2020-05-12</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>从萌生想法到成功搭建自己的网站前前后后花了大概半个月的时间，终于成功搭建一块了属于自己的地盘。第一篇文章就记录下搭建个人网站的全部过程吧。</p>
+<p>大家感兴趣的话完全可以尝试文中操作，免费创建属于自己的主页或者博客。</p>
+<a id="more"></a>
+
+<p>搭建自己的网站有两种方式，一种是直接部署在github上，这种是免费的，但是github属于外网控制，网速以及其他问题大家都懂的。另一种则是自己注册并购买域名，不过这种仍然推荐与github同时使用。根据自己需要选择一个合适的方案。</p>
+<h3 id="1、购买域名，备案（如果仅是通过github部署，可直接跳过1）"><a href="#1、购买域名，备案（如果仅是通过github部署，可直接跳过1）" class="headerlink" title="1、购买域名，备案（如果仅是通过github部署，可直接跳过1）"></a>1、购买域名，备案（如果仅是通过github部署，可直接跳过1）</h3><p>想要搭建属于自己的网站当然要先购买一个域名，直接百度搜索进入阿里云注册一个账号，选择购买域名，输入一个自己喜欢的域名，如果还没有被注册的话那就可以直接买下来了。购买后，按照提示的流程进行备案，通常需要三部分，第一步是阿里云账号的实名认证(秒通过)，第二步是阿里云对域名购买的人工审核(大概1天内收到回复)，第三部则是阿里云提交国家的管局进行备案(一般是20个工作日内，我大概8天就收到了短信通知备案通过)。</p>
+<p>在等待备案通过期间，完全可以同时进行其他的部分(比如文章的撰写，网站的搭建等等)，不用干等着备案的通知。</p>
+<h3 id="2、通过HEXO搭建网站"><a href="#2、通过HEXO搭建网站" class="headerlink" title="2、通过HEXO搭建网站"></a>2、通过HEXO搭建网站</h3><p>Hexo是一款基于Node.js的静态博客框架，可以方便的生成静态网页托管在GitHub和Coding上，非常推荐入坑使用。官网入口：<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo官网</a>。（PS：Hexo对中文很友好。）</p>
+<h4 id="2-1-安装GIT"><a href="#2-1-安装GIT" class="headerlink" title="2.1 安装GIT"></a>2.1 安装GIT</h4><p>Git是目前世界上最先进的分布式版本控制系统，可以有效、高速的管理hexo博客文章，并上传到GitHub。</p>
+<p>Windows安装：</p>
+<p>到git官网上下载, <a href="https://gitforwindows.org/" target="_blank" rel="noopener">Download here</a>  ,安装后使用其中的git bash端口来使用Git(使用方法就类似于windows的WSL)。</p>
+<p>Linux安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<p>使用 git –version 来查看版本，检查是否安装成功。</p>
+<h4 id="2-2-安装nodejs"><a href="#2-2-安装nodejs" class="headerlink" title="2.2 安装nodejs"></a>2.2 安装nodejs</h4><p>Hexo是基于nodeJS框架的，所以需要安装nodeJs和其中的npm。</p>
+<p>Windows安装：<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">选择LTS版本即可</a></p>
+<p>Linux安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nodejs</span><br><span class="line">sudo apt-get install npm</span><br></pre></td></tr></table></figure>
+
+<p>安装后使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>来检查是否安装成功和相应版本。</p>
+<h4 id="2-3-安装Hexo"><a href="#2-3-安装Hexo" class="headerlink" title="2.3 安装Hexo"></a>2.3 安装Hexo</h4><p>在自己想保存博客(网站)源码的位置新建一个文件夹，比如文件夹名为blog，进入该文件夹后右建，选择git bash。输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+
+
+<p>完成安装。</p>
+<p>接下来初始化hexo：(blogname为博客名，这个并不重要，随意起即可)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init blogname</span><br><span class="line">cd myblog </span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>看到cd命令，熟悉linux的小伙伴都懂了，所以说把git bash理解为一个虚拟的linux环境也没啥太大的问题。</p>
+<p>新建完成后，指定文件夹目录下有：</p>
+<ul>
+<li>node_modules: 依赖包</li>
+<li>scaffolds：生成文章的一些模板</li>
+<li>source：用来存放你的文章</li>
+<li>themes：主题</li>
+<li>** _config.yml: 博客的配置文件**</li>
+<li>*** 一些其他的文件</li>
+</ul>
+<p>之后使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>生成博客，并在本地预览，浏览器中输入localhost:4000即可看到。git bash中输入ctrl+c即可断开连接。</p>
+<h3 id="3、GitHub创建个人仓库"><a href="#3、GitHub创建个人仓库" class="headerlink" title="3、GitHub创建个人仓库"></a>3、GitHub创建个人仓库</h3><p>首先去Github注册个人账户，之后在首页点击New repository创建新仓库，仓库名为<strong>***</strong>.github.io，  <strong>***</strong>为github的用户名，只有这样创建，将来部署到GitHub page的时候，才会被直接识别。</p>
+<h3 id="4、生成SSH并添加到GitHub"><a href="#4、生成SSH并添加到GitHub" class="headerlink" title="4、生成SSH并添加到GitHub"></a>4、生成SSH并添加到GitHub</h3><p>在git bash中输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name "name"</span><br><span class="line">git config --global user.email "email"</span><br></pre></td></tr></table></figure>
+
+
+
+<p>其中name为github用户名，email为github邮箱。</p>
+<p>之后输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name</span><br><span class="line">git config user.email</span><br></pre></td></tr></table></figure>
+
+<p>注：这两条直接复制输入，不要把user换成自己的用户名和邮箱。</p>
+<p>然后创建ssh私钥和公钥。创建过程全部回车即可，但是如果以前创建过，那就要注意，中间会有提示是否覆盖以前的秘钥，一定不要确定！！！跳过这步即可，使用以前生成的秘钥就行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "email"</span><br></pre></td></tr></table></figure>
+
+<p>进入端口提示的文件夹查看，id_rsa是你这台电脑的私人秘钥，一定要保存好，且不要泄露，id_rsa.pub是公钥，需要上传到GitHub上，这样当你链接GitHub账户时，公钥私钥进行匹配，才能够顺利的通过git上传文件到GitHub上。</p>
+<p>进入GitHub的setting中，找到SSH keys的设置选项，点击New SSH key把公钥的内容复制进去即可。</p>
+<h3 id="5、把Hexo部署到GitHub"><a href="#5、把Hexo部署到GitHub" class="headerlink" title="5、把Hexo部署到GitHub"></a>5、把Hexo部署到GitHub</h3><p>现在就需要把刚刚在本地创建好的博客部署到github上，也就是让大家都看到。打开blog/blogname/下的配置文件 <code>_config.yml</code>，把最后的那部分修改为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/YourgithubName/***.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>***替换为注册的GitHub用户名。</p>
+<p>之后安装部署命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>接着：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>clean是清除先前缓存的配置，g(generate)生成新的配置文件，deploy部署到github上。</p>
+<p>git bash没有报错的话，恭喜你，过一会大家伙就可以在http://***.github.io这个网站看到你的个人博客了。</p>
+<h3 id="6、解析域名并与github进行hook"><a href="#6、解析域名并与github进行hook" class="headerlink" title="6、解析域名并与github进行hook"></a>6、解析域名并与github进行hook</h3><p>http://***.github.io这个网站可能很长，而且不好记，如果通过第1步的方式购买了域名，那么就有一个通俗常见的.com网址了(或是其他的)。进入阿里云控制台中进行解析，将解析后的域名，在github中的settings中找到webhook，将解析的域名与之前的进行捆绑，重新使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>进行推送即可。</p>
+<h3 id="7、推送文章"><a href="#7、推送文章" class="headerlink" title="7、推送文章"></a>7、推送文章</h3><p>输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new newpapername</span><br></pre></td></tr></table></figure>
+
+<p>创建一个新博文，然后在source/_post中打开markdown文件，就可以开始编辑了。</p>
+<p>这里我推荐使用Typora软件去编辑博文，十分方便。</p>
+<p>写完后重复第6步的三行指令，即可完成推送。</p>
+<p>感兴趣的话完全可以尝试2-5和第7步的操作，创建属于自己的主页或者博客，不花一分钱噢。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-id="cljmaen9a004baoih54wl0nuw" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Other/" rel="tag">Other</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            批量下载气象数据(EC;NCEP;CMIP)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/1899/11/30/cam/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">CAM强迫修改及提交脚本</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    功率谱 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-f1-4-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      功率谱
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/27/f1-4-1-1/" class="article-date">
+  <time datetime="2020-05-27T07:42:20.000Z" itemprop="datePublished">2020-05-27</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.stats.distributions <span class="keyword">import</span> chi2</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">功率谱分析</span></span><br><span class="line"><span class="string">输入：</span></span><br><span class="line"><span class="string">x：需要分析的时间序列(原始序列，未标准化或距平处理)</span></span><br><span class="line"><span class="string">m：最大滞后相关长度，m取值范围最好在(n/10)~(n/3)之间，n为样本数，可以多次调整m获得最佳效果，通常取m=n/3</span></span><br><span class="line"><span class="string">alpha1：红噪音检验信度</span></span><br><span class="line"><span class="string">alpha2：白噪音检验信度</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">l：功率谱图的X坐标，对应的周期为2m/l，使用时自己调整tick labels</span></span><br><span class="line"><span class="string">Sl：功率谱估计值</span></span><br><span class="line"><span class="string">Sr：红噪音</span></span><br><span class="line"><span class="string">Sw：白噪音</span></span><br><span class="line"><span class="string">r1：落后一个时刻的自相关函数，用于查看使用哪种噪音检验</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">specx_anal</span><span class="params">(x,m,alpha1,alpha2)</span>:</span></span><br><span class="line">    n = x.shape[<span class="number">0</span>]</span><br><span class="line">    x = (x - np.mean(x))/np.std(x)</span><br><span class="line">    r1 = np.zeros((n<span class="number">-6</span>))</span><br><span class="line">    r2 = np.zeros((n<span class="number">-7</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">0</span>,n<span class="number">-6</span>):</span><br><span class="line">        r1[i]=np.sum(x[:n-i]*x[i:])/x[:n-i].shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">1</span>,n<span class="number">-6</span>):</span><br><span class="line">        r2[i<span class="number">-1</span>]=np.sum(x[:n-i]*x[i:])/x[:n-i].shape[<span class="number">0</span>]</span><br><span class="line">    r2 = r2[::<span class="number">-1</span>]</span><br><span class="line">    r = np.hstack((r2,r1))</span><br><span class="line">    l = np.arange(<span class="number">0</span>,m+<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    tao = np.arange(<span class="number">1</span>,m,<span class="number">1</span>)</span><br><span class="line">    Sl  = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    Tl  = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    S0l = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    a = np.array((r.shape[<span class="number">0</span>]+<span class="number">1</span>)/<span class="number">2</span>).astype(<span class="string">'int32'</span>)</span><br><span class="line">    r = r[a<span class="number">-1</span>:a+m]</span><br><span class="line">    a=r[<span class="number">1</span>:<span class="number">-1</span>]*(<span class="number">1</span>+np.cos(np.pi*tao/m))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">2</span>,m+<span class="number">1</span>,<span class="number">1</span>):</span><br><span class="line">        Sl[i<span class="number">-1</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[i<span class="number">-1</span>]*np.pi*tao/m)))/m </span><br><span class="line">    Sl[<span class="number">0</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[<span class="number">0</span>]*np.pi*tao/m)))/(<span class="number">2</span>*m)</span><br><span class="line">    Sl[<span class="number">-1</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[<span class="number">-1</span>]*np.pi*tao/m)))/(<span class="number">2</span>*m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(l.shape[<span class="number">0</span>]):</span><br><span class="line">        Tl[i]=<span class="number">2</span>*m/l[i]</span><br><span class="line">    f=(<span class="number">2</span>*n-m/<span class="number">2</span>)/m</span><br><span class="line">    S=np.mean(Sl)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(l.shape[<span class="number">0</span>]):</span><br><span class="line">        S0l[i]=S*(<span class="number">1</span>-r[<span class="number">1</span>]*r[<span class="number">1</span>])/(<span class="number">1</span>+r[<span class="number">1</span>]*r[<span class="number">1</span>]<span class="number">-2</span>*r[<span class="number">1</span>]*np.cos(l[i]*np.pi/m))</span><br><span class="line">    x2r = chi2.ppf(<span class="number">1</span>-alpha1,df = f)</span><br><span class="line">    Sr=S0l*x2r/f</span><br><span class="line">    x2w = chi2.ppf(<span class="number">1</span>-alpha2,df = f)</span><br><span class="line">    Sw=S*x2w/f;</span><br><span class="line">    r1=r[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> l,Sl,Sr,Sw,r1</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([<span class="number">16.80</span>,  <span class="number">15.35</span>,  <span class="number">17.00</span>,  <span class="number">22.50</span>,  <span class="number">23.50</span>,  <span class="number">27.00</span>,  <span class="number">27.60</span>,  <span class="number">28.00</span>,  <span class="number">27.15</span>,  <span class="number">24.00</span>,  <span class="number">20.85</span>,  <span class="number">18.25</span>,</span><br><span class="line">              <span class="number">16.20</span>,  <span class="number">14.30</span>,  <span class="number">16.55</span>,  <span class="number">21.10</span>,  <span class="number">24.00</span>,  <span class="number">26.25</span>,  <span class="number">27.80</span>,  <span class="number">27.30</span>,  <span class="number">27.05</span>,  <span class="number">25.50</span>,  <span class="number">23.80</span>,  <span class="number">19.95</span>,</span><br><span class="line">              <span class="number">15.60</span>,  <span class="number">17.00</span>,  <span class="number">19.70</span>,  <span class="number">20.90</span>,  <span class="number">24.00</span>,  <span class="number">24.80</span>,  <span class="number">26.95</span>,  <span class="number">26.70</span>,  <span class="number">27.40</span>,  <span class="number">24.85</span>,  <span class="number">22.20</span>,  <span class="number">18.90</span>,</span><br><span class="line">              <span class="number">15.80</span>,  <span class="number">13.55</span>,  <span class="number">17.60</span>,  <span class="number">21.75</span>,  <span class="number">25.00</span>,  <span class="number">26.20</span>,  <span class="number">26.95</span>,  <span class="number">27.00</span>,  <span class="number">26.35</span>,  <span class="number">24.60</span>,  <span class="number">21.55</span>,  <span class="number">17.85</span>,</span><br><span class="line">              <span class="number">15.60</span>,  <span class="number">18.05</span>,  <span class="number">18.90</span>,  <span class="number">21.90</span>,  <span class="number">24.35</span>,  <span class="number">26.20</span>,  <span class="number">26.80</span>,  <span class="number">26.90</span>,  <span class="number">28.05</span>,  <span class="number">25.60</span>,  <span class="number">22.00</span>,  <span class="number">17.80</span>,</span><br><span class="line">              <span class="number">16.20</span>,  <span class="number">15.20</span>,  <span class="number">17.60</span>,  <span class="number">20.00</span>,  <span class="number">23.75</span>,  <span class="number">25.20</span>,  <span class="number">27.00</span>,  <span class="number">27.80</span>,  <span class="number">26.90</span>,  <span class="number">24.40</span>,  <span class="number">21.00</span>,  <span class="number">17.80</span>,</span><br><span class="line">              <span class="number">14.00</span>,  <span class="number">13.55</span>,  <span class="number">19.95</span>,  <span class="number">23.00</span>,  <span class="number">25.15</span>,  <span class="number">26.80</span>,  <span class="number">27.00</span>,  <span class="number">27.10</span>,  <span class="number">26.80</span>,  <span class="number">25.50</span>,  <span class="number">22.20</span>,  <span class="number">19.50</span>,</span><br><span class="line">              <span class="number">18.00</span>,  <span class="number">17.80</span>,  <span class="number">18.95</span>,  <span class="number">21.70</span>,  <span class="number">23.40</span>,  <span class="number">27.35</span>,  <span class="number">28.00</span>,  <span class="number">27.80</span>,  <span class="number">27.20</span>,  <span class="number">25.00</span>,  <span class="number">22.20</span>,  <span class="number">19.95</span>,</span><br><span class="line">              <span class="number">18.95</span>,  <span class="number">19.00</span>,  <span class="number">20.50</span>,  <span class="number">22.20</span>,  <span class="number">23.35</span>,  <span class="number">25.55</span>,  <span class="number">27.90</span>,  <span class="number">27.80</span>,  <span class="number">28.00</span>,  <span class="number">24.60</span>,  <span class="number">22.50</span>,  <span class="number">19.20</span>,</span><br><span class="line">              <span class="number">17.70</span>,  <span class="number">15.10</span>,  <span class="number">16.50</span>,  <span class="number">22.00</span>,  <span class="number">24.00</span>,  <span class="number">28.00</span>,  <span class="number">28.60</span>,  <span class="number">27.90</span>,  <span class="number">27.00</span>,  <span class="number">25.40</span>,  <span class="number">23.00</span>,  <span class="number">21.30</span>,</span><br><span class="line">              <span class="number">18.50</span>,  <span class="number">18.00</span>,  <span class="number">19.00</span>,  <span class="number">23.25</span>,  <span class="number">24.25</span>,  <span class="number">25.40</span>,  <span class="number">28.10</span>,  <span class="number">28.50</span>,  <span class="number">26.70</span>,  <span class="number">25.70</span>,  <span class="number">22.00</span>,  <span class="number">18.00</span>,</span><br><span class="line">              <span class="number">18.00</span>,  <span class="number">17.00</span>,  <span class="number">18.00</span>,  <span class="number">20.00</span>,  <span class="number">24.05</span>,  <span class="number">25.50</span>,  <span class="number">27.55</span>,  <span class="number">27.50</span>,  <span class="number">26.60</span>,  <span class="number">26.00</span>,  <span class="number">23.50</span>, <span class="number">20.00</span>])</span><br><span class="line"></span><br><span class="line">l,Sl,Sr,Sw,r1 = specx_anal(x,x.shape[<span class="number">0</span>]//<span class="number">3</span>,<span class="number">0.1</span>,<span class="number">0.1</span>)</span><br><span class="line">plt.plot(l,Sl,<span class="string">'-b'</span>,label=<span class="string">'Real'</span>)</span><br><span class="line">plt.plot(l,Sr,<span class="string">'--r'</span>,label=<span class="string">'red noise'</span>)</span><br><span class="line">plt.plot(l,np.linspace(Sw,Sw,l.shape[<span class="number">0</span>]),<span class="string">'--m'</span>,label=<span class="string">'white noise'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line">print(r1)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200527155848450.png" alt="image-20200527155848450"></p>
+<p>参考：<a href="http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=14978&amp;extra=page%3D3" target="_blank" rel="noopener">http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=14978&amp;extra=page%3D3</a></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/27/f1-4-1-1/" data-id="cljmaen92002iaoihd4z5fnpi" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/05/28/%E4%B8%80%E5%BC%A0%E5%9B%BE%E5%BC%84%E6%87%82matplotlib/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            一张图看懂matplotlib的绘图结构
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/05/23/bashfordownload/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">Bash for Download</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

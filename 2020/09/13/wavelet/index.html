@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    小波变换(测试中) |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-wavelet" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      小波变换(测试中)
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/09/13/wavelet/" class="article-date">
+  <time datetime="2020-09-13T01:17:36.000Z" itemprop="datePublished">2020-09-13</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>该方法仍在测试中，欢迎大家使用，如有问题请及时与我联系，联系方式详见右侧边栏about页面。</p>
+<p>算法主体：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> fft</span><br><span class="line"><span class="keyword">from</span> numpy.fft <span class="keyword">import</span> ifft</span><br><span class="line"><span class="keyword">from</span> scipy.special <span class="keyword">import</span> gamma</span><br><span class="line"><span class="keyword">from</span> scipy.stats.distributions <span class="keyword">import</span> chi2</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wave_bases</span><span class="params">(mother,k,scale,param)</span>:</span></span><br><span class="line">    n = k.shape[<span class="number">0</span>]</span><br><span class="line">    k_tmp = k.copy()</span><br><span class="line">    k_tmp[k_tmp&gt;<span class="number">0</span>]=<span class="number">1</span></span><br><span class="line">    k_tmp[k_tmp&lt;=<span class="number">0</span>]=<span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> (mother ==<span class="string">'MORLET'</span>):</span><br><span class="line">        k0 = param</span><br><span class="line">        expnt = (<span class="number">-1</span>)*(scale*k - k0)**<span class="number">2</span>/<span class="number">2</span>*k_tmp</span><br><span class="line">        norm = np.sqrt(scale*k[<span class="number">1</span>])*(np.pi**(<span class="number">-0.25</span>))*np.sqrt(n)</span><br><span class="line">        daughter = norm*np.exp(expnt)</span><br><span class="line">        daughter = daughter*k_tmp     </span><br><span class="line">        fourier_factor = (<span class="number">4</span>*np.pi)/(k0 + np.sqrt(<span class="number">2</span> + k0**<span class="number">2</span>))</span><br><span class="line">        coi = fourier_factor/np.sqrt(<span class="number">2</span>)</span><br><span class="line">        dofmin = <span class="number">2</span></span><br><span class="line">    <span class="keyword">elif</span> (mother ==<span class="string">'PAUL'</span>):</span><br><span class="line">        m = param</span><br><span class="line">        expnt = (<span class="number">-1</span>)*(scale*k)*k_tmp</span><br><span class="line">        norm = np.sqrt(scale*k[<span class="number">1</span>])*(<span class="number">2</span>**m/np.sqrt(m*np.prod(np.arange(<span class="number">2</span>,<span class="number">2</span>*m))))*np.sqrt(n)</span><br><span class="line">        daughter = norm*((scale*k)**m)*np.exp(expnt)</span><br><span class="line">        daughter = daughter*k_tmp  </span><br><span class="line">        fourier_factor = <span class="number">4</span>*np.pi/(<span class="number">2</span>*m+<span class="number">1</span>)</span><br><span class="line">        coi = fourier_factor*np.sqrt(<span class="number">2</span>)</span><br><span class="line">        dofmin = <span class="number">2</span></span><br><span class="line">    <span class="keyword">elif</span> (mother ==<span class="string">'DOG'</span>):</span><br><span class="line">        m = param</span><br><span class="line">        expnt = (<span class="number">-1</span>)*(scale*k)**<span class="number">2</span>/<span class="number">2.0</span></span><br><span class="line">        norm = np.sqrt(scale*k[<span class="number">1</span>]/gamma(m+<span class="number">0.5</span>))*np.sqrt(n)</span><br><span class="line">        daughter = (<span class="number">-1</span>)*norm*((<span class="number">1j</span>)**m)*((scale*k)**m)*np.exp(expnt)</span><br><span class="line">        fourier_factor = <span class="number">2</span>*np.pi*np.sqrt(<span class="number">2</span>/(<span class="number">2</span>*m+<span class="number">1</span>))</span><br><span class="line">        coi = fourier_factor/np.sqrt(<span class="number">2</span>)</span><br><span class="line">        dofmin = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> daughter,fourier_factor,coi,dofmin</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wavelet</span><span class="params">(Y,dt,pad,dj,s0,J1,mother,param)</span>:</span></span><br><span class="line">    n1 = Y.shape[<span class="number">0</span>]</span><br><span class="line">    x = (Y - Y.mean())</span><br><span class="line">    <span class="keyword">if</span> (pad == <span class="number">1</span>):</span><br><span class="line">        base2 = np.trunc(np.log(n1)/np.log(<span class="number">2</span>) + <span class="number">0.4999</span>).astype(<span class="string">'int32'</span>)</span><br><span class="line">        x = np.hstack((x,np.zeros((<span class="number">2</span>**(base2+<span class="number">1</span>)-n1))))</span><br><span class="line">    n = x.shape[<span class="number">0</span>]</span><br><span class="line">    k = np.arange(<span class="number">1</span>,n//<span class="number">2</span>+<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    k = k*((<span class="number">2</span>*np.pi)/(n*dt))</span><br><span class="line">    k = np.hstack((<span class="number">0</span>,k,((<span class="number">-1</span>)*k[np.arange((n<span class="number">-1</span>)//<span class="number">2</span><span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>)])))</span><br><span class="line">    f = np.fft.fft(x)</span><br><span class="line">    scale = s0*<span class="number">2</span>**(np.arange(<span class="number">0</span>,J1+<span class="number">1</span>)*dj)</span><br><span class="line">    period = scale</span><br><span class="line">    wave = np.zeros((np.array(J1+<span class="number">1</span>).astype(<span class="string">'int32'</span>),n))</span><br><span class="line">    wave = wave + (<span class="number">1j</span>)*wave</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,np.array(J1+<span class="number">2</span>).astype(<span class="string">'int32'</span>)):</span><br><span class="line">        daughter,fourier_factor,coi,dofmin = wave_bases(mother,k,scale[i<span class="number">-1</span>],param)</span><br><span class="line">        wave[i<span class="number">-1</span>,:] = ifft(f*daughter)</span><br><span class="line">    period = fourier_factor*scale</span><br><span class="line">    coi = coi*dt*np.hstack((<span class="number">1e-5</span>,np.arange(<span class="number">1</span>,(n1+<span class="number">1</span>)//<span class="number">2</span>,<span class="number">1</span>),np.arange(<span class="number">1</span>,n1//<span class="number">2</span>,<span class="number">1</span>)[::<span class="number">-1</span>],<span class="number">1e-5</span>))</span><br><span class="line">    wave = wave[:,:n1]</span><br><span class="line">    <span class="keyword">return</span> wave,period,scale,coi</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wave_signif</span><span class="params">(Y,dt,scale1,sigtest,lag1,siglvl,dof,mother,param)</span>:</span></span><br><span class="line">    n1 = np.array([Y]).shape</span><br><span class="line">    J1 = scale1.shape[<span class="number">0</span>] - <span class="number">1</span></span><br><span class="line">    scale[:J1+<span class="number">1</span>] = scale1</span><br><span class="line">    s0 = np.min(scale)</span><br><span class="line">    dj = np.log(scale[<span class="number">1</span>]/scale[<span class="number">0</span>])/np.log(<span class="number">2</span>)</span><br><span class="line">    variance = Y</span><br><span class="line">    <span class="keyword">if</span> (mother ==<span class="string">'MORLET'</span>):</span><br><span class="line">        k0 = param</span><br><span class="line">        fourier_factor = (<span class="number">4</span>*np.pi)/(k0 + np.sqrt(<span class="number">2</span> + k0**<span class="number">2</span>))</span><br><span class="line">        empir = np.array([<span class="number">2.</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">if</span> (k0==<span class="number">6</span>):</span><br><span class="line">            empir[<span class="number">1</span>:]= np.array([<span class="number">0.776</span>,<span class="number">2.32</span>,<span class="number">0.60</span>])</span><br><span class="line">    <span class="keyword">elif</span> (mother ==<span class="string">'PAUL'</span>):</span><br><span class="line">        m = param</span><br><span class="line">        fourier_factor = <span class="number">4</span>*np.pi/(<span class="number">2</span>*m+<span class="number">1</span>)</span><br><span class="line">        empir = np.array([<span class="number">2.</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">if</span> (m==<span class="number">4</span>):</span><br><span class="line">            empir[<span class="number">1</span>:]= np.array([<span class="number">1.132</span>,<span class="number">1.17</span>,<span class="number">1.5</span>])</span><br><span class="line">    <span class="keyword">elif</span> (mother ==<span class="string">'DOG'</span>):</span><br><span class="line">        m = param</span><br><span class="line">        fourier_factor = <span class="number">2</span>*np.pi*np.sqrt(<span class="number">2</span>/(<span class="number">2</span>*m+<span class="number">1</span>))</span><br><span class="line">        empir = np.array([<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">if</span> (m==<span class="number">2</span>):</span><br><span class="line">            empir[<span class="number">1</span>:]= np.array([<span class="number">3.541</span>,<span class="number">1.43</span>,<span class="number">1.4</span>])</span><br><span class="line">        <span class="keyword">elif</span> (m==<span class="number">6</span>):</span><br><span class="line">            empir[<span class="number">1</span>:]= np.array([<span class="number">1.966</span>,<span class="number">1.37</span>,<span class="number">0.97</span>])</span><br><span class="line">    period = scale*fourier_factor</span><br><span class="line">    dofmin = empir[<span class="number">0</span>]</span><br><span class="line">    Cdelta = empir[<span class="number">1</span>]</span><br><span class="line">    gamma_fac = empir[<span class="number">2</span>]</span><br><span class="line">    dj0 = empir[<span class="number">3</span>]</span><br><span class="line">    freq = dt / period</span><br><span class="line">    fft_theor = (<span class="number">1</span>-lag1**<span class="number">2</span>) / (<span class="number">1</span><span class="number">-2</span>*lag1*np.cos(freq*<span class="number">2</span>*np.pi)+lag1**<span class="number">2</span>)</span><br><span class="line">    fft_theor = variance*fft_theor</span><br><span class="line">    signif = fft_theor</span><br><span class="line">    <span class="keyword">if</span> (np.array(dof).sum() == <span class="number">-1</span>):</span><br><span class="line">        dof = dofmin</span><br><span class="line">    <span class="keyword">if</span> (sigtest == <span class="number">0</span>):</span><br><span class="line">        dof = dofmin</span><br><span class="line">        chisquare = chi2.ppf(siglvl,dof)/dof</span><br><span class="line">        signif = fft_theor*chisquare</span><br><span class="line">    <span class="keyword">elif</span> (sigtest == <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> (dof.shape[<span class="number">0</span>] == <span class="number">1</span>):</span><br><span class="line">            dof=np.zeros((J1+<span class="number">1</span>))+dof</span><br><span class="line">        dof[dof&lt;<span class="number">1</span>]=<span class="number">1</span></span><br><span class="line">        dof = dofmin*np.sqrt(<span class="number">1</span> + (dof*dt/gamma_fac/ scale)**<span class="number">2</span> )</span><br><span class="line">        dof[dof&lt;dofmin]=dofmin</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">1</span>,J1+<span class="number">2</span>):</span><br><span class="line">            chisquare = chi2.ppf(siglvl,dof[i<span class="number">-1</span>])/dof[i<span class="number">-1</span>]</span><br><span class="line">            signif[i<span class="number">-1</span>] = fft_theor[i<span class="number">-1</span>]*chisquare</span><br><span class="line">    <span class="keyword">elif</span> (sigtest == <span class="number">2</span>):</span><br><span class="line">        s1 = dof[<span class="number">0</span>]</span><br><span class="line">        s2 = dof[<span class="number">1</span>]</span><br><span class="line">        avg = np.array(np.where((scale &gt;= s1)&amp;(scale &lt; s2))).reshape(<span class="number">-1</span>)</span><br><span class="line">        navg = avg.shape[<span class="number">0</span>]</span><br><span class="line">        Savg = <span class="number">1</span>/np.sum(<span class="number">1</span>/ scale[avg],axis=(<span class="number">0</span>))</span><br><span class="line">        Smid = np.exp((np.log(s1)+np.log(s2))/<span class="number">2.</span>)</span><br><span class="line">        dof = (dofmin*navg*Savg/Smid)*np.sqrt(<span class="number">1</span> + (navg*dj/dj0)**<span class="number">2</span>)</span><br><span class="line">        fft_theor = Savg*np.sum(fft_theor[avg]/ scale[avg])</span><br><span class="line">        chisquare = chi2.ppf(siglvl,dof)/dof</span><br><span class="line">        signif = (dj*dt/Cdelta/Savg)*fft_theor*chisquare    </span><br><span class="line">    <span class="keyword">return</span> signif,fft_theor</span><br></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li><p>wave_bases(mother,k,scale,param)函数（生成小波函数，仅在wavelet函数中调用，无需处理）</p>
+</li>
+<li><p>wavelet(Y,dt,pad,dj,s0,J1,mother,param)函数 （小波变换本体函数）</p>
+<p>各参数含义如下：</p>
+<p>Y：输入数据，一维序列</p>
+<p>pad：是否开启边缘扩展。若为1，则将边缘值填补为0</p>
+<p>dt : 数据分辨率</p>
+<p>dj: 最小尺度，越小越精细，但计算绘图越慢</p>
+<p>s0：小波最小尺度，一般为2*dt</p>
+<p>j1: 刻度数(不太好理解)，范围从s0到s0×2^(j1×dj)；一般取j1 = (log2(N×dt/s0))/dj</p>
+<p>mother: 小波族，可选’MORLET’,’PAUL’,’DOG’三种小波</p>
+<p>param：小波族对应的常量，morlet为6；paul 为4； dog为2</p>
+<p>函数返回值：</p>
+<p>wave,period,scale,coi</p>
+</li>
+</ol>
+<ol start="3">
+<li><p>wave_signif(Y,dt,scale1,sigtest,lag1,siglvl,dof,mother,param) 函数 (显著性检验函数)</p>
+<p>各参数含义如下：</p>
+<p>scale1:wavelet函数返回的scale</p>
+<p>sigtest:显著性检验方法： 0为常规卡方检验；1为时间平均检验，对于局部小波，dof=np.nan,对于全局小波dof=N(N为时间序列的点数)；2为尺度平均检验，dof为一个[s1,s2]型，例如一个尺度的尺度平均在2-8之间，则自由度dof=[2,8]</p>
+<p>lag1:噪声自相关，用于显著性水平</p>
+<p>siglvl:显著性水平，0.95为95%显著性</p>
+<p>dof： 自由度</p>
+</li>
+</ol>
+<h2 id="参数设置十分复杂，就目前而言还没找到能简单设置的方法，但是大部分参数是不需要修改的。"><a href="#参数设置十分复杂，就目前而言还没找到能简单设置的方法，但是大部分参数是不需要修改的。" class="headerlink" title="参数设置十分复杂，就目前而言还没找到能简单设置的方法，但是大部分参数是不需要修改的。"></a>参数设置十分复杂，就目前而言还没找到能简单设置的方法，但是大部分参数是不需要修改的。</h2><p>给出一个具体示例，首先是计算部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">np.set_printoptions(threshold=np.inf)</span><br><span class="line"><span class="comment">#读数据，与数据标准化，数据为126年季节平均的nino3指数（1871-1997年）</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">sst = np.array(pd.read_table(<span class="string">'/data/home/zenggang/yxy/sst_nino3.dat'</span>,header =<span class="literal">None</span>)).reshape((<span class="number">-1</span>))</span><br><span class="line">variance = sst.std()*sst.std()</span><br><span class="line">sst = ((sst - sst.mean())/sst.std())</span><br><span class="line"><span class="comment">#参数设置</span></span><br><span class="line">n = sst.shape[<span class="number">0</span>]</span><br><span class="line">dt = <span class="number">0.25</span> </span><br><span class="line">time = np.arange(n)*dt + <span class="number">1871.0</span> ;  <span class="comment">#年份数据</span></span><br><span class="line">pad = <span class="number">1</span>;     <span class="comment"># 边缘效应</span></span><br><span class="line">dj = <span class="number">0.25</span>    <span class="comment"># </span></span><br><span class="line">s0 = <span class="number">2</span>*dt    <span class="comment"># 最小尺度从逐6个月开始</span></span><br><span class="line">j1 = <span class="number">7</span>/dj    <span class="comment"># </span></span><br><span class="line">lag1 = <span class="number">0.72</span>  <span class="comment"># </span></span><br><span class="line">mother = <span class="string">'MORLET'</span></span><br><span class="line"><span class="comment">#计算小波</span></span><br><span class="line">wave,period,scale,coi = wavelet(sst,dt,pad,dj,s0,j1,mother,<span class="number">6</span>)</span><br><span class="line">power = (np.abs(wave))**<span class="number">2</span></span><br><span class="line"><span class="comment">#显著性检验</span></span><br><span class="line">signif,fft_theor = wave_signif(<span class="number">1</span>,dt,scale,<span class="number">0</span>,lag1,<span class="number">0.95</span>,<span class="number">0</span>,mother,<span class="number">6</span>);</span><br><span class="line">sig95 = (signif.T).reshape((<span class="number">-1</span>,<span class="number">1</span>))*(np.zeros((n))+<span class="number">1</span>).reshape((<span class="number">1</span>,<span class="number">-1</span>))</span><br><span class="line">sig95 = power/ sig95</span><br><span class="line"></span><br><span class="line">global_ws = variance*(np.sum(power.T,axis = <span class="number">0</span>)/n)</span><br><span class="line">dof = n - scale</span><br><span class="line">global_signif,_ = wave_signif(variance,dt,scale,<span class="number">1</span>,lag1,<span class="number">0.95</span>,dof,mother,<span class="number">6</span>)</span><br><span class="line">avg = np.where((scale &gt;= <span class="number">2</span>)&amp;(scale &lt; <span class="number">8</span>))</span><br><span class="line">Cdelta = <span class="number">0.776</span></span><br><span class="line">scale_avg = (scale.T).reshape((<span class="number">-1</span>,<span class="number">1</span>))*(np.zeros((n))+<span class="number">1</span>).reshape((<span class="number">1</span>,<span class="number">-1</span>))</span><br><span class="line">scale_avg = power/ scale_avg</span><br><span class="line">scale_avg = variance*dj*dt/Cdelta*np.sum(scale_avg[avg,:],axis = (<span class="number">0</span>,<span class="number">1</span>))</span><br><span class="line">scaleavg_signif,_ = wave_signif(variance,dt,scale,<span class="number">2</span>,lag1,<span class="number">0.95</span>,np.array([<span class="number">2</span>,<span class="number">7.9</span>]),mother,<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+<p>接下来是作图部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#原始数据序列</span></span><br><span class="line">xlim = np.array([<span class="number">1870</span>,<span class="number">2000</span>])</span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">f_ax1 = fig.add_axes([<span class="number">0.1</span>,<span class="number">0.75</span>,<span class="number">0.65</span>,<span class="number">0.2</span>])</span><br><span class="line">f_ax1.plot(time,sst)</span><br><span class="line">f_ax1.set_xlabel(<span class="string">'Time (year)'</span>)</span><br><span class="line">f_ax1.set_ylabel(<span class="string">'NINO3 SST (degC)'</span>)</span><br><span class="line">f_ax1.set_title(<span class="string">'a) NINO3 Sea Surface Temperature (seasonal)'</span>)</span><br><span class="line"><span class="comment">#小波</span></span><br><span class="line">f_ax2 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.37</span> ,<span class="number">0.65</span> ,<span class="number">0.28</span>])</span><br><span class="line">levels = [<span class="number">0.0625</span>,<span class="number">0.125</span>,<span class="number">0.25</span>,<span class="number">0.5</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">16</span>]</span><br><span class="line">Yticks = np.arange(<span class="number">2</span>**np.trunc(np.log2(np.min(period))),<span class="number">2</span>**np.trunc(np.log2(np.max(period)))+<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">f_ax2.contourf(time,np.log2(period),np.log2(power),np.log2(levels),extend=<span class="string">'both'</span>)</span><br><span class="line">f_ax2.set_xlabel(<span class="string">'Time (year)'</span>)</span><br><span class="line">f_ax2.set_ylabel(<span class="string">'Period (years)'</span>)</span><br><span class="line">f_ax2.set_title(<span class="string">'b) NINO3 SST Wavelet Power Spectrum'</span>)</span><br><span class="line">f_ax2.set_ylim(np.log2(np.max(period)),np.log2(np.min(period)))</span><br><span class="line">f_ax2.contour(time,np.log2(period),sig95,levels=[<span class="number">-99</span>,<span class="number">1</span>],colors =<span class="string">'k'</span>)</span><br><span class="line">f_ax2.plot(time,np.log2(coi),<span class="string">'k'</span>)</span><br><span class="line">f_ax2.set_yticks(np.log2(Yticks)[[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">14</span>,<span class="number">19</span>,<span class="number">29</span>,<span class="number">49</span>]])</span><br><span class="line">f_ax2.set_yticklabels(Yticks[[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">14</span>,<span class="number">19</span>,<span class="number">29</span>,<span class="number">49</span>]])</span><br><span class="line"><span class="comment">#全局功率谱</span></span><br><span class="line">f_ax3 = fig.add_axes([<span class="number">0.77</span>, <span class="number">0.37</span>, <span class="number">0.2</span>, <span class="number">0.28</span>])</span><br><span class="line">f_ax3.plot(global_ws,np.log2(period))</span><br><span class="line">f_ax3.plot(global_signif,np.log2(period),<span class="string">'--'</span>)</span><br><span class="line">f_ax3.set_xlabel(<span class="string">'Power (degC^2)'</span>)</span><br><span class="line">f_ax3.set_title(<span class="string">'c) Global Wavelet Spectrum'</span>)</span><br><span class="line">f_ax3.set_ylim(np.log2([np.max(period),np.min(period)]))</span><br><span class="line">f_ax3.set_yticks(np.log2(Yticks))</span><br><span class="line">f_ax3.set_yticklabels(<span class="string">''</span>)</span><br><span class="line">f_ax3.set_xlim(<span class="number">0</span>,<span class="number">1.25</span>*np.max(global_ws))</span><br><span class="line"><span class="comment">#局部功率谱</span></span><br><span class="line">f_ax4 = fig.add_axes([<span class="number">0.1</span>,<span class="number">0.07</span> ,<span class="number">0.65</span>, <span class="number">0.2</span>])</span><br><span class="line">f_ax4.plot(xlim,scaleavg_signif+np.array([<span class="number">0</span>,<span class="number">0</span>]),<span class="string">'--'</span>)</span><br><span class="line">f_ax4.plot(time,scale_avg)</span><br><span class="line">f_ax4.set_xlabel(<span class="string">'Time (year)'</span>)</span><br><span class="line">f_ax4.set_ylabel(<span class="string">'Avg variance (degC^2)'</span>)</span><br><span class="line">f_ax4.set_title(<span class="string">'d) 2-8 yr Scale-average Time Series'</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>输出图形如下：</p>
+<p><img src="/image/wavelet.png" alt="image-20200527155848450"></p>
+<p>测试数据下载：<a href="/image/sst_nino3.dat">sst_nino3.dat</a></p>
+<p>作为一个数学基础很差的人，理解这些算法实在是太难了，我在编译的过程中很多东西完全是从最后的图形结果倒推算法每一步的含义。程序几乎是参考C. Torrence(1998)的matlab程序完成的。如果大家在程序运行过程中发现Bug请及时向我反馈，关于参数设置问题，还是不要来为难我了，很多东西我只是有个模糊的概念，很难具体解释出来。不过在翻译过程中还是发现python相对于matlab在有些地方还是很方便的，比如傅里叶转换和逆转换，以及卡方检验的实现等等。</p>
+<p>最后感谢大家一直以来的的支持和关注。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/09/13/wavelet/" data-id="cljmaen98003oaoihgyso5w5u" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/09/18/cma-tc-best-path/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            CMA热带气旋最佳路径数据集读取与绘制
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/09/09/map/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">Cartopy地图投影绘制</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    经验正交函数分解(EOF) |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-f1-5-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      经验正交函数分解(EOF)
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/01/f1-5-1-1/" class="article-date">
+  <time datetime="2020-06-01T11:06:08.000Z" itemprop="datePublished">2020-06-01</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>EOF分析在气象分析中十分常见，幸运的是有前辈已经利用Python实现了EOF分析并且发布在<a href="https://github.com/ajdawson/eofs" target="_blank" rel="noopener">github</a>。</p>
+<p>本文将直接介绍该库的安装及使用，关于EOF的原理不做介绍。</p>
+<h4 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge eofs</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、使用介绍"><a href="#二、使用介绍" class="headerlink" title="二、使用介绍"></a>二、使用介绍</h4><p>首先import</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br></pre></td></tr></table></figure>
+
+<p>该库有几个基本函数是必须掌握的，我们一一介绍。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solver = Eof(x, weights)</span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">3</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">3</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br></pre></td></tr></table></figure>
+
+<p>solver = Eof()建立一个EOF分解器，x为要进行分解的变量，weights为权重，通常指纬度权重</p>
+<p>solver.eofsAsCorrelation，solver.pcs，solver.varianceFraction分别取出空间模态，PC和方差。</p>
+<h4 id="三、示例"><a href="#三、示例" class="headerlink" title="三、示例"></a>三、示例</h4><p>我们以中国夏季降水三类雨型的分解为例，展示EOF分析完整的Python实现。</p>
+<p><img src="/image/image-20200601202548617.png" alt="image-20200601202548617"></p>
+<p>数据下载：<a href="/image/pre.nc">1961-2016夏季降水</a> 以及 <a href="/image/shp.rar">边界shp文件</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.gridliner <span class="keyword">import</span> LONGITUDE_FORMATTER, LATITUDE_FORMATTER</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="keyword">import</span> cartopy.io.shapereader <span class="keyword">as</span> shpreader</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">f = xr.open_dataset(<span class="string">'./pre.nc'</span>)</span><br><span class="line">pre = np.array(f[<span class="string">'pre'</span>])</span><br><span class="line">lat = f[<span class="string">'lat'</span>]</span><br><span class="line">lon = f[<span class="string">'lon'</span>]</span><br><span class="line"><span class="comment">#计算纬度权重</span></span><br><span class="line">lat = np.array(lat)</span><br><span class="line">coslat = np.cos(np.deg2rad(lat))</span><br><span class="line">wgts = np.sqrt(coslat)[..., np.newaxis]</span><br><span class="line"><span class="comment">#创建EOF分解器</span></span><br><span class="line">solver = Eof(summer_mean_tmp, weights=wgts)</span><br><span class="line"><span class="comment">#获取前三个模态，获取对应的PC序列和解释方差</span></span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">3</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">3</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br></pre></td></tr></table></figure>
+
+<p>以下是绘图部分，我们先给出其中不重复的部分，文章最末会给出完整代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置色标颜色，用于绘制PC柱状图</span></span><br><span class="line">color1=[]</span><br><span class="line">color2=[]</span><br><span class="line">color3=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1961</span>,<span class="number">2017</span>):</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'blue'</span>)</span><br><span class="line"><span class="comment">#建立图形以及基本设置</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">115</span>)</span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">70</span>,<span class="number">140</span>,<span class="number">15</span>,<span class="number">55</span>)</span><br><span class="line">lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line"><span class="comment">#绘制第一模态</span></span><br><span class="line">fig_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax1.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax1.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax1.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax1.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax1.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax1.set_title(<span class="string">'(a) EOF1'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax1.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">0</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c1=fig_ax1.contourf(pre_lon,pre_lat, eof[<span class="number">0</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"><span class="comment">#添加南海</span></span><br><span class="line">fig_ax11 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.08</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax11.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax11.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax11.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"><span class="comment">#添加色标</span></span><br><span class="line">cbposition=fig.add_axes([<span class="number">0.13</span>, <span class="number">0.04</span>, <span class="number">0.4</span>, <span class="number">0.015</span>])</span><br><span class="line">fig.colorbar(c1,cax=cbposition,orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%.1f'</span>,)</span><br><span class="line"><span class="comment">#绘制PC</span></span><br><span class="line">fig_ax4 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.808</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax4.set_title(<span class="string">'(b) PC1'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax4.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax4.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax4.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">0</span>],color=color1)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>下面给出完整脚本的代码。看上去很长，但实际上大部分都是重复的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.gridliner <span class="keyword">import</span> LONGITUDE_FORMATTER, LATITUDE_FORMATTER</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="keyword">import</span> cartopy.io.shapereader <span class="keyword">as</span> shpreader</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br><span class="line">f = xr.open_dataset(<span class="string">'./pre.nc'</span>)</span><br><span class="line">pre = np.array(f[<span class="string">'pre'</span>])</span><br><span class="line">lat = f[<span class="string">'lat'</span>]</span><br><span class="line">lon = f[<span class="string">'lon'</span>]</span><br><span class="line">lat = np.array(lat)</span><br><span class="line">coslat = np.cos(np.deg2rad(lat))</span><br><span class="line">wgts = np.sqrt(coslat)[..., np.newaxis]</span><br><span class="line">solver = Eof(pre, weights=wgts)</span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">3</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">3</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br><span class="line">color1=[]</span><br><span class="line">color2=[]</span><br><span class="line">color3=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1961</span>,<span class="number">2017</span>):</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'blue'</span>)</span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">115</span>)</span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">70</span>,<span class="number">140</span>,<span class="number">15</span>,<span class="number">55</span>)</span><br><span class="line">lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line"></span><br><span class="line">fig_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax1.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax1.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax1.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax1.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax1.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax1.set_title(<span class="string">'(a) EOF1'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax1.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">0</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c1=fig_ax1.contourf(pre_lon,pre_lat, eof[<span class="number">0</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"></span><br><span class="line">fig_ax2 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.45</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax2.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax2.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax2.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax2.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax2.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax2.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax2.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax2.set_title(<span class="string">'(c) EOF2'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax2.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">1</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c2=fig_ax2.contourf(pre_lon,pre_lat, eof[<span class="number">1</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"></span><br><span class="line">fig_ax3 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax3.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax3.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax3.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax3.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax3.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax3.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax3.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax3.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax3.set_title(<span class="string">'(e) EOF3'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax3.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">2</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c3=fig_ax3.contourf(pre_lon,pre_lat, eof[<span class="number">2</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"></span><br><span class="line">fig_ax11 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.08</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax11.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax11.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax11.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">fig_ax22 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.43</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax22.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax22.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax22.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">fig_ax33 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.78</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax33.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax33.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax33.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">cbposition=fig.add_axes([<span class="number">0.13</span>, <span class="number">0.04</span>, <span class="number">0.4</span>, <span class="number">0.015</span>])</span><br><span class="line">fig.colorbar(c1,cax=cbposition,orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%.1f'</span>,)</span><br><span class="line"></span><br><span class="line">fig_ax4 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.808</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax4.set_title(<span class="string">'(b) PC1'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax4.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax4.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax4.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">0</span>],color=color1)</span><br><span class="line"></span><br><span class="line">fig_ax5 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.458</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax5.set_title(<span class="string">'(d) PC2'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax5.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax5.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax5.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">1</span>],color=color2)</span><br><span class="line"></span><br><span class="line">fig_ax6 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.108</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax6.set_title(<span class="string">'(f) PC3'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax6.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax6.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax6.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">2</span>],color=color3)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/01/f1-5-1-1/" data-id="cljmaen950032aoih4kowf75b" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/06/06/color/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            Python绘图如何自定义或使用NCL中的colormap
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/06/01/geoplot/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">利用Cartopy绘制带有地图投影的图形</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Cartopy地图投影绘制 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-map" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      Cartopy地图投影绘制
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/09/09/map/" class="article-date">
+  <time datetime="2020-09-09T08:58:10.000Z" itemprop="datePublished">2020-09-09</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>整理常用的地图投影绘制，包括源码及示例。</p>
+<a id="more"></a>
+
+<p>简单讲，matplotlib库创建的每个子图称为axes，axes是不具有地图投影性质的，也就是说axes绘制的图形是等距网格的形式，而我们需要绘制带有地图投影的图形时，就需要使用Cartopy库将axes变为具有地图投影性质的GeoAxes,而GeoAxes的网格则是经过地图投影缩放的。那本文主要展示如何将Axes变为不同地图投影的GeoAxes。</p>
+<h2 id="一-、-转换基础，等经纬距离网格投影"><a href="#一-、-转换基础，等经纬距离网格投影" class="headerlink" title="一 、 转换基础，等经纬距离网格投影"></a>一 、 转换基础，等经纬距离网格投影</h2><p>本节介绍如何将Axes转换为GeoAxes，以及如何添加基础地理要素。</p>
+<p>首先先给出代码示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>,projection=ccrs.PlateCarree())</span><br><span class="line">ax1.set_xticks(np.arange(<span class="number">-180</span>,<span class="number">240</span>,<span class="number">60</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax1.set_yticks(np.arange(<span class="number">-90</span>,<span class="number">120</span>,<span class="number">30</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax1.xaxis.set_major_formatter(cticker.LongitudeFormatter())</span><br><span class="line">ax1.yaxis.set_major_formatter(cticker.LatitudeFormatter())</span><br><span class="line">ax1.gridlines() <span class="comment">#添加网格线</span></span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))</span><br><span class="line">ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, projection=ccrs.PlateCarree(central_longitude = <span class="number">120</span>))</span><br><span class="line">ax2.set_xticks(np.arange(<span class="number">-180</span>,<span class="number">240</span>,<span class="number">60</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax2.set_yticks(np.arange(<span class="number">-90</span>,<span class="number">120</span>,<span class="number">30</span>), crs=ccrs.PlateCarree())</span><br><span class="line">ax2.xaxis.set_major_formatter(cticker.LongitudeFormatter())<span class="comment">#设置经纬度刻度格式</span></span><br><span class="line">ax2.yaxis.set_major_formatter(cticker.LatitudeFormatter())</span><br><span class="line">ax2.gridlines() <span class="comment">#添加网格线</span></span><br><span class="line">ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))<span class="comment">#添加海岸线</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>首先通过fig = plt.figure(figsize=[10, 5])语句创建了画布</p>
+<p>接着利用fig.add_subplot语句创建了一个axes,然而与之前不同的是，这里给出了一个projection参数</p>
+<p>projection=ccrs.PlateCarree()参数的设置就使得axes转换成为了一个GeoAxes</p>
+<p>PlateCarree投影是Cartopy库中的基本投影，即等经纬距离网格投影，通常绘制全球平面图时便使用此投影。</p>
+<p>ccrs.PlateCarree中可以传递一个central_longitude参数，即为投影的中心经度，也就是图形中轴线的经度。</p>
+<p><img src="/image/map1-1.png" alt="image-20200702161610554"></p>
+<h2 id="二-、-兰伯特投影"><a href="#二-、-兰伯特投影" class="headerlink" title="二 、 兰伯特投影"></a>二 、 兰伯特投影</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.LambertConformal())</span><br><span class="line">gl1 = ax1.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">False</span>) <span class="comment">#添加网格线</span></span><br><span class="line">gl1.rotate_labels = <span class="literal">False</span></span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))</span><br><span class="line">ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, projection=ccrs.LambertConformal(central_longitude=<span class="number">120</span>,cutoff=<span class="number">0</span>))</span><br><span class="line">gl2 = ax2.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">False</span>) <span class="comment">#添加网格线</span></span><br><span class="line">gl2.rotate_labels = <span class="literal">False</span></span><br><span class="line">ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>兰伯特投影参数的设置除了central_longitude以外还有cutoff参数，意为截断纬度，即图形下边界纬度。</p>
+<p><img src="/image/map1-2.png" alt="image-20200702161610554"></p>
+<h2 id="三、麦卡托投影"><a href="#三、麦卡托投影" class="headerlink" title="三、麦卡托投影"></a>三、麦卡托投影</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.Mercator())</span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))</span><br><span class="line">gl1 = ax1.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">False</span>) <span class="comment">#添加网格线</span></span><br><span class="line">gl1.rotate_labels = <span class="literal">False</span></span><br><span class="line">gl1.xlabels_top = <span class="literal">False</span></span><br><span class="line">gl1.ylabels_right = <span class="literal">False</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/map1-3.png" alt="image-20200702161610554"></p>
+<h2 id="四、-极地投影"><a href="#四、-极地投影" class="headerlink" title="四、 极地投影"></a>四、 极地投影</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, projection=ccrs.NorthPolarStereo())</span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))</span><br><span class="line">gl1 = ax1.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">True</span>) <span class="comment">#添加网格线</span></span><br><span class="line">ax2 = fig.add_subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, projection=ccrs.SouthPolarStereo())</span><br><span class="line">ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'110m'</span>))</span><br><span class="line">gl2 = ax2.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">True</span>) <span class="comment">#添加网格线</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/map1-4.png" alt="image-20200702161610554"></p>
+<h2 id="五、-图形边界问题"><a href="#五、-图形边界问题" class="headerlink" title="五、 图形边界问题"></a>五、 图形边界问题</h2><p>前几节介绍了四种投影的设置，但是还有一个重要的问题没有解决：地图的范围设置</p>
+<p>这里以极地投影为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.path <span class="keyword">as</span> mpath</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, projection=ccrs.NorthPolarStereo())</span><br><span class="line">ax1.set_extent([<span class="number">-180</span>, <span class="number">180</span>, <span class="number">30</span>, <span class="number">90</span>], ccrs.PlateCarree())</span><br><span class="line">gl1 = ax1.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">False</span>) <span class="comment">#添加网格线</span></span><br><span class="line">gl1.rotate_labels = <span class="literal">False</span> <span class="comment">#关闭标签旋转，设置为True时标签与网格线平行</span></span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/map1-5.png" alt="image-20200702161610554"></p>
+<p>然而却发现设置了地图范围后的边界变回了正方形，这是由于地图边界设置是矩形造成的。解决办法是通过设置一个圆形路径的边框来对GeoAxes进行mask。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.path <span class="keyword">as</span> mpath</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, projection=ccrs.NorthPolarStereo())</span><br><span class="line">ax1.set_extent([<span class="number">-180</span>, <span class="number">180</span>, <span class="number">30</span>, <span class="number">90</span>], ccrs.PlateCarree())</span><br><span class="line">gl1 = ax1.gridlines(draw_labels=<span class="literal">True</span>,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">False</span>) <span class="comment">#添加网格线</span></span><br><span class="line">ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line"><span class="comment"># 生成一个圆形的Path</span></span><br><span class="line">theta = np.linspace(<span class="number">0</span>, <span class="number">2</span>*np.pi, <span class="number">100</span>)</span><br><span class="line">center, radius = [<span class="number">0.5</span>, <span class="number">0.5</span>], <span class="number">0.5</span></span><br><span class="line">verts = np.vstack([np.sin(theta), np.cos(theta)]).T</span><br><span class="line">circle = mpath.Path(verts * radius + center)</span><br><span class="line"><span class="comment"># 将该Path设置为GeoAxes的边界</span></span><br><span class="line">ax1.set_boundary(circle, transform=ax1.transAxes)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/map1-6.png" alt="image-20200702161610554"></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/09/09/map/" data-id="cljmaen95002zaoih51rd9j0i" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/09/13/wavelet/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            小波变换(测试中)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/09/09/scatter2/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">带地图投影的散点图(站点分布图)</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

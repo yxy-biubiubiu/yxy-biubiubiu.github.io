@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    Python调用CDO及其它系统指令(下载资料) |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-cdoinpython" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      Python调用CDO及其它系统指令(下载资料)
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2021/06/17/cdoinpython/" class="article-date">
+  <time datetime="2021-06-17T07:58:42.000Z" itemprop="datePublished">2021-06-17</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>之前一篇文章简单介绍了Climate Data Operators (CDO) 如何处理气候数据的软件，并提到配合Python可以方便的使用，这里就再进一步讲解如何在Python中调用CDO，以及其它系统指令。虽然CDO发布了Python-cdo提供了直接使用的方法,但是这里给一些不能安装python-cdo或者其它原因不使用这个库的用户一个其它的方法。</p>
+<a id="more"></a>
+
+<h2 id="一、-Python调用CDO"><a href="#一、-Python调用CDO" class="headerlink" title="一、 Python调用CDO"></a>一、 Python调用CDO</h2><p>这里只需要使用os库(操作系统接口)即可完成，更确切的说，是os.system()函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br></pre></td></tr></table></figure>
+
+<p>system函数可以将字符串转化成命令在服务器上运行；其原理是每一条system函数执行时，其会创建一个子进程在系统上执行命令行，子进程的执行结果无法影响主进程。有了这个函数，我们就可以在python脚本里随意使用CDO了。比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.system(<span class="string">'cdo selname,t2m ./in.nc ./out.nc'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>通常而言，我们会利用CDO批量处理一些数据，一条一条输入太过麻烦，这时候灵活利用循环format格式化函数就可以实现，如我们下载了NCEP再分析资料1948-2020年逐日的pressure level的温度数据，我们需要提取每年500 hPa的数据并且合并成1个文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">filePath = <span class="string">'./data/'</span></span><br><span class="line">filename = os.listdir(filePath)<span class="comment">#获取文件名</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(filename)):<span class="comment">#对文件循环</span></span><br><span class="line">    os.system(<span class="string">'cdo sellevel,500 &#123;&#125;&#123;&#125; &#123;&#125;t500_&#123;&#125;.nc'</span>.format(filePath,filename[i],filePath,i)) <span class="comment">#对每个文件提取500hpa 变量，并输出为名为500_x.nc的文件x=0,1,2,3....</span></span><br><span class="line">os.system(<span class="string">'cdo -b 32 mergetime &#123;&#125;t500_* &#123;&#125;t500.nc'</span>.format(filePath,filePath)) <span class="comment">#合并</span></span><br><span class="line">os.system(<span class="string">'rm -f &#123;&#125;t500_*'</span>.format(filePath)) <span class="comment">#删除所有中间文件</span></span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意的是格式化函数的匹配，比如对os.system(‘cdo sellevel,500 {}{} {}t500_{}.nc’.format(filePath,filename[i],filePath,i))这行代码而言，代码中一共有四个{}，分别对应filePath,filename[i],filePath和i。</p>
+<h2 id="二、Python调用其它系统指令"><a href="#二、Python调用其它系统指令" class="headerlink" title="二、Python调用其它系统指令"></a>二、Python调用其它系统指令</h2><p>既然python可以通过os.system函数调用CDO，那同样也可以调用其它指令，实际上在上边一个示例的最后一行代码已经涉及到了，调用了系统的rm函数删除了中间文件。</p>
+<p>我在<a href="https://yxy-biubiubiu.github.io/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/" target="_blank" rel="noopener">批量下载气象数据(EC;NCEP;CMIP)</a>介绍过使用bash脚本批量下载数据的方法，这里我们进行一点简单的修改，就可以在python里实现批量下载。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">1948</span>,<span class="number">2021</span>,<span class="number">1</span>):</span><br><span class="line">    os.system(<span class="string">'wget ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.&#123;&#125;.nc'</span>.format(i))</span><br></pre></td></tr></table></figure>
+
+<p>对于不熟悉shell语言的伙伴们，看到这样的方法可能会更亲切一点吧。需要注意的是wget语句会默认将文件下载到python脚本所在路径，通过-O 参数可以指定下载路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O ./data/1948.nc ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.1948.nc</span><br></pre></td></tr></table></figure>
+
+<p>当然wget还有更多参数，有兴趣的可以参考<a href="https://blog.csdn.net/qq_27870421/article/details/91951402" target="_blank" rel="noopener">wget参数</a>。</p>
+<p>当然如果你使用的是jupyternotebook，那可能你无法看到下载进度了。当然也有一个不是办法的应对办法，安装一个进度条库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tqdm</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> tqdm.notebook <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tqdm(np.arange(<span class="number">1948</span>,<span class="number">2021</span>,<span class="number">1</span>)):</span><br><span class="line">    os.system(<span class="string">'wget ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.dailyavgs/pressure/hgt.&#123;&#125;.nc'</span>.format(i))</span><br></pre></td></tr></table></figure>
+
+<p>这时再试试看使用了tqdm有什么区别呢？</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2021/06/17/cdoinpython/" data-id="cljmaen8p000uaoihe6t88ksl" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Data/" rel="tag">Data</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Other/" rel="tag">Other</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2021/06/23/NCL.vs.Python/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            Python vs NCL
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">关于绘图思路法人一点想法</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

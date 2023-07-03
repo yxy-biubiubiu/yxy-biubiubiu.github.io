@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    关于绘图思路法人一点想法 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-浅谈绘图思路" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      关于绘图思路法人一点想法
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/" class="article-date">
+  <time datetime="2021-06-15T09:05:44.000Z" itemprop="datePublished">2021-06-15</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>有大半年没有打开简书了(愧对各位默默关注我的读者)，得空看了下简书后台的评论，整理了下发现很多新入坑的伙伴的主要问题还是针对绘图和数据处理的（比如很多小伙伴不知道自己要画什么图，或者知道自己要画什么但是不知道怎么把手中的数据变成需要的图），这里就一并合在一起谈谈我对数据处理和绘图思路的理解(主要是思路)，若有不妥还请指正。主要是针对新入门的。</p>
+<a id="more"></a>
+
+<p>把绘图说的正式一点，就是数据可视化，其本质还是对于数据的呈现方式，所以所有的图片本身不过还是数据而已。对于计算机来说就是二维的像素矩阵，每个像素有自己的颜色，所以呈现出了一张平面图片。对于我们要做的气象绘图而言，也不过是把形式不同的数据变成最终想要的图片。所以在绘图前应该是首先确定自己要呈现怎样的效果，为了这个效果来制定符合的图片类型，然后再分析这种图片类型是由什么格式的数据实现的，最后再去寻找响应的数据并处理。实际上这是一个逆向的思维过程，那我们先从简单的折线图开始。</p>
+<p><img src="/image/htsl1.png" alt="图1-折线图1"></p>
+<p>比如说我们在文献中看到了类似<strong>图1-折线图1</strong>，需要模仿绘制。那么首先观察这幅图的特征，其本质就是200个点连起来的折线，所以这幅图的本质就是200个点构成的序列，假设这幅图是近200年的区域平均降水量，而我们手中的数据是(年，月，经度，纬度)的降水量数据，那么我们对月平均和经度，纬度这三个纬度进行平均，就可以得到数据格式为(年)的序列。之后利用绘制折线图的函数ax.plot(x,y)就可以了（如果是温度廓线，那么对应的x就是温度，y就是高度；如果是某变量如阻塞指数沿经度分布，那么y就是阻塞指数，x就是经度，灵活应用即可）。</p>
+<p>那么现在把折线图变得复杂一些：</p>
+<p><img src="/image/htsl2.png" alt="图2-折线图2"></p>
+<p>这种图常见于预估类的文献，阴影区间表示浮动范围(假如是正负一倍标准差), 那么我们需要计算的就是中间的序列，以及它的浮动范围，本质上依然是三条折线(折线本身+（折线+1δ)+（折线-1δ)）。如果不知道绘制阴影的函数，将其绘制成三条折线的效果也是一样的，浮动范围可以用虚线。如果想要绘制阴影，百度下”matplotlib如何绘制阴影区间”也可以搜到plt.fill_between这个函数。把图换成柱状图本质也是一样的(一条序列)。</p>
+<p>提到预估类的工作就不得不提到箱线图（主要用来分析和对比数据分布情况的，分布情况主要指的是离散程度，分位数位置等等），这里就献丑以我自己的一个工作来展示。</p>
+<p><img src="/image/htsl3.png" alt="图3-箱线图1"></p>
+<p>我这里是对比了四个时间区段的情况，图例清楚的说明了箱体和箱须分别代表的含义。那么需要怎样的数据来实现这幅图呢？首先可以确定的这是四组数据（肯定是四组由数字构成的一维数组），对于python来说，不需要我们事先计算每组数据的均值，中位数，分位数等等，只需将原始数据放入绘图函数ax.boxplot即可。所以我们只在指定的X轴的对应位置使用四次ax.boxplot函数。</p>
+<p>接下来再说说等值线图：</p>
+<p><img src="/image/htsl4.png" alt="图4-等值线图1"></p>
+<p>不要看它是N条线组成的就以为它的组成数组是N个序列！高中地理就都学过等高面图，就是把相等大小的点连在一起。所以可以看到<strong>图4-等值线图1</strong>每条线的颜色是不一样的，因为颜色是反应组成这条线的数的大小。所以实际上这幅图是由N*M个点组成的，每个点都有一个数字，把大小相同的数字连接起来构成等值线图(等下用填色图更好理解)。所以这张图需要一个(N，M)的数组通过ax.contour函数实现。这个(N,M)数组的获取方式，需要分析N是什么，M是什么。如果是空间分布，那就是将原数据保留经纬度，将其它维度(时间，高度)处理，如果是纬高分布，那就将纬度和高度保留，同理，如果是纬度-时间分布，就保留纬度和时间。</p>
+<p><img src="/image/htsl5.png" alt="图5-填色图1"></p>
+<p>现在将空白区域进行了填色，处于两条等值线之间的区域为同一颜色。也就是说，处于同一个区间范围的，为同一种颜色。</p>
+<p><img src="/image/htsl6.png" alt="图6-填色图2"></p>
+<p>我进一步对每一个点进行了标记来方便理解。这幅图就是由这么多个点的同样形状的(N,M)数组构成，每个点都有自己的大小(也就对应了其颜色)。</p>
+<p>再进一步的，我们通常要进行显著性检验，也就是对填色图进行一个”打点”的操作。让过检部分加上阴影或者dots。实现思路是这样的：打点或者添加阴影本质也是一种填色，只不过填的不是颜色，而是一种特殊的标记。所以我们只需要在过检部分填色就好了，设置方法是通过ax.contourf函数的level参数设置填色区间，用hatches参数设置填色标记，我们在进行检验计算时，都会返回对应的P值数组，P&lt;0.05为通过0.05显著性检验，所以这时只需对P值数组0-0.05范围进行标记填充即可。</p>
+<p>再来说说矢量绘制：</p>
+<p><img src="/image/htsl7.png" alt="图7-矢量图1"></p>
+<p>我们首先要知道，矢量的构成，要表达矢量，需要有两个要素，也就是大小和方向，通过正交分解则变成了i矢量和j矢量。对于风场来说，就是u,v。对于上边的前边的填色图来说，是由(N,M)的数组构成，颜色反应每个点的数值。那对于矢量场来说，依然是(N,M)的数组组成的，箭头反应每个点的矢量，特殊的在于，需要同时使用u,和v才能正确表达矢量。所以本质应该是u(N,M)和v(N,M)的叠加。所以绘制时只需要对ax.quiver()函数同时输入u,v即可。</p>
+<p>对于散点图而言，它就像缺失了很多数据的填色图一样（或者理解为仅保留了部分点的填色图），所以它一定不是(N,M)数组构成的了。要绘制填色图，我们首先要知道每个点的x和y的位置，其次也要知道这个点的大小(反应为颜色)，所以它是由(n，3)组成的，n指n个点，3分别为x，y和点本身的大小。</p>
+<p>总的来说，先根据自己需要画的图来设计目标数据(比如我要画折线图，那我就需要1条序列；我需要填色图，我就需要1个(N,M)数组)，确定自己目标数据的形状，然后再根据目标数据的形状来处理原始数据。同样的，在模仿一幅图的时候，先确定它的数据形状，再根据它的X,Y轴确定它图形背后数组的实际意义，才能有针对性的获取和处理数据。至于其它细节性的修饰，如何让图更美观，就考验后期的调整了。当然matplotlib官方本身已经提供了大量的示例，几乎包含了常规图形，不妨收藏在书签栏，画图前看看有没有类似自己需要的，直接拿来修改当然是最方便的。最后一定要善于利用度娘，搜索matoplotlib如何绘制xxxxx，或者python如何让折线图更美观等等。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/" data-id="cljmaen9a004faoihdxtr0wih" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2021/06/17/cdoinpython/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            Python调用CDO及其它系统指令(下载资料)
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/06/15/guiji1/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">多轨迹绘制</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

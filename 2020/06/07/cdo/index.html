@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    CDO简介及常用语法 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-cdo" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      CDO简介及常用语法
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/07/cdo/" class="article-date">
+  <time datetime="2020-06-07T01:36:42.000Z" itemprop="datePublished">2020-06-07</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>Climate Data Operators (CDO) 是用来处理气候数据的软件，可以在linux环境下直接对数据文件进行处理，通过筛选，删除，修改等操作从原始数据文件中得到自己所需的资料格式，配合Python，NCL等语言的使用十分方便。</p>
+<a id="more"></a>
+
+<h2 id="一、-CDO安装"><a href="#一、-CDO安装" class="headerlink" title="一、 CDO安装"></a>一、 CDO安装</h2><p>仍然是推荐在CONDA环境下使用CDO，安装也十分的方便：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge cdo</span><br></pre></td></tr></table></figure>
+
+<p>使用或者使用Ubuntu系统的安装指令也可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install cdo</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、基本语法"><a href="#二、基本语法" class="headerlink" title="二、基本语法"></a>二、基本语法</h2><p>CDO的使用很简单，基本语法只有一条：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo [ Options ] Operator1 [ -Operator2 [ -OperatorN ] ]</span><br></pre></td></tr></table></figure>
+
+<p>这么看起来还是麻烦，那么再简化就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo [ Options ] Operator</span><br></pre></td></tr></table></figure>
+
+<p>cdo起头，表明这是cdo语法，接一个Options表明一些参数选项(可选，无特殊需求可省略)，接Operator 表明操作的行为(命令+数据文件)。</p>
+<p>以下一些Options是针对所有Operator可用的（更多请见<a href="/image/cdo.rar">原文档</a>）：</p>
+<ol>
+<li>-a 生成一个绝对时间坐标 (适用于数据时间信息丢失时)</li>
+<li>-b <nbits>  指定数据格式，<nbits>可选：I8/I16/I32/F32/F64</li>
+<li>-f <format> 设置输出文件格式(一般默认.nc结尾即可，所以该选项一般可忽略)</li>
+</ol>
+<p>第二条可能最常用一些，比如报错信息包含数据精度问题时，指定 -b F64 即可。</p>
+<h2 id="三、多文件操作"><a href="#三、多文件操作" class="headerlink" title="三、多文件操作"></a>三、多文件操作</h2><h3 id="3-1-连锁命令"><a href="#3-1-连锁命令" class="headerlink" title="3.1 连锁命令"></a>3.1 连锁命令</h3><p>连锁命令指的是用一条指令，对一个文件进行一系列处理，比如对一个文件，用一条命令实现提取冬半年数据，删除闰年2.29日，提取500hPa数据，提取北半球数据这四个操作。这就要求Operator1的输出文件可以作为Operator2的输入文件，形成一个链条。</p>
+<p>个人还是不建议新手使用这种方式，容易出问题。</p>
+<p>比如从u.nc和v.nc中提取500hPa数据，并拼接为一个文件时，完整的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cdo sellevel,500 u.nc u500.nc</span><br><span class="line">cdo sellevel,500 v.nc v500.nc</span><br><span class="line">cdo merge u500.nc v500.nc 500.nc</span><br></pre></td></tr></table></figure>
+
+<p>利用连锁命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo merge -sellevel,500 u.nc -sellevel,500 v.nc 500.nc</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-多文件操作"><a href="#3-2-多文件操作" class="headerlink" title="3.2 多文件操作"></a>3.2 多文件操作</h3><p>多文件操作指的是，比如说每年都有一个文件，想要将这些文件合成或者其他操作，通过*来代替字符。</p>
+<p>比如，文件为1979.nc,1980.nc,1981.nc…2017.nc，将这些文件按时间合成，有两种办法</p>
+<p>一种是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo mergetime 1979.nc 1980.nc 1981.nc ..... 2017.nc 1979-2017.nc</span><br></pre></td></tr></table></figure>
+
+<p>…部分是需要完整填写的。</p>
+<p>这样就很麻烦，可以用*代替：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo mergetime *.nc 1979-2017.nc</span><br></pre></td></tr></table></figure>
+
+<p>前提是该文件夹下仅有这些以.nc结尾的文件。</p>
+<h2 id="四、常用命令"><a href="#四、常用命令" class="headerlink" title="四、常用命令"></a>四、常用命令</h2><h3 id="4-1-对文件操作"><a href="#4-1-对文件操作" class="headerlink" title="4.1 对文件操作"></a>4.1 对文件操作</h3><table>
+<thead>
+<tr>
+<th align="center">命令(Operator)</th>
+<th align="center">作用</th>
+<th align="center">用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">cat</td>
+<td align="center">链接数据集</td>
+<td align="center">cdo cat infile1 infile2 infile3 outfile</td>
+</tr>
+<tr>
+<td align="center">mergegrid</td>
+<td align="center">合并从infile2到infile1的所有变量的网格点，并将结果写入outfile。<br/>infile2的水平网格应该更小或等于infile1的网格，且分辨率必须相同。<br/>只有直线网格是支持。<br/>两个输入文件需要具有相同的变量和相同的时间步长。</td>
+<td align="center">cdo mergegrid infile1 infile2 outfile</td>
+</tr>
+<tr>
+<td align="center">merge</td>
+<td align="center">合并数据集</td>
+<td align="center">cdo merge infile1 infile2 infile3 outfile</td>
+</tr>
+<tr>
+<td align="center">mergetime</td>
+<td align="center">按时间合并数据集</td>
+<td align="center">cdo mergetime infile1 infile2 infile3</td>
+</tr>
+<tr>
+<td align="center">splitname</td>
+<td align="center">按变量名切片数据集</td>
+<td align="center">cdo <operator> infiles outfile</td>
+</tr>
+<tr>
+<td align="center">splitlevel</td>
+<td align="center">按高度层数切片数据集</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">splithour</td>
+<td align="center">按小时时间数切片数据集</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">splitday</td>
+<td align="center">按日期天切片数据集</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">splitseas</td>
+<td align="center">按季节切片数据集</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">splityear</td>
+<td align="center">按年切片数据集</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">splityearmon</td>
+<td align="center">按年和月切片数据集</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">splitmon</td>
+<td align="center">按月切片数据集</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h3 id="4-2-对文件选取"><a href="#4-2-对文件选取" class="headerlink" title="4.2 对文件选取"></a>4.2 对文件选取</h3><table>
+<thead>
+<tr>
+<th align="center">命令(Operator)</th>
+<th align="center">作用</th>
+<th align="center">用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">select</td>
+<td align="center">选择</td>
+<td align="center">cdo <operator>,parameter infiles outfile</td>
+</tr>
+<tr>
+<td align="center">delete</td>
+<td align="center">删除</td>
+<td align="center">cdo <operator>,parameter infiles outfile</td>
+</tr>
+<tr>
+<td align="center">selparam</td>
+<td align="center">选择变量</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">delparam</td>
+<td align="center">删除变量</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selname</td>
+<td align="center">按变量名选择变量</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">delname</td>
+<td align="center">按变量名删除变量</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">sellevel</td>
+<td align="center">选择指定层数</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">sellevidx</td>
+<td align="center">按索引标号选择层数</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selgrid</td>
+<td align="center">选择格点</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">seltimestep</td>
+<td align="center">选择时间步长</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">seltime</td>
+<td align="center">选择时间</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selhour</td>
+<td align="center">选择小时</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selday</td>
+<td align="center">选择天</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selmonth</td>
+<td align="center">选择月</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selyear</td>
+<td align="center">选择年</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">selseason</td>
+<td align="center">选择季节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">seldate</td>
+<td align="center">选择日期</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">sellonlatbox</td>
+<td align="center">选择经纬度范围</td>
+<td align="center">sellonlatbox,西,东,南,北 infile outfile</td>
+</tr>
+</tbody></table>
+<p>这些的用法均是<operator>,parameter </p>
+<p>parameter有以下选择：</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>格式</th>
+<th>填写规则</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>string</td>
+<td>逗号分隔的变量名列表</td>
+</tr>
+<tr>
+<td>level</td>
+<td>float</td>
+<td>逗号分隔的高度列表</td>
+</tr>
+<tr>
+<td>date</td>
+<td>string</td>
+<td>逗号分隔的日期列表，格式YYYY-MM-DDThh:mm:ss</td>
+</tr>
+<tr>
+<td>startdate</td>
+<td>string</td>
+<td>起始日期，格式YYYY-MM-DDThh:mm:ss</td>
+</tr>
+<tr>
+<td>enddate</td>
+<td>string</td>
+<td>结束日期，格式YYYY-MM-DDThh:mm:ss</td>
+</tr>
+<tr>
+<td>hour</td>
+<td>integer</td>
+<td>逗号分隔的小时</td>
+</tr>
+<tr>
+<td>day</td>
+<td>integer</td>
+<td>逗号分隔的天</td>
+</tr>
+<tr>
+<td>month</td>
+<td>integer</td>
+<td>逗号分隔的月</td>
+</tr>
+<tr>
+<td>season</td>
+<td>srting</td>
+<td>逗号分隔的季节(DJFMAMJJASOND的子字符串)</td>
+</tr>
+<tr>
+<td>year</td>
+<td>integer</td>
+<td>逗号分隔的年</td>
+</tr>
+<tr>
+<td>timestep</td>
+<td>integer</td>
+<td>逗号分隔的时间步长</td>
+</tr>
+</tbody></table>
+<p>比如，删除一个数据文件中所有的2月29号的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo delete,month&#x3D;2,day&#x3D;29  input.nc output.nc</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-3-插值"><a href="#4-3-插值" class="headerlink" title="4.3 插值"></a>4.3 插值</h3><table>
+<thead>
+<tr>
+<th align="center">命令(Operator)</th>
+<th align="center">作用</th>
+<th align="center">用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">remapbil</td>
+<td align="center">线性插值</td>
+<td align="center">cdo remapbil,grid infile outfile</td>
+</tr>
+</tbody></table>
+<p>CDO提供的插值有很多，这里我只简单的介绍一种线性插值，常用于讲粗(细)网格插值到另一种分辨率的细(粗)网格。grid指的是格点的描述名或者描述文件。</p>
+<p>比如从1°×1°的数据，插值到2.5°×2.5°的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cdo remapbil,r144x73  input.nc output.nc</span><br></pre></td></tr></table></figure>
+
+<p>r144x73指的便是经度144点，纬度73点的标准2.5°×2.5°的网格。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/07/cdo/" data-id="cljmaen8n000eaoih7w2nf4by" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Data/" rel="tag">Data</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Other/" rel="tag">Other</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/06/10/ContourDiagram/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            等高线图、填色图
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/06/06/color/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">Python绘图如何自定义或使用NCL中的colormap</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>
