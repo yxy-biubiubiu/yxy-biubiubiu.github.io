@@ -80,6 +80,147 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-3-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/21/f1-3-1-1/">滑动t检验</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/21/f1-3-1-1/" class="article-date">
+  <time datetime="2020-05-21T01:06:12.000Z" itemprop="datePublished">2020-05-21</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">滑动t检验</span></span><br><span class="line"><span class="string">输入：</span></span><br><span class="line"><span class="string">inputdata：输入数据，一维序列</span></span><br><span class="line"><span class="string">step：滑动步长</span></span><br><span class="line"><span class="string">输出：t1：t统计量</span></span><br><span class="line"><span class="string">注：自由度v =2*n-2</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">slide_t</span><span class="params">(inputdata,step)</span>:</span></span><br><span class="line">    inputdata = np.array(inputdata)</span><br><span class="line">    n = inputdata.shape[<span class="number">0</span>]</span><br><span class="line">    t = np.zeros(n)</span><br><span class="line">    t1 = np.empty(n)</span><br><span class="line">    n1 = step    <span class="comment">#n1, n2为滑动步长，需调整</span></span><br><span class="line">    n2 = step</span><br><span class="line">    n11 = <span class="number">1</span> / n1</span><br><span class="line">    n22 = <span class="number">1</span> / n2</span><br><span class="line">    m = np.sqrt(n11 + n22)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range (step, n-step+<span class="number">1</span>):</span><br><span class="line">        x1_mean = np.mean(inputdata[i-step : i])   </span><br><span class="line">        x2_mean = np.mean(inputdata[i : i+step])</span><br><span class="line">        s1 = np.var(inputdata[i-step : i])          </span><br><span class="line">        s2 = np.var(inputdata[i : i+step])</span><br><span class="line">        s = np.sqrt((n1 * s1 + n2 * s2) / (n1 + n2 - <span class="number">2</span>))</span><br><span class="line">        t[i-step] = (x2_mean - x1_mean) / (s * m)</span><br><span class="line">        t1 = np.roll(t , step<span class="number">-1</span>)</span><br><span class="line">        t1[:step]=np.nan  </span><br><span class="line">        t1[n-step+<span class="number">1</span>:]=np.nan             </span><br><span class="line">    <span class="keyword">return</span>  t1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">y = np.array([<span class="number">15.4</span>,<span class="number">14.6</span>,<span class="number">15.8</span>,<span class="number">14.8</span>,<span class="number">15.0</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">15.0</span>,<span class="number">15.2</span>,<span class="number">15.4</span>,</span><br><span class="line">              <span class="number">14.8</span>,<span class="number">15.0</span>,<span class="number">15.1</span>,<span class="number">14.7</span>,<span class="number">16.0</span>,<span class="number">15.7</span>,<span class="number">15.4</span>,<span class="number">14.5</span>,<span class="number">15.1</span>,<span class="number">15.3</span>,</span><br><span class="line">              <span class="number">15.5</span>,<span class="number">15.1</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">14.9</span>,<span class="number">15.5</span>,<span class="number">15.3</span>,<span class="number">15.3</span>,<span class="number">15.4</span>,</span><br><span class="line">              <span class="number">15.7</span>,<span class="number">15.2</span>,<span class="number">15.5</span>,<span class="number">15.5</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">16.0</span>,<span class="number">16.0</span>,<span class="number">16.8</span>,</span><br><span class="line">              <span class="number">16.2</span>,<span class="number">16.2</span>,<span class="number">16.0</span>,<span class="number">15.6</span>,<span class="number">15.9</span>,<span class="number">16.2</span>,<span class="number">16.7</span>,<span class="number">15.8</span>,<span class="number">16.2</span>,<span class="number">15.9</span>,</span><br><span class="line">              <span class="number">15.8</span>,<span class="number">15.5</span>,<span class="number">15.9</span>,<span class="number">16.8</span>,<span class="number">15.5</span>,<span class="number">15.8</span>,<span class="number">15.0</span>,<span class="number">14.9</span>,<span class="number">15.3</span>,<span class="number">16.0</span>,</span><br><span class="line">              <span class="number">16.1</span>,<span class="number">16.5</span>,<span class="number">15.5</span>,<span class="number">15.6</span>,<span class="number">16.1</span>,<span class="number">15.6</span>,<span class="number">16.0</span>,<span class="number">15.4</span>,<span class="number">15.5</span>,<span class="number">15.2</span>,</span><br><span class="line">              <span class="number">15.4</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.8</span>,<span class="number">15.5</span>,<span class="number">16.0</span>,<span class="number">15.2</span>,<span class="number">15.8</span>,<span class="number">16.2</span>,<span class="number">16.2</span>,</span><br><span class="line">              <span class="number">15.2</span>,<span class="number">15.7</span>,<span class="number">16.0</span>,<span class="number">16.0</span>,<span class="number">15.7</span>,<span class="number">15.9</span>,<span class="number">15.7</span>,<span class="number">16.7</span>,<span class="number">15.3</span>,<span class="number">16.1</span>])</span><br><span class="line"></span><br><span class="line">t = slide_t(y,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">f_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.3</span>])</span><br><span class="line">f_ax1.plot(np.arange(<span class="number">1900</span>,<span class="number">1990</span>,<span class="number">1</span>),y,<span class="string">'k'</span>)</span><br><span class="line"></span><br><span class="line">f_ax2 = fig.add_axes([<span class="number">0.6</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.3</span>])</span><br><span class="line">f_ax2.plot(np.arange(<span class="number">1900</span>,<span class="number">1990</span>,<span class="number">1</span>),t,<span class="string">'k'</span>)</span><br><span class="line">f_ax2.set_xlim(<span class="number">1900</span>,<span class="number">1990</span>)</span><br><span class="line">f_ax2.set_ylim(<span class="number">-4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="comment"># 0.01显著性检验</span></span><br><span class="line">f_ax2.axhline(<span class="number">2.9</span>)</span><br><span class="line">f_ax2.axhline(<span class="number">-2.9</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200521090717453.png" alt="image-20200521090717453"></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/21/f1-3-1-1/" data-id="cljmaen94002taoih6a227gnb" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
+          <article id="post-f1-2-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/19/f1-2-1-1/">线性倾向估计(一元线性回归)</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/19/f1-2-1-1/" class="article-date">
+  <time datetime="2020-05-19T13:40:18.000Z" itemprop="datePublished">2020-05-19</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>除1.132节介绍的的线性回归系数可用来计算线性回归外，sklearn库中也有相关的函数用来计算一元线性回归，同时还可以输出回归线，为数据可视化提供了便利。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line">LinearRegression(fit_intercept=<span class="literal">True</span>, normalize=<span class="literal">False</span>, copy_X=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>fit_intercept ：是否计算截距，若数据已中心化，则可以不计算。默认True。</p>
+<p>normalize ：若开启，则对数据进行归一化处理。</p>
+<p>copy_X ：若开启，则复制X，否则对X进行重写覆盖。</p>
+<p>属性：</p>
+<p>coef_ ：线性回归系数</p>
+<p>intercept_ : 截距</p>
+<p>方法：</p>
+<p>fit(x,y) ：建立x,y的回归模型</p>
+<p>predict(x) ：利用回归模型进行预测</p>
+<p>score(x, y[, sample_weight]) ：返回R^2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#建立数据</span></span><br><span class="line">x = np.arange(<span class="number">2000</span>,<span class="number">2011</span>,<span class="number">1</span>).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">y = np.array([<span class="number">3.9</span>, <span class="number">4.4</span>, <span class="number">10.8</span>, <span class="number">10.3</span>, <span class="number">11.2</span>, <span class="number">13.1</span>, <span class="number">14.1</span>,  <span class="number">9.9</span>, <span class="number">13.9</span>, <span class="number">15.1</span>, <span class="number">12.5</span>]).reshape(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">#创建回归模型</span></span><br><span class="line">solver = LinearRegression()</span><br><span class="line"><span class="comment">#对x,y进行回归计算</span></span><br><span class="line">solver.fit(x,y)</span><br><span class="line"><span class="comment">#计算x对应的回归值</span></span><br><span class="line">regressline = solver.predict(x)</span><br><span class="line"><span class="comment">#绘图</span></span><br><span class="line">plt.scatter(x,y)</span><br><span class="line">plt.plot(x, regressline, color=<span class="string">'k'</span>,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200519214110927.png" alt="image-20200519214110927"></p>
+<p>该方法较1.132节相对繁琐，甚至有些小题大做。因为该方法主要用于通过已有数据建立回归模型，对未知数据进行一元回归预测，在机器学习中使用更为广泛，在此处，仅仅体现了较为方便的回归线的绘制。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/19/f1-2-1-1/" data-id="cljmaen900024aoih0d12bzqr" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-f1-2-2-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -676,148 +817,6 @@
                                     </div>
                                     <footer class="article-footer">
                                         <a data-url="http://yoursite.com/2020/05/19/f1-1-2-1/" data-id="cljmaen8z001yaoihcx6m1mou" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-1-1-2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/19/f1-1-1-2/">百分位数</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/19/f1-1-1-2/" class="article-date">
-  <time datetime="2020-05-19T13:30:27.000Z" itemprop="datePublished">2020-05-19</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>将变量从小到大排序，计算相应的累计百分位，某一百分位对应的变量值为该百分位的百分位数(中位数即为50百分位数)。气候研究中计算极端事件的所用阈值法便可通过此函数实现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">np.percentile(a, q, axis=<span class="literal">None</span>, overwrite_input=<span class="literal">False</span>, interpolation=<span class="string">'linear'</span>, keepdims=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-
-<p>a : 输入数据，数组或序列；</p>
-<p>q : [0-100]之间的浮点数，所需计算的分位；</p>
-<p>axis : 指定计算平均的轴；</p>
-<p>overwrite_input : 是否重写覆盖原本数据，默认为False；</p>
-<p>interpolation : 所需分位数位于两个数据点之间时要使用的插值方法。可选：{‘linear’, ‘lower’, ‘higher’, ‘midpoint’, ‘nearest’}，默认’linear’；</p>
-<p>keepdims : 是否保留维度，如果为True，计算后减少的维度将保留1的大小，默认为False。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data = np.array([[<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>]])</span><br><span class="line">print(np.percentile(data, <span class="number">50</span>))</span><br><span class="line">print(np.percentile(data, <span class="number">50</span>, axis=<span class="number">0</span>, interpolation=<span class="string">'lower'</span>))</span><br><span class="line">print(np.percentile(data, <span class="number">50</span>, axis=<span class="number">1</span>))</span><br><span class="line">print(np.percentile(data, <span class="number">50</span>, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4.0</span><br><span class="line">[1 3 3]</span><br><span class="line">[3. 5.]</span><br><span class="line">[[3.]</span><br><span class="line"> [5.]]</span><br></pre></td></tr></table></figure>
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-1-2/" data-id="cljmaen8r001baoihcy7gcjbo" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-1-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/19/f1-1-1-1/">均值</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/19/f1-1-1-1/" class="article-date">
-  <time datetime="2020-05-19T13:19:11.000Z" itemprop="datePublished">2020-05-19</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>均值用来描述某一变量的平均水平。numpy库中提供了直接的函数用来计算变量均值。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">np.mean(a, axis=<span class="literal">None</span>, dtype=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">np.nanmean(a, axis=<span class="literal">None</span>, dtype=<span class="literal">None</span>) <span class="comment">#np.nanmean() 默认略过缺测值进行计算</span></span><br></pre></td></tr></table></figure>
-
-<p>a : 输入数据，数组或序列；</p>
-<p>axis : 指定计算平均的轴，默认为全部数据的平均。如 axis=0;axis=(0,1)等；</p>
-<p>dtype : 指定数据类型，默认为’float64’。</p>
-<p>例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]])</span><br><span class="line">print(np.mean(data))</span><br><span class="line">print(np.mean(data,axis = <span class="number">0</span>))</span><br><span class="line">print(np.mean(data,axis = (<span class="number">0</span>,<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3.5</span><br><span class="line">[2.5 3.5 4.5]</span><br><span class="line">3.5</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data2 = np.array([<span class="number">1</span>,np.nan,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</span><br><span class="line">print(np.mean(data2))</span><br><span class="line">print(np.nanmean(data2))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nan</span><br><span class="line">3.8</span><br></pre></td></tr></table></figure>
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-1-1/" data-id="cljmaen8r0018aoih0uhz0dv0" class="article-share-link">
                                             Share
                                         </a>
                                         

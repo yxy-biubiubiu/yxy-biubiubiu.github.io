@@ -80,6 +80,154 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-5-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/06/01/f1-5-1-1/">经验正交函数分解(EOF)</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/01/f1-5-1-1/" class="article-date">
+  <time datetime="2020-06-01T11:06:08.000Z" itemprop="datePublished">2020-06-01</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>EOF分析在气象分析中十分常见，幸运的是有前辈已经利用Python实现了EOF分析并且发布在<a href="https://github.com/ajdawson/eofs" target="_blank" rel="noopener">github</a>。</p>
+<p>本文将直接介绍该库的安装及使用，关于EOF的原理不做介绍。</p>
+<h4 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge eofs</span><br></pre></td></tr></table></figure>
+
+<h4 id="二、使用介绍"><a href="#二、使用介绍" class="headerlink" title="二、使用介绍"></a>二、使用介绍</h4><p>首先import</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br></pre></td></tr></table></figure>
+
+<p>该库有几个基本函数是必须掌握的，我们一一介绍。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">solver = Eof(x, weights)</span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">3</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">3</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br></pre></td></tr></table></figure>
+
+<p>solver = Eof()建立一个EOF分解器，x为要进行分解的变量，weights为权重，通常指纬度权重</p>
+<p>solver.eofsAsCorrelation，solver.pcs，solver.varianceFraction分别取出空间模态，PC和方差。</p>
+<h4 id="三、示例"><a href="#三、示例" class="headerlink" title="三、示例"></a>三、示例</h4><p>我们以中国夏季降水三类雨型的分解为例，展示EOF分析完整的Python实现。</p>
+<p><img src="/image/image-20200601202548617.png" alt="image-20200601202548617"></p>
+<p>数据下载：<a href="/image/pre.nc">1961-2016夏季降水</a> 以及 <a href="/image/shp.rar">边界shp文件</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.gridliner <span class="keyword">import</span> LONGITUDE_FORMATTER, LATITUDE_FORMATTER</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="keyword">import</span> cartopy.io.shapereader <span class="keyword">as</span> shpreader</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">f = xr.open_dataset(<span class="string">'./pre.nc'</span>)</span><br><span class="line">pre = np.array(f[<span class="string">'pre'</span>])</span><br><span class="line">lat = f[<span class="string">'lat'</span>]</span><br><span class="line">lon = f[<span class="string">'lon'</span>]</span><br><span class="line"><span class="comment">#计算纬度权重</span></span><br><span class="line">lat = np.array(lat)</span><br><span class="line">coslat = np.cos(np.deg2rad(lat))</span><br><span class="line">wgts = np.sqrt(coslat)[..., np.newaxis]</span><br><span class="line"><span class="comment">#创建EOF分解器</span></span><br><span class="line">solver = Eof(summer_mean_tmp, weights=wgts)</span><br><span class="line"><span class="comment">#获取前三个模态，获取对应的PC序列和解释方差</span></span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">3</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">3</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br></pre></td></tr></table></figure>
+
+<p>以下是绘图部分，我们先给出其中不重复的部分，文章最末会给出完整代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置色标颜色，用于绘制PC柱状图</span></span><br><span class="line">color1=[]</span><br><span class="line">color2=[]</span><br><span class="line">color3=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1961</span>,<span class="number">2017</span>):</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'blue'</span>)</span><br><span class="line"><span class="comment">#建立图形以及基本设置</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">115</span>)</span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">70</span>,<span class="number">140</span>,<span class="number">15</span>,<span class="number">55</span>)</span><br><span class="line">lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line"><span class="comment">#绘制第一模态</span></span><br><span class="line">fig_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax1.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax1.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax1.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax1.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax1.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax1.set_title(<span class="string">'(a) EOF1'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax1.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">0</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c1=fig_ax1.contourf(pre_lon,pre_lat, eof[<span class="number">0</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"><span class="comment">#添加南海</span></span><br><span class="line">fig_ax11 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.08</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax11.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax11.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax11.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"><span class="comment">#添加色标</span></span><br><span class="line">cbposition=fig.add_axes([<span class="number">0.13</span>, <span class="number">0.04</span>, <span class="number">0.4</span>, <span class="number">0.015</span>])</span><br><span class="line">fig.colorbar(c1,cax=cbposition,orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%.1f'</span>,)</span><br><span class="line"><span class="comment">#绘制PC</span></span><br><span class="line">fig_ax4 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.808</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax4.set_title(<span class="string">'(b) PC1'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax4.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax4.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax4.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">0</span>],color=color1)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>下面给出完整脚本的代码。看上去很长，但实际上大部分都是重复的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.gridliner <span class="keyword">import</span> LONGITUDE_FORMATTER, LATITUDE_FORMATTER</span><br><span class="line"><span class="keyword">import</span> cartopy.mpl.ticker <span class="keyword">as</span> cticker</span><br><span class="line"><span class="keyword">import</span> cartopy.io.shapereader <span class="keyword">as</span> shpreader</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">from</span> eofs.standard <span class="keyword">import</span> Eof</span><br><span class="line">f = xr.open_dataset(<span class="string">'./pre.nc'</span>)</span><br><span class="line">pre = np.array(f[<span class="string">'pre'</span>])</span><br><span class="line">lat = f[<span class="string">'lat'</span>]</span><br><span class="line">lon = f[<span class="string">'lon'</span>]</span><br><span class="line">lat = np.array(lat)</span><br><span class="line">coslat = np.cos(np.deg2rad(lat))</span><br><span class="line">wgts = np.sqrt(coslat)[..., np.newaxis]</span><br><span class="line">solver = Eof(pre, weights=wgts)</span><br><span class="line">eof = solver.eofsAsCorrelation(neofs=<span class="number">3</span>)</span><br><span class="line">pc = solver.pcs(npcs=<span class="number">3</span>, pcscaling=<span class="number">1</span>)</span><br><span class="line">var = solver.varianceFraction()</span><br><span class="line">color1=[]</span><br><span class="line">color2=[]</span><br><span class="line">color3=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1961</span>,<span class="number">2017</span>):</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">0</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color1.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">1</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color2.append(<span class="string">'blue'</span>)</span><br><span class="line">    <span class="keyword">if</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &gt;=<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'red'</span>)</span><br><span class="line">    <span class="keyword">elif</span> pc[i<span class="number">-1961</span>,<span class="number">2</span>] &lt;<span class="number">0</span>:</span><br><span class="line">        color3.append(<span class="string">'blue'</span>)</span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">115</span>)</span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">70</span>,<span class="number">140</span>,<span class="number">15</span>,<span class="number">55</span>)</span><br><span class="line">lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line"></span><br><span class="line">fig_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax1.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax1.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax1.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax1.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax1.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax1.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax1.set_title(<span class="string">'(a) EOF1'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax1.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">0</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c1=fig_ax1.contourf(pre_lon,pre_lat, eof[<span class="number">0</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"></span><br><span class="line">fig_ax2 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.45</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax2.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax2.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax2.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax2.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax2.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax2.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax2.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax2.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax2.set_title(<span class="string">'(c) EOF2'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax2.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">1</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c2=fig_ax2.contourf(pre_lon,pre_lat, eof[<span class="number">1</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"></span><br><span class="line">fig_ax3 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.5</span>, <span class="number">0.3</span>],projection = proj)</span><br><span class="line">fig_ax3.set_extent([leftlon, rightlon, lowerlat, upperlat], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax3.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">fig_ax3.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">fig_ax3.set_xticks(np.arange(leftlon,rightlon+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax3.set_yticks(np.arange(lowerlat,upperlat+<span class="number">10</span>,<span class="number">10</span>), crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax3.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">fig_ax3.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax3.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line">fig_ax3.set_title(<span class="string">'(e) EOF3'</span>,loc=<span class="string">'left'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">fig_ax3.set_title( <span class="string">'%.2f%%'</span> % (var[<span class="number">2</span>]*<span class="number">100</span>),loc=<span class="string">'right'</span>,fontsize =<span class="number">15</span>)</span><br><span class="line">c3=fig_ax3.contourf(pre_lon,pre_lat, eof[<span class="number">2</span>,:,:], levels=np.arange(<span class="number">-0.9</span>,<span class="number">1.0</span>,<span class="number">0.1</span>), zorder=<span class="number">0</span>, extend = <span class="string">'both'</span>,transform=ccrs.PlateCarree(), cmap=plt.cm.RdBu_r)</span><br><span class="line"></span><br><span class="line">fig_ax11 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.08</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax11.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax11.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax11.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">fig_ax22 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.43</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax22.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax22.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax22.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">fig_ax33 = fig.add_axes([<span class="number">0.525</span>, <span class="number">0.78</span>, <span class="number">0.072</span>, <span class="number">0.15</span>],projection = proj)</span><br><span class="line">fig_ax33.set_extent([<span class="number">105</span>, <span class="number">125</span>, <span class="number">0</span>, <span class="number">25</span>], crs=ccrs.PlateCarree())</span><br><span class="line">fig_ax33.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>))</span><br><span class="line">china = shpreader.Reader(<span class="string">'./bou2_4l.dbf'</span>).geometries()</span><br><span class="line">fig_ax33.add_geometries(china, ccrs.PlateCarree(),facecolor=<span class="string">'none'</span>, edgecolor=<span class="string">'black'</span>,zorder = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">cbposition=fig.add_axes([<span class="number">0.13</span>, <span class="number">0.04</span>, <span class="number">0.4</span>, <span class="number">0.015</span>])</span><br><span class="line">fig.colorbar(c1,cax=cbposition,orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%.1f'</span>,)</span><br><span class="line"></span><br><span class="line">fig_ax4 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.808</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax4.set_title(<span class="string">'(b) PC1'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax4.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax4.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax4.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">0</span>],color=color1)</span><br><span class="line"></span><br><span class="line">fig_ax5 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.458</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax5.set_title(<span class="string">'(d) PC2'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax5.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax5.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax5.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">1</span>],color=color2)</span><br><span class="line"></span><br><span class="line">fig_ax6 = fig.add_axes([<span class="number">0.65</span>, <span class="number">0.108</span>, <span class="number">0.47</span>, <span class="number">0.285</span>])</span><br><span class="line">fig_ax6.set_title(<span class="string">'(f) PC3'</span>,loc=<span class="string">'left'</span>,fontsize = <span class="number">15</span>)</span><br><span class="line">fig_ax6.set_ylim(<span class="number">-2.5</span>,<span class="number">2.5</span>)</span><br><span class="line">fig_ax6.axhline(<span class="number">0</span>,linestyle=<span class="string">"--"</span>)</span><br><span class="line">fig_ax6.bar(np.arange(<span class="number">1961</span>,<span class="number">2017</span>,<span class="number">1</span>),pc[:,<span class="number">2</span>],color=color3)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/01/f1-5-1-1/" data-id="cljmaen950032aoih4kowf75b" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
+          <article id="post-geoplot" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/06/01/geoplot/">利用Cartopy绘制带有地图投影的图形</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/01/geoplot/" class="article-date">
+  <time datetime="2020-06-01T10:38:28.000Z" itemprop="datePublished">2020-06-01</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                    <p>从NCL转向python绘图后，最迷茫的一点恐怕就是地理绘图了，网络上流传了大量的python绘图教程，但是很少是关于地理方面的，包括各类投影坐标系，地理地形，界线shp的绘制等等。这篇文章以Cartopy为主，介绍如何通过Matplotlib结合Cartopy来灵活的绘制带有地图投影的图像。</p>
+                                                        
+                                                            <a class="article-more-link" href="/2020/06/01/geoplot/">
+                                                                Read More...
+                                                            </a>
+                                                            
+                                                                
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/01/geoplot/" data-id="cljmaen93002kaoih7crk9q4z" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cartopy/" rel="tag">Cartopy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-一张图弄懂matplotlib" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -612,147 +760,6 @@
                                     </div>
                                     <footer class="article-footer">
                                         <a data-url="http://yoursite.com/2020/05/21/f1-3-2-1/" data-id="cljmaen92002gaoih76mvg9fe" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-3-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/21/f1-3-1-1/">滑动t检验</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/21/f1-3-1-1/" class="article-date">
-  <time datetime="2020-05-21T01:06:12.000Z" itemprop="datePublished">2020-05-21</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">滑动t检验</span></span><br><span class="line"><span class="string">输入：</span></span><br><span class="line"><span class="string">inputdata：输入数据，一维序列</span></span><br><span class="line"><span class="string">step：滑动步长</span></span><br><span class="line"><span class="string">输出：t1：t统计量</span></span><br><span class="line"><span class="string">注：自由度v =2*n-2</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">slide_t</span><span class="params">(inputdata,step)</span>:</span></span><br><span class="line">    inputdata = np.array(inputdata)</span><br><span class="line">    n = inputdata.shape[<span class="number">0</span>]</span><br><span class="line">    t = np.zeros(n)</span><br><span class="line">    t1 = np.empty(n)</span><br><span class="line">    n1 = step    <span class="comment">#n1, n2为滑动步长，需调整</span></span><br><span class="line">    n2 = step</span><br><span class="line">    n11 = <span class="number">1</span> / n1</span><br><span class="line">    n22 = <span class="number">1</span> / n2</span><br><span class="line">    m = np.sqrt(n11 + n22)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range (step, n-step+<span class="number">1</span>):</span><br><span class="line">        x1_mean = np.mean(inputdata[i-step : i])   </span><br><span class="line">        x2_mean = np.mean(inputdata[i : i+step])</span><br><span class="line">        s1 = np.var(inputdata[i-step : i])          </span><br><span class="line">        s2 = np.var(inputdata[i : i+step])</span><br><span class="line">        s = np.sqrt((n1 * s1 + n2 * s2) / (n1 + n2 - <span class="number">2</span>))</span><br><span class="line">        t[i-step] = (x2_mean - x1_mean) / (s * m)</span><br><span class="line">        t1 = np.roll(t , step<span class="number">-1</span>)</span><br><span class="line">        t1[:step]=np.nan  </span><br><span class="line">        t1[n-step+<span class="number">1</span>:]=np.nan             </span><br><span class="line">    <span class="keyword">return</span>  t1</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">y = np.array([<span class="number">15.4</span>,<span class="number">14.6</span>,<span class="number">15.8</span>,<span class="number">14.8</span>,<span class="number">15.0</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">15.0</span>,<span class="number">15.2</span>,<span class="number">15.4</span>,</span><br><span class="line">              <span class="number">14.8</span>,<span class="number">15.0</span>,<span class="number">15.1</span>,<span class="number">14.7</span>,<span class="number">16.0</span>,<span class="number">15.7</span>,<span class="number">15.4</span>,<span class="number">14.5</span>,<span class="number">15.1</span>,<span class="number">15.3</span>,</span><br><span class="line">              <span class="number">15.5</span>,<span class="number">15.1</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">14.9</span>,<span class="number">15.5</span>,<span class="number">15.3</span>,<span class="number">15.3</span>,<span class="number">15.4</span>,</span><br><span class="line">              <span class="number">15.7</span>,<span class="number">15.2</span>,<span class="number">15.5</span>,<span class="number">15.5</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.1</span>,<span class="number">16.0</span>,<span class="number">16.0</span>,<span class="number">16.8</span>,</span><br><span class="line">              <span class="number">16.2</span>,<span class="number">16.2</span>,<span class="number">16.0</span>,<span class="number">15.6</span>,<span class="number">15.9</span>,<span class="number">16.2</span>,<span class="number">16.7</span>,<span class="number">15.8</span>,<span class="number">16.2</span>,<span class="number">15.9</span>,</span><br><span class="line">              <span class="number">15.8</span>,<span class="number">15.5</span>,<span class="number">15.9</span>,<span class="number">16.8</span>,<span class="number">15.5</span>,<span class="number">15.8</span>,<span class="number">15.0</span>,<span class="number">14.9</span>,<span class="number">15.3</span>,<span class="number">16.0</span>,</span><br><span class="line">              <span class="number">16.1</span>,<span class="number">16.5</span>,<span class="number">15.5</span>,<span class="number">15.6</span>,<span class="number">16.1</span>,<span class="number">15.6</span>,<span class="number">16.0</span>,<span class="number">15.4</span>,<span class="number">15.5</span>,<span class="number">15.2</span>,</span><br><span class="line">              <span class="number">15.4</span>,<span class="number">15.6</span>,<span class="number">15.1</span>,<span class="number">15.8</span>,<span class="number">15.5</span>,<span class="number">16.0</span>,<span class="number">15.2</span>,<span class="number">15.8</span>,<span class="number">16.2</span>,<span class="number">16.2</span>,</span><br><span class="line">              <span class="number">15.2</span>,<span class="number">15.7</span>,<span class="number">16.0</span>,<span class="number">16.0</span>,<span class="number">15.7</span>,<span class="number">15.9</span>,<span class="number">15.7</span>,<span class="number">16.7</span>,<span class="number">15.3</span>,<span class="number">16.1</span>])</span><br><span class="line"></span><br><span class="line">t = slide_t(y,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">15</span>,<span class="number">15</span>))</span><br><span class="line">f_ax1 = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.3</span>])</span><br><span class="line">f_ax1.plot(np.arange(<span class="number">1900</span>,<span class="number">1990</span>,<span class="number">1</span>),y,<span class="string">'k'</span>)</span><br><span class="line"></span><br><span class="line">f_ax2 = fig.add_axes([<span class="number">0.6</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.3</span>])</span><br><span class="line">f_ax2.plot(np.arange(<span class="number">1900</span>,<span class="number">1990</span>,<span class="number">1</span>),t,<span class="string">'k'</span>)</span><br><span class="line">f_ax2.set_xlim(<span class="number">1900</span>,<span class="number">1990</span>)</span><br><span class="line">f_ax2.set_ylim(<span class="number">-4</span>,<span class="number">7</span>)</span><br><span class="line"><span class="comment"># 0.01显著性检验</span></span><br><span class="line">f_ax2.axhline(<span class="number">2.9</span>)</span><br><span class="line">f_ax2.axhline(<span class="number">-2.9</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200521090717453.png" alt="image-20200521090717453"></p>
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/21/f1-3-1-1/" data-id="cljmaen94002taoih6a227gnb" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-2-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/19/f1-2-1-1/">线性倾向估计(一元线性回归)</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/19/f1-2-1-1/" class="article-date">
-  <time datetime="2020-05-19T13:40:18.000Z" itemprop="datePublished">2020-05-19</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>除1.132节介绍的的线性回归系数可用来计算线性回归外，sklearn库中也有相关的函数用来计算一元线性回归，同时还可以输出回归线，为数据可视化提供了便利。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line">LinearRegression(fit_intercept=<span class="literal">True</span>, normalize=<span class="literal">False</span>, copy_X=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<p>参数：</p>
-<p>fit_intercept ：是否计算截距，若数据已中心化，则可以不计算。默认True。</p>
-<p>normalize ：若开启，则对数据进行归一化处理。</p>
-<p>copy_X ：若开启，则复制X，否则对X进行重写覆盖。</p>
-<p>属性：</p>
-<p>coef_ ：线性回归系数</p>
-<p>intercept_ : 截距</p>
-<p>方法：</p>
-<p>fit(x,y) ：建立x,y的回归模型</p>
-<p>predict(x) ：利用回归模型进行预测</p>
-<p>score(x, y[, sample_weight]) ：返回R^2</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#建立数据</span></span><br><span class="line">x = np.arange(<span class="number">2000</span>,<span class="number">2011</span>,<span class="number">1</span>).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">y = np.array([<span class="number">3.9</span>, <span class="number">4.4</span>, <span class="number">10.8</span>, <span class="number">10.3</span>, <span class="number">11.2</span>, <span class="number">13.1</span>, <span class="number">14.1</span>,  <span class="number">9.9</span>, <span class="number">13.9</span>, <span class="number">15.1</span>, <span class="number">12.5</span>]).reshape(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">#创建回归模型</span></span><br><span class="line">solver = LinearRegression()</span><br><span class="line"><span class="comment">#对x,y进行回归计算</span></span><br><span class="line">solver.fit(x,y)</span><br><span class="line"><span class="comment">#计算x对应的回归值</span></span><br><span class="line">regressline = solver.predict(x)</span><br><span class="line"><span class="comment">#绘图</span></span><br><span class="line">plt.scatter(x,y)</span><br><span class="line">plt.plot(x, regressline, color=<span class="string">'k'</span>,linewidth=<span class="number">3</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200519214110927.png" alt="image-20200519214110927"></p>
-<p>该方法较1.132节相对繁琐，甚至有些小题大做。因为该方法主要用于通过已有数据建立回归模型，对未知数据进行一元回归预测，在机器学习中使用更为广泛，在此处，仅仅体现了较为方便的回归线的绘制。</p>
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/19/f1-2-1-1/" data-id="cljmaen900024aoih0d12bzqr" class="article-share-link">
                                             Share
                                         </a>
                                         

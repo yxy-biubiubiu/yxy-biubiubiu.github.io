@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-03-24T14:37:28.774Z</updated>
+  <updated>2023-10-30T02:45:54.565Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,14 +17,57 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>ColorMap的选择和设置</title>
+    <link href="http://yoursite.com/2023/10/30/colormap/"/>
+    <id>http://yoursite.com/2023/10/30/colormap/</id>
+    <published>2023-10-30T01:05:44.000Z</published>
+    <updated>2023-10-30T02:45:54.565Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Matplotlib绘图中颜色映射的选择和设置。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Tool" scheme="http://yoursite.com/categories/Tool/"/>
+    
+    
+    <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+    <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
+    
+  </entry>
+  
+  <entry>
     <title>经度坐标180°与360°的转换</title>
     <link href="http://yoursite.com/2023/03/24/%E7%BB%8F%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/"/>
     <id>http://yoursite.com/2023/03/24/%E7%BB%8F%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/</id>
     <published>2023-03-24T08:05:44.000Z</published>
-    <updated>2023-03-24T14:37:28.774Z</updated>
+    <updated>2023-10-30T01:37:41.749Z</updated>
     
     
-    <summary type="html">&lt;p&gt;经度坐标系从-180°&lt;del&gt;180°转为0°&lt;/del&gt;360°。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;经度坐标系-180°&lt;del&gt;180°和0°&lt;/del&gt;360°的相互转换。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+    <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+    <category term="Matplotlib" scheme="http://yoursite.com/tags/Matplotlib/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>绘制带投影图形的比例缩放问题</title>
+    <link href="http://yoursite.com/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/</id>
+    <published>2023-03-24T02:05:44.000Z</published>
+    <updated>2023-10-30T03:01:55.433Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;经度坐标系-180°&lt;del&gt;180°和0°&lt;/del&gt;360°的相互转换。&lt;/p&gt;
+&lt;p&gt;修改绘制带有地图投影图形时的图片纵横比。&lt;/p&gt;</summary>
     
     
     
@@ -151,11 +194,11 @@
   </entry>
   
   <entry>
-    <title>关于绘图思路法人一点想法</title>
+    <title>关于绘图思路的一点想法</title>
     <link href="http://yoursite.com/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/"/>
     <id>http://yoursite.com/2021/06/15/%E6%B5%85%E8%B0%88%E7%BB%98%E5%9B%BE%E6%80%9D%E8%B7%AF/</id>
     <published>2021-06-15T09:05:44.000Z</published>
-    <updated>2023-03-15T08:11:52.287Z</updated>
+    <updated>2023-10-30T01:40:49.520Z</updated>
     
     
     <summary type="html">&lt;p&gt;有大半年没有打开简书了(愧对各位默默关注我的读者)，得空看了下简书后台的评论，整理了下发现很多新入坑的伙伴的主要问题还是针对绘图和数据处理的（比如很多小伙伴不知道自己要画什么图，或者知道自己要画什么但是不知道怎么把手中的数据变成需要的图），这里就一并合在一起谈谈我对数据处理和绘图思路的理解(主要是思路)，若有不妥还请指正。主要是针对新入门的。&lt;/p&gt;</summary>
@@ -420,54 +463,6 @@
         
     <summary type="html">&lt;p&gt;数据同样利用折线图示例中所使用的AO.txt&lt;/p&gt;
 &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span</summary>
-        
-      
-    
-    
-    
-    <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>单变量柱状图</title>
-    <link href="http://yoursite.com/2020/09/03/bar1/"/>
-    <id>http://yoursite.com/2020/09/03/bar1/</id>
-    <published>2020-09-03T06:33:43.000Z</published>
-    <updated>2020-09-03T06:39:38.888Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;同样使用折线图示例中使用过的数据&lt;/p&gt;
-&lt;p&gt;最基础的柱状图绘制如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span</summary>
-        
-      
-    
-    
-    
-    <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>zhexian4</title>
-    <link href="http://yoursite.com/2020/09/01/zhexian4/"/>
-    <id>http://yoursite.com/2020/09/01/zhexian4/</id>
-    <published>2020-09-01T08:40:16.000Z</published>
-    <updated>2020-09-01T08:47:09.501Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;非等比例坐标轴折线图主要是指将y轴换为对数坐标轴或是其他格式。对于对数坐标轴来说，matplotlib提供了两种格式可供选择，分别是”symlog”以及”log”，就使用感觉而言，个人认为”symlog”更加方便(主要是坐标刻度ticklabels的设置更加方便)。&lt;/p&gt;</summary>
         
       
     

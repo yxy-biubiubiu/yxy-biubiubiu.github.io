@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    绘制带投影图形的比例缩放问题 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-带投影图形的比例问题" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      绘制带投影图形的比例缩放问题
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2023-03-24T02:05:44.000Z" itemprop="datePublished">2023-03-24</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>经度坐标系-180°<del>180°和0°</del>360°的相互转换。</p>
+<p>修改绘制带有地图投影图形时的图片纵横比。</p>
+<a id="more"></a>
+
+<p>通过Cartopy和Matplotlib在绘制带有地图投影时，由于固定的投影和经纬度比例，有可能使得图片纵横比固定（例如在绘制北半球范围时，经度范围过长，纬度范围较短，导致图片扁长）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contour_map</span><span class="params">(fig,img_extent,spec1,spec2)</span>:</span></span><br><span class="line">    fig.set_extent(img_extent, crs=ccrs.PlateCarree())</span><br><span class="line">    fig.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">    fig.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">    fig.set_xticks(np.arange(leftlon,rightlon+spec1,spec1), crs=ccrs.PlateCarree())</span><br><span class="line">    fig.set_yticks(np.arange(lowerlat,upperlat+spec2,spec2), crs=ccrs.PlateCarree())</span><br><span class="line">    lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">    lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line">    fig.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">    fig.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#设置色阶</span></span><br><span class="line">vmin = <span class="number">10</span></span><br><span class="line">vmax = <span class="number">34</span></span><br><span class="line">interval = <span class="number">2</span></span><br><span class="line">boundaries = np.arange(vmin, vmax + interval, interval)</span><br><span class="line">norm = BoundaryNorm(boundaries, plt.get_cmap(<span class="string">'jet'</span>).N, clip=<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#设置投影和范围</span></span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">0</span>,<span class="number">360</span>,<span class="number">0</span>,<span class="number">90</span>)</span><br><span class="line">img_extent = [leftlon, rightlon, lowerlat, upperlat]</span><br><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">150</span>)</span><br><span class="line"><span class="comment">#绘图</span></span><br><span class="line">fig1 = plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">f1_ax1 = fig1.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.4</span>],projection = proj)</span><br><span class="line">contour_map(f1_ax1,img_extent,<span class="number">60</span>,<span class="number">30</span>)</span><br><span class="line">c1 = f1_ax1.pcolormesh(lon,lat,wbgt_mean.mean(<span class="string">'time'</span>),norm=norm, </span><br><span class="line">                       transform=ccrs.PlateCarree(),cmap=cmaps.WhiteBlueGreenYellowRed,zorder=<span class="number">0</span>)</span><br><span class="line">f1_ax1.add_feature(cfeature.OCEAN.with_scale(<span class="string">'50m'</span>),facecolor=<span class="string">'white'</span>,zorder=<span class="number">1</span>) </span><br><span class="line"><span class="comment">#绘制色标</span></span><br><span class="line">cbar1 = fig1.colorbar(c1,cax=fig1.add_axes([<span class="number">0.35</span>, <span class="number">0.05</span>, <span class="number">0.3</span>, <span class="number">0.025</span>]),orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%d'</span>,)</span><br><span class="line">cbar1.set_label(<span class="string">'unit: °C'</span>,fontsize=<span class="number">14</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出图形如下：</p>
+<p><img src="D:%5CBlog%5Csource%5Cimage%5C%E5%9B%BE%E5%BD%A2%E7%BA%B5%E6%A8%AA%E6%AF%941.png" alt=""></p>
+<p>这里调整f1_ax1 = fig1.add_axes([0.1, 0.1, 0.8, 0.4],projection = proj)这句代码中的子图大小参数是不能修改纵横比的。</p>
+<p>可以通过添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f1_ax1.set_aspect(2)</span><br></pre></td></tr></table></figure>
+
+<p>来实现目的：</p>
+<p><img src="D:%5CBlog%5Csource%5Cimage%5C%E5%9B%BE%E5%BD%A2%E7%BA%B5%E6%A8%AA%E6%AF%942.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_aspect(aspect, share=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>该函数的作用是设置轴缩放的纵横比，即 y/x 缩放。</p>
+<p>参数：</p>
+<p>aspect：{‘auto’, ‘equal’} 或 float</p>
+<p>​                ‘auto’：自动填充子图</p>
+<p>​                ‘equal’：与aspect=1相同，即等纵横比</p>
+<p>​                float：y 数据坐标中 1 个单位的显示大小将是 x 数据坐标中 1 个单位的显示大小的 <em>aspect</em> 倍； 例如 对于“aspect=2”，数据坐标                            中的正方形将以两倍宽度的高度进行渲染。</p>
+<p>share：如果为“True”，则将设置应用于所有共享轴。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" data-id="clocbem690001rcihcqoo2026" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2023/03/24/%E7%BB%8F%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            经度坐标180°与360°的转换
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/03/15/%E5%A4%84%E7%90%86%E9%97%B0%E5%B9%B42%E6%9C%8829%E5%8F%B7%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">处理闰年2月29号的两种方法</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>
