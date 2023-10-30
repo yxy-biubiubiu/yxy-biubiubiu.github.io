@@ -2,7 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/</loc>
+    <loc>http://yoursite.com/tools/index.html</loc>
+    
+    <lastmod>2023-10-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2023/10/30/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/</loc>
     
     <lastmod>2023-10-30</lastmod>
     
@@ -12,15 +21,6 @@
   
   <url>
     <loc>http://yoursite.com/2023/10/30/colormap/</loc>
-    
-    <lastmod>2023-10-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tools/index.html</loc>
     
     <lastmod>2023-10-30</lastmod>
     

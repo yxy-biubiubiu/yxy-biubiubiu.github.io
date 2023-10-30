@@ -68,8 +68,8 @@
 
                 
                     <div class="article-meta">
-                        <a href="/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2023-03-24T02:05:44.000Z" itemprop="datePublished">2023-03-24</time>
+                        <a href="/2023/10/30/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2023-10-30T02:05:44.000Z" itemprop="datePublished">2023-10-30</time>
 </a>
                             
   <div class="article-category">
@@ -102,13 +102,13 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">contour_map</span><span class="params">(fig,img_extent,spec1,spec2)</span>:</span></span><br><span class="line">    fig.set_extent(img_extent, crs=ccrs.PlateCarree())</span><br><span class="line">    fig.add_feature(cfeature.COASTLINE.with_scale(<span class="string">'50m'</span>)) </span><br><span class="line">    fig.add_feature(cfeature.LAKES, alpha=<span class="number">0.5</span>)</span><br><span class="line">    fig.set_xticks(np.arange(leftlon,rightlon+spec1,spec1), crs=ccrs.PlateCarree())</span><br><span class="line">    fig.set_yticks(np.arange(lowerlat,upperlat+spec2,spec2), crs=ccrs.PlateCarree())</span><br><span class="line">    lon_formatter = cticker.LongitudeFormatter()</span><br><span class="line">    lat_formatter = cticker.LatitudeFormatter()</span><br><span class="line">    fig.xaxis.set_major_formatter(lon_formatter)</span><br><span class="line">    fig.yaxis.set_major_formatter(lat_formatter)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#设置色阶</span></span><br><span class="line">vmin = <span class="number">10</span></span><br><span class="line">vmax = <span class="number">34</span></span><br><span class="line">interval = <span class="number">2</span></span><br><span class="line">boundaries = np.arange(vmin, vmax + interval, interval)</span><br><span class="line">norm = BoundaryNorm(boundaries, plt.get_cmap(<span class="string">'jet'</span>).N, clip=<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#设置投影和范围</span></span><br><span class="line">leftlon, rightlon, lowerlat, upperlat = (<span class="number">0</span>,<span class="number">360</span>,<span class="number">0</span>,<span class="number">90</span>)</span><br><span class="line">img_extent = [leftlon, rightlon, lowerlat, upperlat]</span><br><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">150</span>)</span><br><span class="line"><span class="comment">#绘图</span></span><br><span class="line">fig1 = plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">f1_ax1 = fig1.add_axes([<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.4</span>],projection = proj)</span><br><span class="line">contour_map(f1_ax1,img_extent,<span class="number">60</span>,<span class="number">30</span>)</span><br><span class="line">c1 = f1_ax1.pcolormesh(lon,lat,wbgt_mean.mean(<span class="string">'time'</span>),norm=norm, </span><br><span class="line">                       transform=ccrs.PlateCarree(),cmap=cmaps.WhiteBlueGreenYellowRed,zorder=<span class="number">0</span>)</span><br><span class="line">f1_ax1.add_feature(cfeature.OCEAN.with_scale(<span class="string">'50m'</span>),facecolor=<span class="string">'white'</span>,zorder=<span class="number">1</span>) </span><br><span class="line"><span class="comment">#绘制色标</span></span><br><span class="line">cbar1 = fig1.colorbar(c1,cax=fig1.add_axes([<span class="number">0.35</span>, <span class="number">0.05</span>, <span class="number">0.3</span>, <span class="number">0.025</span>]),orientation=<span class="string">'horizontal'</span>,format=<span class="string">'%d'</span>,)</span><br><span class="line">cbar1.set_label(<span class="string">'unit: °C'</span>,fontsize=<span class="number">14</span>)</span><br></pre></td></tr></table></figure>
 
 <p>输出图形如下：</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5C%E5%9B%BE%E5%BD%A2%E7%BA%B5%E6%A8%AA%E6%AF%941.png" alt=""></p>
+<p><img src="/image/%E5%9B%BE%E5%BD%A2%E7%BA%B5%E6%A8%AA%E6%AF%941.png" alt=""></p>
 <p>这里调整f1_ax1 = fig1.add_axes([0.1, 0.1, 0.8, 0.4],projection = proj)这句代码中的子图大小参数是不能修改纵横比的。</p>
 <p>可以通过添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f1_ax1.set_aspect(2)</span><br></pre></td></tr></table></figure>
 
 <p>来实现目的：</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5C%E5%9B%BE%E5%BD%A2%E7%BA%B5%E6%A8%AA%E6%AF%942.png" alt=""></p>
+<p><img src="/image/%E5%9B%BE%E5%BD%A2%E7%BA%B5%E6%A8%AA%E6%AF%942.png" alt=""></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_aspect(aspect, share=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 
 <p>该函数的作用是设置轴缩放的纵横比，即 y/x 缩放。</p>
@@ -122,7 +122,7 @@
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2023/03/24/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" data-id="clocbem690001rcihcqoo2026" class="article-share-link">
+                                        <a data-url="http://yoursite.com/2023/10/30/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" data-id="clocbem690001rcihcqoo2026" class="article-share-link">
                                             Share
                                         </a>
                                         
@@ -136,19 +136,10 @@
         
   <nav class="article-nav">
     
-      <a href="/2023/03/24/%E7%BB%8F%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/" class="article-nav-link">
-        <strong class="article-nav-caption">Newer</strong>
-        <div class="article-nav-title">
-          
-            经度坐标180°与360°的转换
-          
-        </div>
-      </a>
     
-    
-      <a href="/2023/03/15/%E5%A4%84%E7%90%86%E9%97%B0%E5%B9%B42%E6%9C%8829%E5%8F%B7%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95/" class="article-nav-link">
+      <a href="/2023/10/30/colormap/" class="article-nav-link">
         <strong class="article-nav-caption">Older</strong>
-        <div class="article-nav-title">处理闰年2月29号的两种方法</div>
+        <div class="article-nav-title">ColorMap的选择和设置</div>
       </a>
     
   </nav>

@@ -105,17 +105,17 @@
 <p>可以通过”色阶名_r“的方式倒置色阶顺序（该方式也可用于NCL的色阶）。</p>
 <p>主要分为5种类型的色阶：</p>
 <p>1.顺序色阶：同种颜色，逐渐加深。</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor1.png" alt="顺序色阶(Sequential colormap)"></p>
+<p><img src="/image/color1.png" alt="顺序色阶(Sequential colormap)"></p>
 <p>2.发散色阶：中间为白色，向两端加深。</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor2.png" alt="发散色阶(Diverging colormap)"></p>
+<p><img src="/image/color2.png" alt="发散色阶(Diverging colormap)"></p>
 <p>3.循环色阶：以相同的颜色开始和结束。</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor3.png" alt="循环色阶(Cyclic colormap)"></p>
+<p><img src="/image/color3.png" alt="循环色阶(Cyclic colormap)"></p>
 <p>4.固定色阶：颜色固定排列。</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor4.png" alt="固定色阶(Qualitative colormap)"></p>
+<p><img src="/image/color4.png" alt="固定色阶(Qualitative colormap)"></p>
 <p>5.其它。</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor5.png" alt="其它色阶"></p>
+<p><img src="/image/color5.png" alt="其它色阶"></p>
 <p>这里瞬变把Matplotlib中的颜色对应名也一起给出：</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor6.png" alt="颜色对应"></p>
+<p><img src="/image/color6.png" alt="颜色对应"></p>
 <p>参考：<a href="https://matplotlib.org/stable/users/explain/colors/colormaps.html" target="_blank" rel="noopener">https://matplotlib.org/stable/users/explain/colors/colormaps.html</a></p>
 <h3 id="2-NCL原生色阶"><a href="#2-NCL原生色阶" class="headerlink" title="2. NCL原生色阶"></a>2. NCL原生色阶</h3><p>NCL包含了丰富的色阶模版，这里推荐通过安装cmaps库来调用(<a href="https://github.com/hhuangwx/cmaps)：" target="_blank" rel="noopener">https://github.com/hhuangwx/cmaps)：</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge cmaps</span><br></pre></td></tr></table></figure>
@@ -140,38 +140,38 @@
 </li>
 </ol>
 <p>这里我将NCL官网图库中的色阶列在下边（按类型）：</p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor7.png" alt="Rainbow color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor8.png" alt="Small rainbow color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor9.png" alt="Earth/Ocean color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor10.png" alt="Oceanography color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor11.png" alt="Aid in color blindness color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor12.png" alt="[MeteoSwiss](http://www.meteoswiss.ch/) color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor13.png" alt="Blue/Red color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor14.png" alt="Blue/Green color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor15.png" alt="Red/Orange color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor16.png" alt="Red/Green color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor17.png" alt="Green/Yellow color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor18.png" alt="Red/Purple color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor19.png" alt="Blue/Purple color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor20.png" alt="Green/Purple color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor21.png" alt="Brown/Copper color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor22.png" alt="Blue/Yellow/Red color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor23.png" alt="Blue color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor24.png" alt="Purple color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor25.png" alt="Green color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor26.png" alt="Gray color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor27.png" alt="Banded color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor28.png" alt="Faded color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor29.png" alt="Circular color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor30.png" alt="Miscellaneous color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor31.png" alt="Vegetation color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor32.png" alt="White-in-the-middle color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor33.png" alt="Starts-with-white color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor34.png" alt="GMT color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor35.png" alt="[GrADS](http://www.iges.org/grads/) color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor36.png" alt="Ncview color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor37.png" alt="SVG color tables"></p>
-<p><img src="D:%5CBlog%5Csource%5Cimage%5Ccolor38.png" alt="ColorBrewer color tables"></p>
+<p><img src="/image/color7.png" alt="Rainbow color tables"></p>
+<p><img src="/image/color8.png" alt="Small rainbow color tables"></p>
+<p><img src="/image/color9.png" alt="Earth/Ocean color tables"></p>
+<p><img src="/image/color10.png" alt="Oceanography color tables"></p>
+<p><img src="/image/color11.png" alt="Aid in color blindness color tables"></p>
+<p><img src="/image/color12.png" alt="MeteoSwiss color tables"></p>
+<p><img src="/image/color13.png" alt="Blue/Red color tables"></p>
+<p><img src="/image/color14.png" alt="Blue/Green color tables"></p>
+<p><img src="/image/color15.png" alt="Red/Orange color tables"></p>
+<p><img src="/image/color16.png" alt="Red/Green color tables"></p>
+<p><img src="/image/color17.png" alt="Green/Yellow color tables"></p>
+<p><img src="/image/color18.png" alt="Red/Purple color tables"></p>
+<p><img src="/image/color19.png" alt="Blue/Purple color tables"></p>
+<p><img src="/image/color20.png" alt="Green/Purple color tables"></p>
+<p><img src="/image/color21.png" alt="Brown/Copper color tables"></p>
+<p><img src="/image/color22.png" alt="Blue/Yellow/Red color tables"></p>
+<p><img src="/image/color23.png" alt="Blue color tables"></p>
+<p><img src="/image/color24.png" alt="Purple color tables"></p>
+<p><img src="/image/color25.png" alt="Green color tables"></p>
+<p><img src="/image/color26.png" alt="Gray color tables"></p>
+<p><img src="/image/color27.png" alt="Banded color tables"></p>
+<p><img src="/image/color28.png" alt="Faded color tables"></p>
+<p><img src="/image/color29.png" alt="Circular color tables"></p>
+<p><img src="/image/color30.png" alt="Miscellaneous color tables"></p>
+<p><img src="/image/color31.png" alt="Vegetation color tables"></p>
+<p><img src="/image/color32.png" alt="White-in-the-middle color tables"></p>
+<p><img src="/image/color33.png" alt="Starts-with-white color tables"></p>
+<p><img src="/image/color34.png" alt="GMT color tables"></p>
+<p><img src="/image/color35.png" alt="GrADS color tables"></p>
+<p><img src="/image/color36.png" alt="Ncview color tables"></p>
+<p><img src="/image/color37.png" alt="SVG color tables"></p>
+<p><img src="/image/color38.png" alt="ColorBrewer color tables"></p>
 <h3 id="3-自定义颜色"><a href="#3-自定义颜色" class="headerlink" title="3. 自定义颜色"></a>3. 自定义颜色</h3><p>这里推荐几个自定义颜色配色方案网站：</p>
 <ol>
 <li>Colors: <a href="https://coolors.co/palettes/trending" target="_blank" rel="noopener">https://coolors.co/palettes/trending</a></li>
@@ -196,6 +196,15 @@
     
         
   <nav class="article-nav">
+    
+      <a href="/2023/10/30/%E5%B8%A6%E6%8A%95%E5%BD%B1%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%AF%94%E4%BE%8B%E9%97%AE%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            绘制带投影图形的比例缩放问题
+          
+        </div>
+      </a>
     
     
       <a href="/2023/03/24/%E7%BB%8F%E5%BA%A6%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2/" class="article-nav-link">
