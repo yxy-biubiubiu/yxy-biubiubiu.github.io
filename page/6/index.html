@@ -80,6 +80,72 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-1-2-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/19/f1-1-2-1/">距平</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/19/f1-1-2-1/" class="article-date">
+  <time datetime="2020-05-19T13:31:35.000Z" itemprop="datePublished">2020-05-19</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>距平表示变量偏离平均水平的量。numpy中并没有直接的函数可以计算某变量的距平，然而我们可以通过对均值函数的灵活运用加以实现。除此以外，scipy库中的去趋势函数也可以计算数据的距平，具体将在去趋势一节中介绍。</p>
+<p>将以下内容复制进A.py文件，与使用脚本放在同一文件夹内，通过import A 调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">function ：anomaly(x,a)</span></span><br><span class="line"><span class="string">计算序列，数组距平。 </span></span><br><span class="line"><span class="string">对x的a轴求距平。</span></span><br><span class="line"><span class="string">x为序列或数组，</span></span><br><span class="line"><span class="string">a为int；如1或(0,1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">anomaly</span><span class="params">(x,a)</span>:</span></span><br><span class="line">    y = x - x.mean(axis=(a))</span><br><span class="line">    <span class="keyword">return</span> y</span><br></pre></td></tr></table></figure>
+
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data = np.array([[<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>]])</span><br><span class="line">print(anomaly(data,<span class="number">0</span>))</span><br><span class="line">print(anomaly(data,(<span class="number">0</span>,<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[-3.  -1.   1.5]</span><br><span class="line"> [ 3.   1.  -1.5]]</span><br><span class="line">[[-3.16666667 -1.16666667  1.83333333]</span><br><span class="line"> [ 2.83333333  0.83333333 -1.16666667]]</span><br></pre></td></tr></table></figure>
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-2-1/" data-id="cljmaen8z001yaoihcx6m1mou" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-f1-1-1-2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
