@@ -1,3 +1,4 @@
+http://yoursite.com/2023/12/07/Xarray/
 http://yoursite.com/2020/05/23/cdopython/
 http://yoursite.com/about/index.html
 http://yoursite.com/tools/index.html
@@ -75,6 +76,7 @@ http://yoursite.com/tags/Method/
 http://yoursite.com/tags/Statistical/
 http://yoursite.com/tags/Linux/
 http://yoursite.com/tags/Shell/
+http://yoursite.com/tags/Xarray/
 http://yoursite.com/categories/Plot/
 http://yoursite.com/categories/Paper/
 http://yoursite.com/categories/Other/

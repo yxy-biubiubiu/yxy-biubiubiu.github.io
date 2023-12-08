@@ -80,6 +80,72 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-wsl-and-jupyternotebook" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/21/wsl-and-jupyternotebook/">Windows10下的Linux子系统启用及JupyterNotebook入门</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/21/wsl-and-jupyternotebook/" class="article-date">
+  <time datetime="2020-05-21T13:48:03.000Z" itemprop="datePublished">2020-05-21</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                    <p>介绍Windows10系统如何启用Linux子系统，以及安装conda、python(各种库)，并介绍一个非常好用非常推荐的脚本编辑运行应用——JupyterNotebook。</p>
+                                                        
+                                                            <a class="article-more-link" href="/2020/05/21/wsl-and-jupyternotebook/">
+                                                                Read More...
+                                                            </a>
+                                                            
+                                                                
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/21/wsl-and-jupyternotebook/" data-id="cljmaen97003maoih702w2os2" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-f1-3-2-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -742,79 +808,6 @@
                                     </div>
                                     <footer class="article-footer">
                                         <a data-url="http://yoursite.com/2020/05/19/f1-1-3-1/" data-id="cljmaen91002aaoih2gyra1z2" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-1-2-2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/19/f1-1-2-2/">标准差与方差</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/19/f1-1-2-2/" class="article-date">
-  <time datetime="2020-05-19T13:32:39.000Z" itemprop="datePublished">2020-05-19</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>标准差：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">np.std(a, axis=<span class="literal">None</span>, dtype=<span class="literal">None</span>, ddof=<span class="number">0</span>, keepdims= Fales)</span><br></pre></td></tr></table></figure>
-
-<p>方差：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.std()**<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<p>a : 输入数据，数组或序列；</p>
-<p>axis : 指定计算平均的轴；</p>
-<p>dtype : 指定数据类型，默认为’float64’；</p>
-<p>ddof : 表示自由度。计算中使用的除数是N - ddof，N为元素个数，默认ddfo为0；</p>
-<p>keepdims : 是否保留维度，如果为True，计算后减少的维度将保留1的大小，默认为False。</p>
-<p>例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">data = np.array([<span class="number">1</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>])</span><br><span class="line">print(np.std(data,<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.034425935955617</span><br></pre></td></tr></table></figure>
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-2-2/" data-id="cljmaen8r001faoihe0seblq1" class="article-share-link">
                                             Share
                                         </a>
                                         

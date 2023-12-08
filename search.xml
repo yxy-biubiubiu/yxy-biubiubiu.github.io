@@ -2395,4 +2395,92 @@
         <tag>Matplotlib</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Xarray一库通关气象编程（持续更新中）</title>
+    <url>/2023/12/07/Xarray/</url>
+    <content><![CDATA[<p>Xarray库提供了包括数据读写、运算和绘图在内的诸多功能，非常方便灵活，下面会尽可能详细的展示Xarray库的强大美丽，一库通关气象编程。</p>
+<a id="more"></a>
+
+<h1 id="1、必须知道的基础术语"><a href="#1、必须知道的基础术语" class="headerlink" title="1、必须知道的基础术语"></a>1、必须知道的基础术语</h1><ol>
+<li><strong>DataArray （数据数组）</strong>： 区别于numpy库中的ndarray，DataArray是具有维度标签信息或其他额外信息的数组，而ndarray仅包含数据。</li>
+<li><strong>Dataset (数据集)</strong>：可以理解为一个或多个DataArray组成的集合。例如一个.nc文件读进来以后就是一个Dataset。</li>
+<li><strong>Variable (变量)</strong>：每个DataArray 都包含一个变量。</li>
+<li><strong>Dimension (维度)</strong>：对于一个气象要素场来说，例如时间，纬度，经度就是这个数据数组的维度。</li>
+<li><strong>Coordinate  (坐标)</strong>：例如在经度维度中，那些经度格点就是它的坐标。</li>
+</ol>
+<h1 id="2、DataArray和DataSet"><a href="#2、DataArray和DataSet" class="headerlink" title="2、DataArray和DataSet"></a>2、DataArray和DataSet</h1><p>所以对于一个DataArray来说，它的数据结构应该包含了4个关键属性：</p>
+<ol>
+<li><p>values：数据的值，这里就等同于numpy库中的ndarray了；</p>
+</li>
+<li><p>dims：每个轴（维度）的名称；</p>
+</li>
+<li><p>coords：坐标；</p>
+</li>
+<li><p>attrs：其它属性，例如单位等。</p>
+<p>所以我们可以输入这些属性，通过xr.DataArray函数来创建一个DataArray：</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">temperature = np.random.rand(<span class="number">4</span>, <span class="number">3</span>)</span><br><span class="line">city = [<span class="string">"Beijing"</span>, <span class="string">"Shanghai"</span>, <span class="string">"Guangzhou"</span>]</span><br><span class="line">times = pd.date_range(<span class="string">"1979-01-01"</span>, periods=<span class="number">4</span>)</span><br><span class="line">temperature_da1 = xr.DataArray(temperature, coords=[times, city], dims=[<span class="string">"time"</span>, <span class="string">"city"</span>])</span><br></pre></td></tr></table></figure>
+
+<p>输出temperature_da1为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;xarray.DataArray (time: 4, city: 3)&gt;</span><br><span class="line">array([[0.52175765, 0.23541586, 0.82895499],</span><br><span class="line">       [0.75949885, 0.51938664, 0.99386399],</span><br><span class="line">       [0.8609056 , 0.93325225, 0.30514099],</span><br><span class="line">       [0.51485224, 0.59548789, 0.68056358]])</span><br><span class="line">Coordinates:</span><br><span class="line">  * time     (time) datetime64[ns] 1979-01-01 1979-01-02 1979-01-03 1979-01-04</span><br><span class="line">  * city     (city) &lt;U9 &#39;Beijing&#39; &#39;Shanghai&#39; &#39;Guangzhou&#39;</span><br></pre></td></tr></table></figure>
+
+<p>如果想偷懒，可以不指定coords和dims，仅输入temperature来快速实现：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">temperature_da2 = xr.DataArray(temperature)</span><br></pre></td></tr></table></figure>
+
+<p>输出temperature_da2为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;xarray.DataArray (dim_0: <span class="number">4</span>, dim_1: <span class="number">3</span>)&gt;</span><br><span class="line">array([[<span class="number">0.68667675</span>, <span class="number">0.48846151</span>, <span class="number">0.82217817</span>],</span><br><span class="line">       [<span class="number">0.61239246</span>, <span class="number">0.02478648</span>, <span class="number">0.12715034</span>],</span><br><span class="line">       [<span class="number">0.27431044</span>, <span class="number">0.50271205</span>, <span class="number">0.253774</span>  ],</span><br><span class="line">       [<span class="number">0.55916828</span>, <span class="number">0.72812243</span>, <span class="number">0.45839827</span>]])</span><br><span class="line">Dimensions without coordinates: dim_0, dim_1</span><br></pre></td></tr></table></figure>
+
+<p>这时候我们再回顾这些关键属性是是么：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(temperature_da1.values)</span><br><span class="line">print(temperature_da1.dims)</span><br><span class="line">print(temperature_da1.coords)</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[[<span class="number">0.52175765</span> <span class="number">0.23541586</span> <span class="number">0.82895499</span>]</span><br><span class="line"> [<span class="number">0.75949885</span> <span class="number">0.51938664</span> <span class="number">0.99386399</span>]</span><br><span class="line"> [<span class="number">0.8609056</span>  <span class="number">0.93325225</span> <span class="number">0.30514099</span>]</span><br><span class="line"> [<span class="number">0.51485224</span> <span class="number">0.59548789</span> <span class="number">0.68056358</span>]]</span><br><span class="line"></span><br><span class="line">(<span class="string">'time'</span>, <span class="string">'city'</span>)</span><br><span class="line"></span><br><span class="line">Coordinates:</span><br><span class="line">  * time     (time) datetime64[ns] <span class="number">1979</span><span class="number">-01</span><span class="number">-01</span> <span class="number">1979</span><span class="number">-01</span><span class="number">-02</span> <span class="number">1979</span><span class="number">-01</span><span class="number">-03</span> <span class="number">1979</span><span class="number">-01</span><span class="number">-04</span></span><br><span class="line">  * city     (city) &lt;U9 <span class="string">'Beijing'</span> <span class="string">'Shanghai'</span> <span class="string">'Guangzhou'</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们有了DataArray后，便可以轻松的创建Dataset从而来生成.nc文件。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">temperature_ds = xr.Dataset(&#123;<span class="string">'temperature'</span> : temperature_da1&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;xarray.Dataset&gt;</span><br><span class="line">Dimensions:      (time: 4, city: 3)</span><br><span class="line">Coordinates:</span><br><span class="line">  * time         (time) datetime64[ns] 1979-01-01 1979-01-02 ... 1979-01-04</span><br><span class="line">  * city         (city) &lt;U9 &#39;Beijing&#39; &#39;Shanghai&#39; &#39;Guangzhou&#39;</span><br><span class="line">Data variables:</span><br><span class="line">    temperature  (time, city) float64 0.5218 0.2354 0.829 ... 0.5955 0.6806</span><br></pre></td></tr></table></figure>
+
+<p>可以看到先前的DataArray作为一个variable出现在了Dataset里。</p>
+<h1 id="3、索引和筛选数据"><a href="#3、索引和筛选数据" class="headerlink" title="3、索引和筛选数据"></a>3、索引和筛选数据</h1><p>索引实际上是Xarray中最重要的部分之一，精通索引可以通过简单的几个Xarray指令便实现用普通代码很复杂的功能（例如闰年2月29号的处理，如何筛选指定位置数据等等）。</p>
+<h2 id="3-1-位置索引（下标索引）"><a href="#3-1-位置索引（下标索引）" class="headerlink" title="3.1 位置索引（下标索引）"></a>3.1 位置索引（下标索引）</h2><p>使用index来进行索引（我喜欢叫这种索引下标索引，就是用它下标的数字位置来进行索引）的方法与Numpy中是一样的，例如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(temperature_da1[:<span class="number">2</span>])</span><br><span class="line"><span class="comment"># &lt;xarray.DataArray (time: 2, city: 3)&gt;</span></span><br><span class="line"><span class="comment"># array([[0.33777998, 0.23731543, 0.74981315],</span></span><br><span class="line"><span class="comment">#        [0.4033871 , 0.05466693, 0.80505634]])</span></span><br><span class="line"><span class="comment"># Coordinates:</span></span><br><span class="line"><span class="comment">#   * time     (time) datetime64[ns] 1979-01-01 1979-01-02</span></span><br><span class="line"><span class="comment">#   * city     (city) &lt;U9 'Beijing' 'Shanghai' 'Guangzhou'</span></span><br><span class="line"></span><br><span class="line">print(temperature_da1[<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray ()&gt;</span></span><br><span class="line"><span class="comment">#array(0.80505634)</span></span><br><span class="line"><span class="comment">#Coordinates:</span></span><br><span class="line"><span class="comment">#    time     datetime64[ns] 1979-01-02</span></span><br><span class="line"><span class="comment">#    city     &lt;U9 'Guangzhou'</span></span><br><span class="line"></span><br><span class="line">print(temperature_da1[:,[<span class="number">2</span>,<span class="number">1</span>]])</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray (time: 4, city: 2)&gt;</span></span><br><span class="line"><span class="comment">#array([[0.74981315, 0.23731543],</span></span><br><span class="line"><span class="comment">#       [0.80505634, 0.05466693],</span></span><br><span class="line"><span class="comment">#       [0.66774707, 0.28434184],</span></span><br><span class="line"><span class="comment">#       [0.74922789, 0.26928012]])</span></span><br><span class="line"><span class="comment">#Coordinates:</span></span><br><span class="line"><span class="comment">#  * time     (time) datetime64[ns] 1979-01-01 1979-01-02 1979-01-03 1979-01-04</span></span><br><span class="line"><span class="comment">#  * city     (city) &lt;U9 'Guangzhou' 'Shanghai'</span></span><br></pre></td></tr></table></figure>
+
+<p>数据数组的属性在所有索引操作中都会保留。</p>
+<h2 id="3-2-标签索引"><a href="#3-2-标签索引" class="headerlink" title="3.2 标签索引"></a>3.2 标签索引</h2><p>Xarray 还支持基于标签的索引，就像 pandas 一样。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(temperature_da1.loc[<span class="string">'1979-01-02'</span>,<span class="string">'Shanghai'</span>])</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray ()&gt;</span></span><br><span class="line"><span class="comment">#array(0.05466693)</span></span><br><span class="line"><span class="comment">#Coordinates:</span></span><br><span class="line"><span class="comment">#    time     datetime64[ns] 1979-01-02</span></span><br><span class="line"><span class="comment">#    city     &lt;U9 'Shanghai'</span></span><br></pre></td></tr></table></figure>
+
+<p>这种操作会广泛应用于气象编程中，例如索引出某个区域的数据，某个时间断的数据等等，这种索引是十分灵活的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 以一个NCEP数据为例</span><br><span class="line">f_u &#x3D; xr.open_dataset(&#39;uwnd_1948_2022.nc&#39;)</span><br><span class="line">u200 &#x3D; f_u[&#39;uwnd&#39;].loc[f_u.time.dt.month.isin([6,7,8])].loc[&#39;1979-05-01&#39;:&#39;2021-09-30&#39;,200]</span><br></pre></td></tr></table></figure>
+
+<p>这里选出了月份在6,7,8月的200hPa风速数据。还可以更复杂：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">u200 = f_u[<span class="string">'uwnd'</span>].loc[(f_u.time.dt.month.isin([<span class="number">12</span>,<span class="number">1</span>,<span class="number">2</span>]))].loc[<span class="string">'1979-12-01'</span>:<span class="string">'2021-02-28'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这样就选出了1979年到2020年冬季12,1,2月的数据，并且考虑到了冬季数据的跨年问题。</p>
+<p>我先前的博客也有写到用索引方式剔除闰年2月29号的方式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">u200 = f_u[<span class="string">'uwnd'</span>].loc[~((f_u.time.dt.month==<span class="number">2</span>)&amp;(f_u.time.dt.day==<span class="number">29</span>))]</span><br></pre></td></tr></table></figure>
+
+<p>~符号表示非，所以这里是选择了非2月29号的全部数据。</p>
+<p>因此这种索引方式有很高的上限，取决于对基础编程的掌握水平。</p>
+<h2 id="3-3-模糊索引"><a href="#3-3-模糊索引" class="headerlink" title="3.3 模糊索引"></a>3.3 模糊索引</h2><p>如果我们想索引某个坐标点的数据，但是这个坐标在数据中又不存在（也可能是显示问题导致数据的小数位显示不全），比如我们索引300hPa数据，但实际上在数据中为300.1hPa，那么一般索引会报错。因此可以使用模糊索引：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">da = xr.DataArray([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [(<span class="string">"x"</span>, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>])])</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray (x: 3)&gt;</span></span><br><span class="line"><span class="comment">#array([1, 2, 3])</span></span><br><span class="line"><span class="comment">#Coordinates:</span></span><br><span class="line"><span class="comment">#  * x        (x) int64 0 1 2</span></span><br><span class="line"></span><br><span class="line">da.sel(x=[<span class="number">1.1</span>, <span class="number">1.9</span>], method=<span class="string">"nearest"</span>)</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray (x: 2)&gt;</span></span><br><span class="line"><span class="comment">#array([2, 3])</span></span><br><span class="line"><span class="comment">#Coordinates:</span></span><br><span class="line"><span class="comment">#  * x        (x) int64 1 2</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以使用tolerance参数来限制模糊索引的有效距离：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(da.reindex(x=[<span class="number">1.1</span>, <span class="number">1.5</span>], method=<span class="string">"nearest"</span>, tolerance=<span class="number">0.2</span>))</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray (x: 2)&gt;</span></span><br><span class="line"><span class="comment">#array([ 2., nan])</span></span><br><span class="line"><span class="comment">#Coordinates:</span></span><br><span class="line"><span class="comment">#  * x        (x) float64 1.1 1.5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-where方法"><a href="#3-4-where方法" class="headerlink" title="3.4 where方法"></a>3.4 where方法</h2><p>数据数组也可以使用类似np中的where方法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">da = xr.DataArray(np.arange(<span class="number">16</span>).reshape(<span class="number">4</span>, <span class="number">4</span>), dims=[<span class="string">"x"</span>, <span class="string">"y"</span>])</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray (x: 4, y: 4)&gt;</span></span><br><span class="line"><span class="comment">#array([[ 0,  1,  2,  3],</span></span><br><span class="line"><span class="comment">#       [ 4,  5,  6,  7],</span></span><br><span class="line"><span class="comment">#       [ 8,  9, 10, 11],</span></span><br><span class="line"><span class="comment">#       [12, 13, 14, 15]])</span></span><br><span class="line"><span class="comment">#Dimensions without coordinates: x, y</span></span><br><span class="line"></span><br><span class="line">da.where(da&gt;<span class="number">4</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment">#&lt;xarray.DataArray (x: 4, y: 4)&gt;</span></span><br><span class="line"><span class="comment">#array([[ 0,  0,  0,  0],</span></span><br><span class="line"><span class="comment">#       [ 0,  5,  6,  7],</span></span><br><span class="line"><span class="comment">#       [ 8,  9, 10, 11],</span></span><br><span class="line"><span class="comment">#       [12, 13, 14, 15]])</span></span><br><span class="line"><span class="comment">#Dimensions without coordinates: x, y</span></span><br></pre></td></tr></table></figure>
+
+<p>使用这个方法可以进行一些索引替换赋值等等的灵活操作。</p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Xarray</tag>
+      </tags>
+  </entry>
 </search>

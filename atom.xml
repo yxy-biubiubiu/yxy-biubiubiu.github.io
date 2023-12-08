@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-11-23T07:51:02.437Z</updated>
+  <updated>2023-12-08T21:16:31.044Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Xarray一库通关气象编程（持续更新中）</title>
+    <link href="http://yoursite.com/2023/12/07/Xarray/"/>
+    <id>http://yoursite.com/2023/12/07/Xarray/</id>
+    <published>2023-12-07T15:05:44.000Z</published>
+    <updated>2023-12-08T21:16:31.044Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Xarray库提供了包括数据读写、运算和绘图在内的诸多功能，非常方便灵活，下面会尽可能详细的展示Xarray库的强大美丽，一库通关气象编程。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Paper" scheme="http://yoursite.com/categories/Paper/"/>
+    
+    
+    <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+    <category term="Xarray" scheme="http://yoursite.com/tags/Xarray/"/>
+    
+  </entry>
   
   <entry>
     <title>利用bash脚本批量下载数据（并行）</title>
@@ -435,30 +456,6 @@
     <summary type="html">&lt;p&gt;这类图同常用填色区间表示折线的误差(标准差)区间，或是用于鲜明地表现出两条折线的差异。&lt;/p&gt;
 &lt;p&gt;绘制填色区间的关键函数为：&lt;/p&gt;
 &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td</summary>
-        
-      
-    
-    
-    
-    <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>堆叠柱状图</title>
-    <link href="http://yoursite.com/2020/09/03/bar3/"/>
-    <id>http://yoursite.com/2020/09/03/bar3/</id>
-    <published>2020-09-03T06:45:35.000Z</published>
-    <updated>2020-09-03T06:49:35.128Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;(纵向)堆叠柱状图主要是用于横向对比累计分布。绘制方法如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span</summary>
         
       
     
