@@ -1,3 +1,6 @@
+http://yoursite.com/2020/06/10/randomforest/
+http://yoursite.com/1899/11/30/cam/
+http://yoursite.com/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/
 http://yoursite.com/2023/12/07/Xarray/
 http://yoursite.com/2020/05/23/cdopython/
 http://yoursite.com/about/index.html
@@ -14,9 +17,6 @@ http://yoursite.com/2022/11/28/contourf2/
 http://yoursite.com/2020/05/21/f1-3-1-1/
 http://yoursite.com/2020/05/15/method1/
 http://yoursite.com/2022/11/27/f1-5-1-2/
-http://yoursite.com/1899/11/29/cam/
-http://yoursite.com/1899/11/29/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/
-http://yoursite.com/2020/06/10/randomforest/
 http://yoursite.com/tags/index.html
 http://yoursite.com/categories/index.html
 http://yoursite.com/link/index.html
@@ -80,6 +80,5 @@ http://yoursite.com/tags/Xarray/
 http://yoursite.com/categories/Plot/
 http://yoursite.com/categories/Paper/
 http://yoursite.com/categories/Other/
-http://yoursite.com/categories/Private/
 http://yoursite.com/categories/Function/
 http://yoursite.com/categories/Tool/
