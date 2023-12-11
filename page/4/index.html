@@ -80,6 +80,65 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-ContourDiagram" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/06/10/ContourDiagram/">等高线图、填色图</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/06/10/ContourDiagram/" class="article-date">
+  <time datetime="2020-06-10T08:44:05.000Z" itemprop="datePublished">2020-06-10</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Plot/">Plot</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/06/10/ContourDiagram/" data-id="cljmaen8f0000aoihbc399tu9" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-cdo" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -692,90 +751,6 @@
                                         
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
 
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-TaylorDiagram" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/23/TaylorDiagram/">泰勒图</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/23/TaylorDiagram/" class="article-date">
-  <time datetime="2020-05-23T07:25:57.000Z" itemprop="datePublished">2020-05-23</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Plot/">Plot</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>泰勒图绘制的核心思想是设计一个只有第一象限的极坐标，并将方差，相关系数进行捆绑，通过转化为极坐标系坐标进行绘制。为了实现泰勒图的绘制，设计了两个函数：</p>
-<p>set_tayloraxes(fig, location=111) 和plot_taylor(axes, refsample, sample, <em>args, *</em>kwargs)</p>
-<p>set_tayloraxes()函数用于建立一个泰勒图的坐标系，这个自定义函数一般情况下不建议修改，每一个参数都是经过多次调试得到的，很可能牵一发动全身。因此，将绘图部分的独立成为了plot_taylor函数()，这部分函数较为简单，目的就是将需要绘图的数据，转换为极坐标系坐标，通过plot函数将散点打在泰勒图上，这个函数模块较为简单，可以根据自己的输入数据情况进行调整。</p>
-<p>下面直接给出两个函数的完整代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib.projections <span class="keyword">import</span> PolarAxes</span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.axisartist <span class="keyword">import</span> floating_axes</span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.axisartist <span class="keyword">import</span> grid_finder</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_tayloraxes</span><span class="params">(fig, location=<span class="number">111</span>)</span>:</span></span><br><span class="line">    trans = PolarAxes.PolarTransform()</span><br><span class="line">    r1_locs = np.hstack((np.arange(<span class="number">1</span>,<span class="number">10</span>)/<span class="number">10.0</span>,[<span class="number">0.95</span>,<span class="number">0.99</span>]))</span><br><span class="line">    t1_locs = np.arccos(r1_locs)        </span><br><span class="line">    gl1 = grid_finder.FixedLocator(t1_locs)    </span><br><span class="line">    tf1 = grid_finder.DictFormatter(dict(zip(t1_locs, map(str,r1_locs))))</span><br><span class="line">    r2_locs = np.arange(<span class="number">0</span>,<span class="number">2</span>,<span class="number">0.25</span>)</span><br><span class="line">    r2_labels = [<span class="string">'0 '</span>, <span class="string">'0.25 '</span>, <span class="string">'0.50 '</span>, <span class="string">'0.75 '</span>, <span class="string">'REF '</span>, <span class="string">'1.25 '</span>, <span class="string">'1.50 '</span>, <span class="string">'1.75 '</span>]</span><br><span class="line">    gl2 = grid_finder.FixedLocator(r2_locs)</span><br><span class="line">    tf2 = grid_finder.DictFormatter(dict(zip(r2_locs, map(str,r2_labels))))</span><br><span class="line">    ghelper = floating_axes.GridHelperCurveLinear(trans,extremes=(<span class="number">0</span>,np.pi/<span class="number">2</span>,<span class="number">0</span>,<span class="number">1.75</span>),</span><br><span class="line">                                                  grid_locator1=gl1,tick_formatter1=tf1,</span><br><span class="line">                                                  grid_locator2=gl2,tick_formatter2=tf2)</span><br><span class="line">    ax = floating_axes.FloatingSubplot(fig, location, grid_helper=ghelper)</span><br><span class="line">    fig.add_subplot(ax)</span><br><span class="line">    ax.axis[<span class="string">"top"</span>].set_axis_direction(<span class="string">"bottom"</span>)  </span><br><span class="line">    ax.axis[<span class="string">"top"</span>].toggle(ticklabels=<span class="literal">True</span>, label=<span class="literal">True</span>)</span><br><span class="line">    ax.axis[<span class="string">"top"</span>].major_ticklabels.set_axis_direction(<span class="string">"top"</span>)</span><br><span class="line">    ax.axis[<span class="string">"top"</span>].label.set_axis_direction(<span class="string">"top"</span>)</span><br><span class="line">    ax.axis[<span class="string">"top"</span>].label.set_text(<span class="string">"Correlation"</span>)</span><br><span class="line">    ax.axis[<span class="string">"left"</span>].set_axis_direction(<span class="string">"bottom"</span>) </span><br><span class="line">    ax.axis[<span class="string">"left"</span>].label.set_text(<span class="string">"Standard deviation"</span>)</span><br><span class="line">    ax.axis[<span class="string">"right"</span>].set_axis_direction(<span class="string">"top"</span>)   </span><br><span class="line">    ax.axis[<span class="string">"right"</span>].toggle(ticklabels=<span class="literal">True</span>)</span><br><span class="line">    ax.axis[<span class="string">"right"</span>].major_ticklabels.set_axis_direction(<span class="string">"left"</span>)</span><br><span class="line">    ax.axis[<span class="string">"bottom"</span>].set_visible(<span class="literal">False</span>)         </span><br><span class="line">    ax.grid()</span><br><span class="line">    polar_ax = ax.get_aux_axes(trans)   </span><br><span class="line">    t = np.linspace(<span class="number">0</span>,np.pi/<span class="number">2</span>)</span><br><span class="line">    r = np.zeros_like(t) + <span class="number">1</span></span><br><span class="line">    polar_ax.plot(t,r,<span class="string">'k--'</span>)</span><br><span class="line">    polar_ax.text(np.pi/<span class="number">2</span>+<span class="number">0.042</span>,<span class="number">1.03</span>, <span class="string">" 1.00"</span>, size=<span class="number">10.5</span>,ha=<span class="string">"right"</span>, va=<span class="string">"top"</span>,</span><br><span class="line">                  bbox=dict(boxstyle=<span class="string">"square"</span>,ec=<span class="string">'w'</span>,fc=<span class="string">'w'</span>))</span><br><span class="line">    <span class="keyword">return</span> polar_ax</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_taylor</span><span class="params">(axes, refsample, sample, *args, **kwargs)</span>:</span></span><br><span class="line">    std = np.std(sample)</span><br><span class="line">    corr = np.corrcoef(refsample, sample) </span><br><span class="line">    theta = np.arccos(corr[<span class="number">0</span>,<span class="number">1</span>])</span><br><span class="line">    t,r = theta,std</span><br><span class="line">    d = axes.plot(t,r, *args, **kwargs) </span><br><span class="line">    <span class="keyword">return</span> d</span><br></pre></td></tr></table></figure>
-
-<p>下面介绍下函数的具体用法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup_axes(fig, rect=<span class="number">111</span>)</span><br></pre></td></tr></table></figure>
-
-<p>输入：</p>
-<p>fig： 需要绘图的figure</p>
-<p>rect：图的位置，如111为1行1列第一个，122为1行2列第2个</p>
-<p>输出：</p>
-<p>polar_ax：泰勒坐标系</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_taylor(axes, refsample, sample, *args, **kwargs)</span><br></pre></td></tr></table></figure>
-
-<p>输入：</p>
-<p>axes : setup_axes返回的泰勒坐标系</p>
-<p>refsample ：参照样本</p>
-<p>sample ：评估样本</p>
-<p><em>args, *</em>kwargs ：plt.plot()函数的相关参数，设置点的颜色，形状等等。</p>
-<p>下面给出示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">0</span>,<span class="number">10</span>*np.pi,<span class="number">100</span>)</span><br><span class="line">data = np.sin(x)                           </span><br><span class="line">m1 = data + <span class="number">0.4</span>*np.random.randn(len(x))    </span><br><span class="line">m2 = <span class="number">0.3</span>*data + <span class="number">0.6</span>*np.random.randn(len(x)) </span><br><span class="line">m3 = np.sin(x-np.pi/<span class="number">10</span>)                    </span><br><span class="line">fig = plt.figure(figsize=(<span class="number">10</span>,<span class="number">4</span>))</span><br><span class="line">ax1 = set_tayloraxes(fig, <span class="number">121</span>)</span><br><span class="line">ax2 = set_tayloraxes(fig, <span class="number">122</span>)</span><br><span class="line">d1 = plot_taylor(ax2,data,m1, <span class="string">'bo'</span>)</span><br><span class="line">d2 = plot_taylor(ax2,data,m2, <span class="string">'ro'</span>)</span><br><span class="line">d3 = plot_taylor(ax2,data,m3, <span class="string">'go'</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200523154901802.png" alt="image-20200523154901802"></p>
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/23/TaylorDiagram/" data-id="cljmaen8k0005aoihdd8i3xoj" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
                                     </footer>
 
     </div>

@@ -68,8 +68,8 @@
 
                 
                     <div class="article-meta">
-                        <a href="/2020/05/23/TaylorDiagram/" class="article-date">
-  <time datetime="2020-05-23T07:25:57.000Z" itemprop="datePublished">2020-05-23</time>
+                        <a href="/2023/12/11/TaylorDiagram/" class="article-date">
+  <time datetime="2023-12-11T14:25:57.000Z" itemprop="datePublished">2023-12-11</time>
 </a>
                             
   <div class="article-category">
@@ -81,6 +81,8 @@
 
                         
                             
+    <div class="tocbot"></div>
+
 
 
 
@@ -94,7 +96,315 @@
                                             
 
                                                 
-                                                                    <p>泰勒图绘制的核心思想是设计一个只有第一象限的极坐标，并将方差，相关系数进行捆绑，通过转化为极坐标系坐标进行绘制。为了实现泰勒图的绘制，设计了两个函数：</p>
+                                                                    <p>​    目前可以用<a href="https://pypi.org/project/SkillMetrics/" target="_blank" rel="noopener">SkillMetrics</a>这个库中的相关函数来快速实现泰勒图的绘制。虽然总体效果还是差强人意，美感比NCL差不少，但好在简便可以快速出图了。</p>
+<p>可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install SkillMetrics</span><br></pre></td></tr></table></figure>
+
+<p>来安装这个库。</p>
+<p>直接上绘图代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> skill_metrics <span class="keyword">as</span> sm </span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 提供数据，SD标准差（也可以是相对标准差），CC相关系数，rmsd均方根误差。 存放顺序分别为（观测，模式1，模式2，模式3...）所以SD和CC的第一个数值是1。</span></span><br><span class="line">sd = np.array([<span class="number">1</span>,<span class="number">0.82</span>,<span class="number">1.12</span>,<span class="number">1.48</span>,<span class="number">0.65</span>,<span class="number">0.8</span>])</span><br><span class="line">cc = np.array([<span class="number">1</span>,<span class="number">0.48</span>,<span class="number">0.36</span>,<span class="number">0.74</span>,<span class="number">0.54</span>,<span class="number">0.61</span>])</span><br><span class="line">rmsd = np.array([<span class="number">0</span>,<span class="number">1.68</span>,<span class="number">1.57</span>,<span class="number">1.92</span>,<span class="number">2.34</span>,<span class="number">2.18</span>])</span><br><span class="line">label=[<span class="string">'obs'</span>,<span class="string">'model_1'</span>,<span class="string">'model_2'</span>,<span class="string">'model_3'</span>,<span class="string">'model_4'</span>,<span class="string">'model_5'</span>]</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">ax = fig.add_axes([<span class="number">0.1</span>, <span class="number">0.6</span>, <span class="number">0.6</span>, <span class="number">0.6</span>])</span><br><span class="line"><span class="comment"># 绘图核心函数</span></span><br><span class="line">sm.taylor_diagram(sd,rmsd,cc,markerLabel = label,markercolor=<span class="string">"k"</span>,markerSize=<span class="number">5</span>,markerLegend = <span class="string">'on'</span>,<span class="comment">#基本参数</span></span><br><span class="line">                  colCOR=<span class="string">"k"</span>,styleCOR=<span class="string">"--"</span>,widthCOR=<span class="number">.4</span>, <span class="comment">#CC相关设置</span></span><br><span class="line">                  colSTD=<span class="string">"k"</span>,widthSTD=<span class="number">.9</span>,styleSTD=<span class="string">"--"</span>,axismax=<span class="number">1.7</span>, <span class="comment">#SD相关设置</span></span><br><span class="line">                  widthRMS=<span class="number">0.5</span>,labelRMS=<span class="string">''</span>,colRMS=<span class="string">'k'</span>, <span class="comment">#RMSD相关设置</span></span><br><span class="line">                  colOBS=<span class="string">"r"</span>,styleOBS=<span class="string">"-"</span>,widthOBS=<span class="number">1</span>,markerObs=<span class="string">""</span>,titleOBS=<span class="string">"Observation"</span>, <span class="comment">#观测值设置</span></span><br><span class="line">                 )</span><br><span class="line"></span><br><span class="line">ax.grid(<span class="literal">False</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>图形输出：</p>
+<p><img src="/image/taylor_diagram.png" alt="image-20200523154901802"></p>
+<p>以下是sm.taylor_diagram函数所支持的参数：</p>
+<h2 id="基础参数"><a href="#基础参数" class="headerlink" title="基础参数"></a>基础参数</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>alpha</td>
+<td>Blending of symbol face color (0.0 transparent through 1.0 opaque) (Default: 1.0)</td>
+</tr>
+<tr>
+<td>axisMax</td>
+<td>Maximum for the radial contours</td>
+</tr>
+<tr>
+<td>colFrame</td>
+<td>Color for the y and x spines</td>
+</tr>
+<tr>
+<td>colorMap</td>
+<td>‘on’ / ‘off’ (default): Switch to map color shading of markers to colormap (“on”) or min to max range of RMSDz values (“off”). Set to same value as option “nonRMSDz”.</td>
+</tr>
+<tr>
+<td>labelWeight</td>
+<td>Weight of the x &amp; y axis labels</td>
+</tr>
+<tr>
+<td>numberPanels</td>
+<td>1 or 2: Panels to display (1 for positive correlations, 2 for positive and negative correlations). Default value depends on correlations (CORs).</td>
+</tr>
+<tr>
+<td>overlay</td>
+<td>‘on’ / ‘off’ (default): Switch to overlay current statistics on Taylor diagram. Only markers will be displayed.</td>
+</tr>
+</tbody></table>
+<h3 id="当ColorMap-‘on’-时："><a href="#当ColorMap-‘on’-时：" class="headerlink" title="当ColorMap = ‘on’ 时："></a>当ColorMap = ‘on’ 时：</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cmap</td>
+<td>Choice of colormap. (Default: ‘jet’)</td>
+</tr>
+<tr>
+<td>cmap_marker</td>
+<td>Marker to use with colormap (Default: ‘d’)</td>
+</tr>
+<tr>
+<td>cmap_vmax</td>
+<td>Maximum range of colormap (Default: None)</td>
+</tr>
+<tr>
+<td>cmap_vmin</td>
+<td>Minimum range of colormap (Default: None)</td>
+</tr>
+</tbody></table>
+<h2 id="Marker-设置"><a href="#Marker-设置" class="headerlink" title="Marker 设置"></a>Marker 设置</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MarkerDisplayed</td>
+<td>‘marker’ (default): Experiments are represented by individual symbols</td>
+</tr>
+<tr>
+<td></td>
+<td>‘colorBar’: Experiments are represented by a color described in a colorbar</td>
+</tr>
+</tbody></table>
+<h3 id="当-MarkerDisplayed-‘marker’"><a href="#当-MarkerDisplayed-‘marker’" class="headerlink" title="当 MarkerDisplayed = ‘marker’"></a>当 MarkerDisplayed = ‘marker’</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>markerColor</td>
+<td>Single color to use for all markers</td>
+</tr>
+<tr>
+<td>markerColors</td>
+<td>Dictionary with up to two colors as keys (‘face’, ‘edge’) to use for all markers when ‘markerlegend’ == ‘off’ or None. If None or ‘markerlegend’ == ‘on’, then uses only the value of ‘markercolor’. (Default: None)</td>
+</tr>
+<tr>
+<td>markerLabel</td>
+<td>Labels for markers</td>
+</tr>
+<tr>
+<td>markerLabelColor</td>
+<td>Marker label color (Default: black)</td>
+</tr>
+<tr>
+<td>markerLayout</td>
+<td>Matrix layout for markers in legend [nrow, ncolumn], e.g. [4,None] for 4 rows and [None,3] for 3 columns. (Default [15, no. markers/15] )</td>
+</tr>
+<tr>
+<td>markerLegend</td>
+<td>‘on’ / ‘off’ (default): Use legend for markers</td>
+</tr>
+<tr>
+<td>markers</td>
+<td>Dictionary providing individual control of the marker label, label color, symbol, size, face color, and edge color (Default: None)</td>
+</tr>
+<tr>
+<td>markerSize</td>
+<td>Marker size (Default: 10)</td>
+</tr>
+<tr>
+<td>markerSymbol</td>
+<td>Marker symbol (Default: ‘o’)</td>
+</tr>
+</tbody></table>
+<h3 id="当MarkerDisplayed-‘colorbar’时："><a href="#当MarkerDisplayed-‘colorbar’时：" class="headerlink" title="当MarkerDisplayed = ‘colorbar’时："></a>当MarkerDisplayed = ‘colorbar’时：</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cmapZData</td>
+<td>Data values to use for color mapping of markers, e.g. RMSD or BIAS (Default empty). Used to make range of values appear beside color bar.</td>
+</tr>
+<tr>
+<td>locationColorBar</td>
+<td>Location for the colorbar, ‘NorthOutside’ or ‘EastOutside’.</td>
+</tr>
+<tr>
+<td>titleColorBar</td>
+<td>Title of the colorbar</td>
+</tr>
+</tbody></table>
+<h2 id="RMSD的相关设置"><a href="#RMSD的相关设置" class="headerlink" title="RMSD的相关设置"></a>RMSD的相关设置</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>colRMS</td>
+<td>RMS grid and tick labels color. (Default: green)</td>
+</tr>
+<tr>
+<td>labelRMS</td>
+<td>RMS axis label (Default: ‘RMSD’)</td>
+</tr>
+<tr>
+<td>rincRMS</td>
+<td>Axis tick increment for RMS values</td>
+</tr>
+<tr>
+<td>rmsLabelFormat</td>
+<td>String format for RMS contour labels, e.g. ‘0:.2f’. (Default ‘0’, format as specified by str function.)</td>
+</tr>
+<tr>
+<td>showlabelsRMS</td>
+<td>‘on’ / ‘off’ (default): Show the RMS tick labels</td>
+</tr>
+<tr>
+<td>styleRMS</td>
+<td>Line style of the RMS grid</td>
+</tr>
+<tr>
+<td>tickRMS</td>
+<td>RMS values to plot gridding circles from observation point</td>
+</tr>
+<tr>
+<td>tickRMSangle</td>
+<td>Angle for RMS tick labels with the observation point. (Default: 135 deg.)</td>
+</tr>
+<tr>
+<td>titleRMS</td>
+<td>‘on’ / ‘off’ (default): Show RMSD axis title</td>
+</tr>
+<tr>
+<td>titleRMSDangle</td>
+<td>Angle at which to display the ‘RMSD’ label for the RMS contours (Default: 160 degrees)</td>
+</tr>
+<tr>
+<td>widthRMS</td>
+<td>Line width of the RMS grid</td>
+</tr>
+</tbody></table>
+<h2 id="标准差的相关设置"><a href="#标准差的相关设置" class="headerlink" title="标准差的相关设置"></a>标准差的相关设置</h2><table>
+<thead>
+<tr>
+<th>colSTD</th>
+<th>STD grid and tick labels color. (Default: black)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>colsSTD</td>
+<td>STD dictionary of grid colors with: ‘grid’, ‘tick_labels’, ‘title’ keys/values. If not provided or None, considers the monotonic ‘colSTD’ argument. (“Default: None”)</td>
+</tr>
+<tr>
+<td>rincSTD</td>
+<td>Axis tick increment for STD values</td>
+</tr>
+<tr>
+<td>showlabelsSTD</td>
+<td>‘on’ / ‘off’ (default): Show the STD tick labels</td>
+</tr>
+<tr>
+<td>styleSTD</td>
+<td>Line style of the STD grid</td>
+</tr>
+<tr>
+<td>tickSTD</td>
+<td>STD values to plot gridding circles from observation point</td>
+</tr>
+<tr>
+<td>titleSTD</td>
+<td>‘on’ / ‘off’ (default): Show STD axis title</td>
+</tr>
+<tr>
+<td>widthSTD</td>
+<td>Line width of the STD grid</td>
+</tr>
+</tbody></table>
+<h2 id="相关系数的相关设置"><a href="#相关系数的相关设置" class="headerlink" title="相关系数的相关设置"></a>相关系数的相关设置</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>colCOR</td>
+<td>CORRELATION grid color. (Default: blue)</td>
+</tr>
+<tr>
+<td>colsCOR</td>
+<td>CORRELATION dictionary of grid colors with: ‘grid’, ‘tick_labels’, ‘title’ keys/values. If not provided or None, considers the monotonic ‘colSTD’ argument. (“Default: None”)</td>
+</tr>
+<tr>
+<td>showlabelsCOR</td>
+<td>‘on’ (default) / ‘off’: Show the CORRELATION tick labels</td>
+</tr>
+<tr>
+<td>styleCOR</td>
+<td>Line style of the CORRELATION grid</td>
+</tr>
+<tr>
+<td>tickCOR[panel]</td>
+<td>Tick values for correlation coefficients for two types of panelsCOR grid values</td>
+</tr>
+<tr>
+<td>titleCOR</td>
+<td>‘on’ / ‘off’ (default): Show CORRELATION axis title</td>
+</tr>
+<tr>
+<td>titleCORshape</td>
+<td>The shape of the label ‘correlation coefficient’. Accepted values are ‘curved’ or ‘linear’. (Default: ‘curved’)</td>
+</tr>
+<tr>
+<td>widthCOR</td>
+<td>Line width of the COR grid</td>
+</tr>
+</tbody></table>
+<h2 id="观测点设置"><a href="#观测点设置" class="headerlink" title="观测点设置"></a>观测点设置</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>colOBS</td>
+<td>Observation STD color. (Default: magenta)</td>
+</tr>
+<tr>
+<td>markerObs</td>
+<td>Marker to use for x-axis indicating observed STD.A choice of ‘None’ will suppress appearance of marker. (Default None)</td>
+</tr>
+<tr>
+<td>styleOBS</td>
+<td>Line style for observation grid line. A choice of empty string (‘’) will suppress appearance of the grid line. (Default: ‘’)</td>
+</tr>
+<tr>
+<td>titleOBS</td>
+<td>Label for observation STD point on axis</td>
+</tr>
+<tr>
+<td>widthOBS</td>
+<td>Line width of the observation STD circle</td>
+</tr>
+</tbody></table>
+<p>—————————————————以下是老版本，不删了留个记忆————————————————————</p>
+<p>泰勒图绘制的核心思想是设计一个只有第一象限的极坐标，并将方差，相关系数进行捆绑，通过转化为极坐标系坐标进行绘制。为了实现泰勒图的绘制，设计了两个函数：</p>
 <p>set_tayloraxes(fig, location=111) 和plot_taylor(axes, refsample, sample, <em>args, *</em>kwargs)</p>
 <p>set_tayloraxes()函数用于建立一个泰勒图的坐标系，这个自定义函数一般情况下不建议修改，每一个参数都是经过多次调试得到的，很可能牵一发动全身。因此，将绘图部分的独立成为了plot_taylor函数()，这部分函数较为简单，目的就是将需要绘图的数据，转换为极坐标系坐标，通过plot函数将散点打在泰勒图上，这个函数模块较为简单，可以根据自己的输入数据情况进行调整。</p>
 <p>下面直接给出两个函数的完整代码：</p>
@@ -123,7 +433,7 @@
                                                                         
                                     </div>
                                     <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/23/TaylorDiagram/" data-id="cljmaen8k0005aoihdd8i3xoj" class="article-share-link">
+                                        <a data-url="http://yoursite.com/2023/12/11/TaylorDiagram/" data-id="cljmaen8k0005aoihdd8i3xoj" class="article-share-link">
                                             Share
                                         </a>
                                         
@@ -135,19 +445,10 @@
         
   <nav class="article-nav">
     
-      <a href="/2020/05/23/plot/" class="article-nav-link">
-        <strong class="article-nav-caption">Newer</strong>
-        <div class="article-nav-title">
-          
-            常用绘图类型
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/05/21/wsl-and-jupyternotebook/" class="article-nav-link">
+      <a href="/2023/12/07/Xarray/" class="article-nav-link">
         <strong class="article-nav-caption">Older</strong>
-        <div class="article-nav-title">Windows10下的Linux子系统启用及JupyterNotebook入门</div>
+        <div class="article-nav-title">Xarray一库通关气象编程（持续更新中）</div>
       </a>
     
   </nav>
