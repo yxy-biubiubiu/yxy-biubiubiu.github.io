@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/05/23/plot/</loc>
+    
+    <lastmod>2023-12-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2023/12/11/TaylorDiagram/</loc>
     
     <lastmod>2023-12-11</lastmod>
@@ -131,15 +140,6 @@
     <loc>http://yoursite.com/2020/05/23/bashfordownload/</loc>
     
     <lastmod>2022-11-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2020/05/23/plot/</loc>
-    
-    <lastmod>2022-11-28</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -589,7 +589,7 @@
 
   <url>
     <loc>http://yoursite.com/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -597,91 +597,91 @@
   
   <url>
     <loc>http://yoursite.com/tags/Model/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Python/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Matplotlib/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Plot/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Other/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Data/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/data/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Cartopy/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Method/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Statistical/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Linux/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Shell/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Xarray/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -690,35 +690,35 @@
   
   <url>
     <loc>http://yoursite.com/categories/Plot/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Paper/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Other/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Function/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Tool/</loc>
-    <lastmod>2023-12-11</lastmod>
+    <lastmod>2023-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
