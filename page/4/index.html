@@ -80,6 +80,71 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-lat-time-lev" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/07/02/lat-time-lev/">经纬度-时间分布图</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/07/02/lat-time-lev/" class="article-date">
+  <time datetime="2020-07-02T07:54:54.000Z" itemprop="datePublished">2020-07-02</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Plot/">Plot</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>气象绘图中，等值线图包含很多种类，其中一种就是以经纬度，和时间或者高度为xy轴的等值线分布图。其与普通等值线图的区别主要体现在xy轴格式不统一上。以纬度-时间分布图为例，分享绘制这类图形的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">f = xr.open_dataset(<span class="string">'./data.nc'</span>)</span><br><span class="line">z = f[<span class="string">'hgt'</span>].loc[<span class="string">'2005-01-01'</span>:<span class="string">'2005-12-01'</span>,<span class="number">500</span>,:,<span class="number">120</span>]</span><br><span class="line">time = z.time</span><br><span class="line">lat = z.lat</span><br><span class="line"><span class="comment">#创建Figure</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">16</span>, <span class="number">13</span>))</span><br><span class="line"><span class="comment">#绘制500hPa位势高度场</span></span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">#绘制等值线</span></span><br><span class="line">q1 = ax1.contour(range(time.shape[<span class="number">0</span>]), lat, z.T)</span><br><span class="line"><span class="comment">#设置y轴为对数轴，并设置相关标签</span></span><br><span class="line">ax1.set_xticks(np.arange(<span class="number">0</span>,<span class="number">12</span>,<span class="number">1</span>))</span><br><span class="line">ax1.set_yticks(np.arange(<span class="number">-90</span>,<span class="number">120</span>,<span class="number">30</span>))</span><br><span class="line">ax1.yaxis.set_major_formatter(cticker.LatitudeFormatter())</span><br><span class="line"><span class="comment">#设置x轴标签</span></span><br><span class="line">ax1.set_xlim(<span class="number">0</span>,<span class="number">11</span>)</span><br><span class="line">ax1.set_xticks(np.arange(<span class="number">0</span>,<span class="number">12</span>,<span class="number">1</span>))</span><br><span class="line">ax1.set_xticklabels(pd.date_range(start=<span class="string">'2005-01'</span>,periods=<span class="number">12</span>,freq=<span class="string">'M'</span>).date )</span><br><span class="line"><span class="comment">#添加图题</span></span><br><span class="line">ax1.set_title(<span class="string">'2005 500hPa Z'</span>,loc=<span class="string">'center'</span>,fontsize=<span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出图形如下：</p>
+<p><img src="/image/image-20200702161610554.png" alt="image-20200702161610554"></p>
+<p>其中z数组代表2005年逐月120°E经线上500hPa位势高度场演变(只做示例，不考虑绘图意义)</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/07/02/lat-time-lev/" data-id="cljmaen94002waoihflnq1d3b" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-randomforest" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -672,76 +737,6 @@
                                     </div>
                                     <footer class="article-footer">
                                         <a data-url="http://yoursite.com/2020/05/23/cdopython/" data-id="cljmaen8o000kaoihe1e7czzn" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
-
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-plot" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/23/plot/">常用绘图类型</a>
-    </h2>
-  
-  
-  <div class="article-topping">
-    <i class="fe fe-umbrella"></i>
-  </div>
-
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/23/plot/" class="article-date">
-  <time datetime="2020-05-23T14:52:08.000Z" itemprop="datePublished">2020-05-23</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Other/">Other</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                    <p>整理了常用的气候统计方法，包括源码及示例。</p>
-                                                        
-                                                            <a class="article-more-link" href="/2020/05/23/plot/">
-                                                                Read More...
-                                                            </a>
-                                                            
-                                                                
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/23/plot/" data-id="cljmaen950035aoihh1tvbpzx" class="article-share-link">
                                             Share
                                         </a>
                                         

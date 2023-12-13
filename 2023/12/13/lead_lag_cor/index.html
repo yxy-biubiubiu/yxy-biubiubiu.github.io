@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    超前滞后相关系数 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-lead_lag_cor" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      超前滞后相关系数
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2023/12/13/lead_lag_cor/" class="article-date">
+  <time datetime="2023-12-13T20:19:11.000Z" itemprop="datePublished">2023-12-13</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>超前滞后相关用于分析两个序列之间的时滞相关性，可以在一定程度上判断两者的因果关系。例如一个序列与另一个序列存在显著的超前相关，那么说明前一个序列对应的要素可能会在显著相关的周期后影响一个序列对应的要素。</p>
+<p>这里我将计算讲个序列的超前滞后相关封装成了现成函数方便大家调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lead_lag_correlation</span><span class="params">(s1, s2, max_shift)</span>:</span></span><br><span class="line">    correlations = np.empty(<span class="number">2</span> * max_shift + <span class="number">1</span>)  </span><br><span class="line">    p_values = np.empty(<span class="number">2</span> * max_shift + <span class="number">1</span>)  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> shift <span class="keyword">in</span> range(-max_shift, max_shift + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> shift &lt; <span class="number">0</span>:</span><br><span class="line">            corr, p_value = pearsonr(s1[:shift], s2[-shift:])</span><br><span class="line">        <span class="keyword">elif</span> shift &gt; <span class="number">0</span>:</span><br><span class="line">            corr, p_value = pearsonr(s1[shift:], s2[:-shift])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            corr, p_value = pearsonr(s1, s2)</span><br><span class="line">        correlations[shift + max_shift] = corr  </span><br><span class="line">        p_values[shift + max_shift] = p_value  </span><br><span class="line">    <span class="keyword">return</span> correlations, p_values</span><br></pre></td></tr></table></figure>
+
+<p>只需要输入S1,S2两个等长序列，以及需要计算的最大超前步长即可。下边是一个示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例调用</span></span><br><span class="line">s1 = np.random.rand(<span class="number">40</span>)</span><br><span class="line">s2 = np.random.rand(<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">max_shift = <span class="number">10</span></span><br><span class="line">correlations, p_values = lead_lag_correlation(s1, s2, max_shift)</span><br><span class="line">print(<span class="string">"超前/滞后相关系数数组："</span>)</span><br><span class="line">print(correlations)</span><br><span class="line">print(<span class="string">"\n对应的 P 值数组："</span>)</span><br><span class="line">print(p_values)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">超前&#x2F;滞后相关系数数组：</span><br><span class="line">[-0.0667701  -0.20196212 -0.19440555 -0.03344729  0.09401154  0.03682201</span><br><span class="line"> -0.08435947 -0.14058007  0.29389157  0.35276157 -0.08771688 -0.43661858</span><br><span class="line"> -0.29126164  0.00451985 -0.04504127 -0.02366273  0.10640454  0.0751925</span><br><span class="line">  0.1293342   0.26239277 -0.1882403 ]</span><br><span class="line"></span><br><span class="line">对应的 P 值数组：</span><br><span class="line">[0.72591345 0.27591415 0.28634049 0.8533993  0.59691207 0.83366645</span><br><span class="line"> 0.62472335 0.40659622 0.07330382 0.02761788 0.59042669 0.00545349</span><br><span class="line"> 0.07603491 0.97881895 0.79421402 0.89267097 0.5492149  0.67749602</span><br><span class="line"> 0.48050658 0.15385903 0.31916923]</span><br></pre></td></tr></table></figure>
+
+<p>可以对其进行一些简单的可视化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">fig, axs = plt.subplots(<span class="number">2</span>, <span class="number">1</span>, figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line"><span class="comment"># 第一个子图：绘制两条序列的原始值</span></span><br><span class="line">axs[<span class="number">0</span>].plot(sequence1, label=<span class="string">'S1'</span>)</span><br><span class="line">axs[<span class="number">0</span>].plot(sequence2, label=<span class="string">'S2'</span>)</span><br><span class="line">axs[<span class="number">0</span>].set_title(<span class="string">'Original Sequences'</span>)</span><br><span class="line">axs[<span class="number">0</span>].legend()</span><br><span class="line"><span class="comment"># 第二个子图：绘制超前/滞后相关系数，并加粗 P 值小于 0.1 的部分</span></span><br><span class="line">shifts = np.arange(-max_shift, max_shift + <span class="number">1</span>) </span><br><span class="line">axs[<span class="number">1</span>].plot(shifts, correlations, label=<span class="string">'Correlation'</span>)</span><br><span class="line">axs[<span class="number">1</span>].set_title(<span class="string">'Lagged Correlation'</span>)</span><br><span class="line"><span class="comment"># 根据 P 值小于 0.1 的部分加粗或是打点</span></span><br><span class="line">threshold = <span class="number">0.5</span></span><br><span class="line">mask = p_values &lt; threshold</span><br><span class="line">axs[<span class="number">1</span>].plot(np.where(mask, shifts, np.nan), np.where(mask, correlations, np.nan), <span class="string">'b'</span>, linewidth=<span class="number">2</span>)  <span class="comment"># 用蓝色加粗表示 P 值小于阈值的部分</span></span><br><span class="line"><span class="comment"># axs[1].scatter(shifts[mask], correlations[mask], color='black', marker='o')  # 使用 scatter 绘制黑色实心圆</span></span><br><span class="line"><span class="comment">#修改轴刻度</span></span><br><span class="line">axs[<span class="number">1</span>].set_xlabel(<span class="string">'Shift'</span>)  </span><br><span class="line">axs[<span class="number">1</span>].set_ylabel(<span class="string">'Correlation'</span>)  </span><br><span class="line">axs[<span class="number">1</span>].set_xticks(shifts)  </span><br><span class="line">axs[<span class="number">1</span>].set_xticklabels(shifts)  </span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>图形输出为：</p>
+<p><img src="/image/lead_lag_cor.png" alt="image-20200528144651404"></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2023/12/13/lead_lag_cor/" data-id="clq48830s0000lkihbdmoenbe" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+    
+      <a href="/2023/12/13/heatmap_plot/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">热图（相关系数矩阵）</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

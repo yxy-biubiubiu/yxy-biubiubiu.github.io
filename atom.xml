@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-12-13T20:06:48.674Z</updated>
+  <updated>2023-12-13T20:30:20.488Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>超前滞后相关系数</title>
+    <link href="http://yoursite.com/2023/12/13/lead_lag_cor/"/>
+    <id>http://yoursite.com/2023/12/13/lead_lag_cor/</id>
+    <published>2023-12-13T20:19:11.000Z</published>
+    <updated>2023-12-13T20:30:20.488Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;超前滞后相关用于分析两个序列之间的时滞相关性，可以在一定程度上判断两者的因果关系。例如一个序列与另一个序列存在显著的超前相关，那么说明前一个序列对应的要素可能会在显著相关的周期后影响一个序列对应的要素。&lt;/p&gt;
+&lt;p&gt;这里我将计算讲个序列的超前滞后相关封装成了现成函数方便大</summary>
+        
+      
+    
+    
+    
+    <category term="Function" scheme="http://yoursite.com/categories/Function/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>热图（相关系数矩阵）</title>
@@ -436,30 +460,6 @@
     <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
     <category term="Plot" scheme="http://yoursite.com/tags/Plot/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>带地图投影的散点图(站点分布图)</title>
-    <link href="http://yoursite.com/2020/09/09/scatter2/"/>
-    <id>http://yoursite.com/2020/09/09/scatter2/</id>
-    <published>2020-09-09T08:32:49.000Z</published>
-    <updated>2020-09-09T10:10:04.528Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;散点图另一种常用的形式往往要结合地图投影来实现，也就是站点数据分布图的绘制。&lt;/p&gt;
-&lt;p&gt;关于地图投影，请见&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
-    
     
   </entry>
   
