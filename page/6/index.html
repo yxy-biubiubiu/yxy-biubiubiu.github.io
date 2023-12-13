@@ -80,6 +80,84 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-1-3-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/19/f1-1-3-1/">皮尔逊相关系数</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/19/f1-1-3-1/" class="article-date">
+  <time datetime="2020-05-19T13:33:49.000Z" itemprop="datePublished">2020-05-19</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line">pearsonr(x,r)</span><br></pre></td></tr></table></figure>
+
+<p>输入：</p>
+<p>x:输入数据1(1维序列)</p>
+<p>y:输入数据2(1维序列)</p>
+<p>返回：</p>
+<p>r：皮尔逊相关系数</p>
+<p>p-value ：双尾P值</p>
+<p>该函数优点在于可以直接输出P值，省去了再次计算置信区间的步骤，缺点在于仅适用于两个一维序列。</p>
+<p>改进： 将以下内容复制进*.py文件，与使用脚本放在同一文件夹内，通过import * 调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">function ：escorc(x,y,opt)</span></span><br><span class="line"><span class="string">计算x与y的相关系数，及其双尾P值。 </span></span><br><span class="line"><span class="string">x必须为一维数组</span></span><br><span class="line"><span class="string">y可以为一维数组或三维数组，若y为一维数组，opt为1，计算两序列相关系数；</span></span><br><span class="line"><span class="string">若y为三维数组，则时间维度必须在最左边，即axis=0，opt =2，计算序列和场的相关关系分布。</span></span><br><span class="line"><span class="string">返回r,t</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line"><span class="keyword">from</span> numba <span class="keyword">import</span> jit</span><br><span class="line"><span class="meta">@jit</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">escorc</span><span class="params">(x,y,opt)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> opt==<span class="number">1</span>:</span><br><span class="line">        r,p = pearsonr(x,y)</span><br><span class="line">    <span class="keyword">elif</span> opt ==<span class="number">2</span>:</span><br><span class="line">        lat = y.shape[<span class="number">1</span>]</span><br><span class="line">        lon = y.shape[<span class="number">2</span>]</span><br><span class="line">        r,p = np.zeros((lat,lon)),np.zeros((lat,lon))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(lat):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(lon):</span><br><span class="line">                r[i,j],p[i,j] = pearsonr(x,y[:,i,j])</span><br><span class="line">    <span class="keyword">return</span> r,p</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> **</span><br><span class="line">r,p = escorc(x,y,opt)</span><br></pre></td></tr></table></figure>
+
+<p>x必须为一维数组</p>
+<p>y可以为一维数组或三维数组，若y为一维数组，opt为1，计算两序列相关系数；</p>
+<p>若y为三维数组，则时间维度必须在最左边，即axis=0，opt =2，计算序列和场的相关关系分布。</p>
+<p>返回相关系数r和双尾p值。</p>
+<p>该自定义函数保留了NCL计算相关系数的函数名escorc()，同时加入了numba提高了循环计算的速度，同时支持两序列以及序列和气候要素场相关系数的计算。缺点是输入数据有格式要求，即时间维必须是最左维，同时y为序列时opt=1，y为三维数组时opt=2。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-3-1/" data-id="cljmaen91002aaoih2gyra1z2" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-f1-1-2-2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -690,72 +768,12 @@
 
 </article>
         
-          <article id="post-groupDELL大型机" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/">DELL大型机使用Jupyter Notebook</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/" class="article-date">
-  <time datetime="1899-11-29T23:00:00.000Z" itemprop="datePublished">1899-11-30</time>
-</a>
-                            
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                    有东西被加密了, 请输入密码查看.
-                                                        
-                                                            <a class="article-more-link" href="/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/">
-                                                                Read More...
-                                                            </a>
-                                                            
-                                                                
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/" data-id="cljmaen93002maoihdbvxabqh" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
     </article>
     
   
     
       <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/5/">prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+        <a class="extend prev" rel="prev" href="/page/5/">prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">next</a>
       </nav>
     
   </section>

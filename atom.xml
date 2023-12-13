@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-12-11T21:43:05.753Z</updated>
+  <updated>2023-12-13T20:06:48.674Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>热图（相关系数矩阵）</title>
+    <link href="http://yoursite.com/2023/12/13/heatmap_plot/"/>
+    <id>http://yoursite.com/2023/12/13/heatmap_plot/</id>
+    <published>2023-12-13T14:25:57.000Z</published>
+    <updated>2023-12-13T20:06:48.674Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;推荐用&lt;a href=&quot;https://seaborn.pydata.org/generated/seaborn.heatmap.html#seaborn.heatmap&quot; target=&quot;_blank&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>泰勒图</title>
@@ -430,30 +453,6 @@
         
     <summary type="html">&lt;p&gt;散点图另一种常用的形式往往要结合地图投影来实现，也就是站点数据分布图的绘制。&lt;/p&gt;
 &lt;p&gt;关于地图投影，请见&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="Plot" scheme="http://yoursite.com/categories/Plot/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>简单散点图</title>
-    <link href="http://yoursite.com/2020/09/09/scatter1/"/>
-    <id>http://yoursite.com/2020/09/09/scatter1/</id>
-    <published>2020-09-09T08:32:44.000Z</published>
-    <updated>2020-09-09T08:46:52.744Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;首先给出一个最基本的散点图示例：&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span</summary>
         
       
     

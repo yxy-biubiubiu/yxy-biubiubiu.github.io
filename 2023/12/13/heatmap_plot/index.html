@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    热图（相关系数矩阵） |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-heatmap_plot" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      热图（相关系数矩阵）
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2023/12/13/heatmap_plot/" class="article-date">
+  <time datetime="2023-12-13T14:25:57.000Z" itemprop="datePublished">2023-12-13</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Plot/">Plot</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>推荐用<a href="https://seaborn.pydata.org/generated/seaborn.heatmap.html#seaborn.heatmap" target="_blank" rel="noopener">seaborn</a>这个库中的函数来快速实现热图的绘制。可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install seaborn</span><br><span class="line">conda install seaborn -c conda-forge</span><br></pre></td></tr></table></figure>
+
+<p>来安装这个库。</p>
+<p>直接上绘图代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 传入N个指数序列</span></span><br><span class="line">index_a = np.random.rand(<span class="number">40</span>)</span><br><span class="line">index_b = np.random.rand(<span class="number">40</span>)</span><br><span class="line">index_c = np.random.rand(<span class="number">40</span>)</span><br><span class="line">index_d = np.random.rand(<span class="number">40</span>)</span><br><span class="line">index_e = np.random.rand(<span class="number">40</span>)</span><br><span class="line"><span class="comment"># 堆叠</span></span><br><span class="line">index_all = np.vstack([index_a,index_b,index_c,index_d,index_e])</span><br><span class="line"><span class="comment">#计算相关系数矩阵</span></span><br><span class="line">correlation_matrix = np.zeros((index_all.shape[<span class="number">0</span>],index_all.shape[<span class="number">0</span>]))</span><br><span class="line">p_value_matrix = np.zeros((index_all.shape[<span class="number">0</span>],index_all.shape[<span class="number">0</span>]))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(index_all.shape[<span class="number">0</span>]):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(index_all.shape[<span class="number">0</span>]):</span><br><span class="line">        correlation_matrix[i, j], p_value_matrix[i, j] = pearsonr(index_all[i], index_all[j])</span><br><span class="line"><span class="comment">#处理P值矩阵为对应的字符串矩阵（过检部分的*号显示）</span></span><br><span class="line">p_value_str = p_value_matrix.astype(str)</span><br><span class="line">p_value_str[p_value_matrix &lt; <span class="number">0.01</span>] = <span class="string">'***'</span></span><br><span class="line">p_value_str[(p_value_matrix &gt;= <span class="number">0.01</span>) &amp; (p_value_matrix &lt; <span class="number">0.05</span>)] = <span class="string">'**'</span></span><br><span class="line">p_value_str[(p_value_matrix &gt;= <span class="number">0.05</span>) &amp; (p_value_matrix &lt; <span class="number">0.1</span>)] = <span class="string">'*'</span></span><br><span class="line">p_value_str[(p_value_matrix &gt;<span class="number">0.1</span>)] = <span class="string">''</span></span><br><span class="line">strings = (np.asarray([<span class="string">"&#123;0:.2f&#125;\n&#123;1&#125;"</span>.format(cor,p_value) <span class="keyword">for</span> cor, p_value <span class="keyword">in</span> zip(correlation_matrix.flatten(), p_value_str.flatten())]))</span><br><span class="line">strings = strings.reshape(correlation_matrix.shape)</span><br><span class="line"><span class="comment">#绘图</span></span><br><span class="line">fig,ax = plt.subplots(figsize=(<span class="number">7</span>,<span class="number">7</span>),facecolor=<span class="string">"w"</span>)</span><br><span class="line">sns.heatmap(correlation_matrix, annot=strings,fmt=<span class="string">''</span>,cmap=plt.cm.coolwarm,vmin=<span class="number">-0.5</span>, vmax=<span class="number">0.5</span>,</span><br><span class="line">            annot_kws=&#123;<span class="string">"size"</span>:<span class="number">15</span>,<span class="string">"fontweight"</span>:<span class="string">"bold"</span>&#125;,linecolor=<span class="string">"k"</span>,linewidths=<span class="number">.2</span>,</span><br><span class="line">            ax=ax)</span><br><span class="line">plt.xticks(ticks=np.arange(<span class="number">0.5</span>, correlation_matrix.shape[<span class="number">0</span>], <span class="number">1</span>), labels=[<span class="string">'Index_a'</span>,<span class="string">'Index_b'</span>,<span class="string">'Index_c'</span>,<span class="string">'Index_d'</span>,<span class="string">'Index_e'</span>],fontsize=<span class="number">12</span>)</span><br><span class="line">plt.yticks(ticks=np.arange(<span class="number">0.5</span>, correlation_matrix.shape[<span class="number">1</span>], <span class="number">1</span>), labels=[<span class="string">'Index_a'</span>,<span class="string">'Index_b'</span>,<span class="string">'Index_c'</span>,<span class="string">'Index_d'</span>,<span class="string">'Index_e'</span>],fontsize=<span class="number">12</span>)</span><br><span class="line">plt.title(<span class="string">'Heatmap'</span>,fontsize=<span class="number">16</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>图形输出：</p>
+<p><img src="/image/heatmap.png" alt="image-20200523154901802"></p>
+<p>以下是sns.heatmap函数所支持的参数：</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><ul>
+<li><strong>data</strong>：二维数据集，可以是 ndarray 数组。如果提供 Pandas DataFrame，则会使用其索引/列信息来标记行和列。</li>
+<li><strong>vmin, vmax</strong>：浮点数，可选。用于锚定颜色映射的值，否则会根据数据和其他关键字参数进行推断。</li>
+<li><strong>cmap</strong>：Matplotlib 的颜色映射名称或对象，或颜色列表，可选。数据值到颜色空间的映射。</li>
+<li><strong>center</strong>：浮点数，可选。用于绘制差异性数据时设置颜色映射的中心值。如果使用此参数，且未指定 cmap，则会更改默认的颜色映射。</li>
+<li><strong>robust</strong>：布尔值，可选。如果为 True，且未指定 vmin 或 vmax，则将使用健壮的分位数计算颜色映射范围，而不是使用极端值。</li>
+<li><strong>annot</strong>：布尔值或二维数据集，可选。如果为 True，则在每个单元格中写入数据值。如果是与数据形状相同的类数组，则使用其来标注热图，而不是使用数据。注意，DataFrame 将根据位置匹配，而不是索引。</li>
+<li><strong>fmt</strong>：字符串，可选。添加注释时要使用的字符串格式化代码。</li>
+<li><strong>annot_kws</strong>：字典，可选。当 annot 为 True 时，用于 matplotlib.axes.Axes.text() 的关键字参数。</li>
+<li><strong>linewidths</strong>：浮点数，可选。单元格之间分隔线的宽度。</li>
+<li><strong>linecolor</strong>：颜色，可选。单元格之间分隔线的颜色。</li>
+<li><strong>cbar</strong>：布尔值，可选。是否绘制颜色条。</li>
+<li><strong>cbar_kws</strong>：字典，可选。用于 matplotlib.figure.Figure.colorbar() 的关键字参数。</li>
+<li><strong>cbar_ax</strong>：Matplotlib Axes 对象，可选。颜色条的绘制位置，否则将从主要 Axes 中获取空间。</li>
+<li><strong>square</strong>：布尔值，可选。如果为 True，则将 Axes 的纵横比设置为“equal”，使每个单元格都成为正方形。</li>
+<li><strong>xticklabels, yticklabels</strong>：字符串“auto”、布尔值、类列表或整数，可选。如果为 True，则绘制数据框的列名。如果为 False，则不绘制列名。如果是类似列表的对象，则将其作为 xticklabels 绘制替代标签。如果是整数，则使用列名，但仅每 n 个标签绘制一次。如果为“auto”，则尝试密集绘制非重叠标签。</li>
+<li><strong>mask</strong>：布尔数组或 DataFrame，可选。如果传递了 mask，则数据在 mask 为 True 的单元格中将不显示。具有缺失值的单元格会自动被屏蔽。</li>
+<li><strong>ax</strong>：Matplotlib Axes 对象，可选。要绘制图表的 Axes，否则使用当前正在使用的 Axes。</li>
+</ul>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2023/12/13/heatmap_plot/" data-id="clq47exli00001wih7coq3p4v" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+    
+      <a href="/2023/12/11/TaylorDiagram/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">泰勒图</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>
