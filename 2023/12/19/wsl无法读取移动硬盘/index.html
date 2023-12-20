@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    目录 |
+    WSL无法读取移动硬盘的解决方案 |
     
     ZSYXY Meteorological workshop</title>
   
@@ -47,142 +47,122 @@
 <body>
 <main class="content">
   <section class="outer">
-    <article class="articles">
-      
-      <h1 class="page-type-title">目录</h1>
-      
-      
-      
+  <article id="post-wsl无法读取移动硬盘" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
         
-        
-          
-          
-      <div class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-          
-          <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/" class="archive-article-date">
-  <time datetime="2020-05-13T01:19:58.000Z" itemprop="datePublished">05/13</time>
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      WSL无法读取移动硬盘的解决方案
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2023/12/19/wsl%E6%97%A0%E6%B3%95%E8%AF%BB%E5%8F%96%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98/" class="article-date">
+  <time datetime="2023-12-19T09:05:44.000Z" itemprop="datePublished">2023-12-19</time>
 </a>
-      
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/">批量下载气象数据(EC;NCEP;CMIP)</a>
-    </h2>
-  
-  
-
-
-
-
-    </header>
-    
-    
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Paper/">Paper</a>
   </div>
-</article>
-          
-        
-        
-          <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  <time datetime="2020-05-12T03:05:44.000Z" itemprop="datePublished">05/12</time>
-</a>
-      
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">从无到有搭建一个属于自己的网站</a>
-    </h2>
-  
-  
+
+                    </div>
+                    
+
+                        
+                            
 
 
 
 
-    </header>
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>解决WSL无法读取移动硬盘的问题。</p>
+<a id="more"></a>
+
+<p>在启动WSL后再插入移动硬盘有可能会出现WSL内无法读取到该存储的问题，可通过重启WSL服务解决，在powershell中运行指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+<p>之后重新打开WSL即可。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2023/12/19/wsl%E6%97%A0%E6%B3%95%E8%AF%BB%E5%8F%96%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98/" data-id="clqe2l2vd0001h0ih2tstauji" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Other/" rel="tag">Other</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
     
-    
-  </div>
-</article>
-          
         
-        
-          
-            </div></div>
-          
-          
-      <div class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/1899" class="archive-year">1899</a>
-        </div>
-        <div class="archives">
-          
-          <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/1899/11/30/cam/" class="archive-article-date">
-  <time datetime="1899-11-29T23:00:00.000Z" itemprop="datePublished">11/30</time>
-</a>
-      
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/1899/11/30/cam/">CAM强迫修改及提交脚本</a>
-    </h2>
-  
-  
-
-
-
-
-    </header>
+  <nav class="article-nav">
     
-    
-  </div>
-</article>
+      <a href="/2023/12/20/SVD/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
           
-        
-        
-          <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/" class="archive-article-date">
-  <time datetime="1899-11-29T23:00:00.000Z" itemprop="datePublished">11/30</time>
-</a>
-      
-  
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/1899/11/30/groupDELL%E5%A4%A7%E5%9E%8B%E6%9C%BA/">DELL大型机使用Jupyter Notebook</a>
-    </h2>
-  
-  
-
-
-
-
-    </header>
-    
-    
-  </div>
-</article>
-          
+            SVD奇异值分解
           
         </div>
-      </div>
-      
+      </a>
     
-  
     
-      <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/page/6/">prev</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><span class="page-number current">7</span>
-      </nav>
+      <a href="/2023/12/13/lead_lag_cor/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">超前滞后相关系数</div>
+      </a>
     
-  </section>
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
   <footer class="footer">
   <div class="outer">
     <!-- <ul class="list-inline">
@@ -193,6 +173,8 @@
       <div class="powered-by">
   
 	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
   
 </div>
     </div>
@@ -302,6 +284,23 @@
 
 
 
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
 
 
 

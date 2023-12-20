@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+    <meta name="keywords" content="Meteorological, Python, Numerical Model, Code, Data visualization">
+  
+  
+    <meta name="description" content="Meteorological; Python; Numerical Model; Code; Data visualization">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    SVD奇异值分解 |
+    
+    ZSYXY Meteorological workshop</title>
+  
+    <link rel="shortcut icon" href="/2.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+  
+  <script type="text/javascript">
+  <script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  </script>
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ZSYXY Meteorological workshop" type="application/atom+xml">
+</head>
+
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-SVD" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      SVD奇异值分解
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2023/12/20/SVD/" class="article-date">
+  <time datetime="2023-12-20T08:19:11.000Z" itemprop="datePublished">2023-12-20</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>奇异值分解（Singular Value Decomposition，SVD）方法被用于揭示不同气候变量之间可能存在的关系。该方法描述了每个变量变化的主要特征，还可以捕获了两个场之间的主要时空相关结构。</p>
+<p>这里我们通过<a href="https://pyxmca.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">xMCA</a>库来实现SVD方法，该库可以通过以下指令来安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install xmca</span><br></pre></td></tr></table></figure>
+
+<p>这里我将通过大致再现”<a href="https://link.springer.com/article/10.1007/s11434-012-4989-2" target="_blank" rel="noopener">Changes of climate extremes of temperature and precipitation in summer in eastern China associated with changes in atmospheric circulation in East Asia during 1960–2008</a>“这篇论文中的SVD示例（数据与极端定义与原文不同，但结论基本一致，仅供参考）。简单来说，该文章通过SVD分析了中国区域夏季极端高温和极端降水日数的时空变化关系，体现了一种南涝北旱模态的年代际变化。这里我将通过中国CN05.1逐日最高气温和降水的1°分辨率格点数据集（我不提供该数据，我想大部分做气候的人应该都有这套资料），并以90百分位阈值的定义来识别极端高温和极端降水。</p>
+<p>首先引入相关的库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> xmca.xarray <span class="keyword">import</span> xMCA</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br></pre></td></tr></table></figure>
+
+<p>读取文件并计算极端日数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">f_prec = xr.open_dataset(<span class="string">'/mnt/f/CN05_STATIONS/CN05.1/1961-2017/daily/1/CN05.1_Pre_1961_2017_daily_1x1.nc'</span>)</span><br><span class="line">f_tmax = xr.open_dataset(<span class="string">'/mnt/f/CN05_STATIONS/CN05.1/1961-2017/daily/1/CN05.1_Tmax_1961_2017_daily_1x1.nc'</span>)</span><br><span class="line"><span class="comment">##############90阈值统计极端天数####################</span></span><br><span class="line">summer_preci = f_prec.pre.loc[f_prec.time.dt.season == <span class="string">'JJA'</span>]</span><br><span class="line">threshold90_preci = summer_preci.reduce(np.nanpercentile, q=<span class="number">90</span>, dim=<span class="string">'time'</span>)</span><br><span class="line">extreme_precipitation_days = (summer_preci &gt; threshold90_preci).groupby(summer_preci.time.dt.year).sum(dim=<span class="string">'time'</span>).rename(&#123;<span class="string">'year'</span>:<span class="string">'time'</span>,<span class="string">'longitude'</span>: <span class="string">'lon'</span>,<span class="string">'latitude'</span>: <span class="string">'lat'</span>&#125;)</span><br><span class="line"><span class="comment">#-----------------------------------#</span></span><br><span class="line">summer_tmax = f_tmax.tmax.loc[f_tmax.time.dt.season == <span class="string">'JJA'</span>]</span><br><span class="line">threshold90_tmax = summer_tmax.reduce(np.nanpercentile, q=<span class="number">90</span>, dim=<span class="string">'time'</span>)</span><br><span class="line">extreme_tmax_days = (summer_tmax &gt; threshold90_tmax).groupby(summer_tmax.time.dt.year).sum(dim=<span class="string">'time'</span>).rename(&#123;<span class="string">'year'</span>:<span class="string">'time'</span>,<span class="string">'longitude'</span>: <span class="string">'lon'</span>,<span class="string">'latitude'</span>: <span class="string">'lat'</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这里需要强调的是，因为我使用的是xMCA中关于DataArray的方法，所以需要将最终的数据维度修改命名为”time,lat,lon”格式。如果使用的xMCA中关于array的方法，那直接传入ndarray即可。接下来将计算好的极端高温和降水日数放进SVD中（两个数组的形状均为：年份，纬度，经度。表示每年每个格点的极端天数；实际上与EOF类似）。</p>
+<p>接下来是SVD部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##############SVD##################</span></span><br><span class="line">svd = xMCA(extreme_precipitation_days, extreme_tmax_days)</span><br><span class="line">svd.solve()</span><br><span class="line">het_patterns  = svd.heterogeneous_patterns()</span><br><span class="line">pcs = svd.pcs()</span><br></pre></td></tr></table></figure>
+
+<p>svd.heterogeneous_patterns()用于获取异构空间场，svd.pcs()为获取时间系数。</p>
+<p>至此，即可进行SVD结果的可视化。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">fig, axes = plt.subplots(nrows=<span class="number">1</span>, ncols=<span class="number">2</span>, figsize=(<span class="number">14</span>, <span class="number">6</span>), subplot_kw=&#123;<span class="string">'projection'</span>: ccrs.PlateCarree()&#125;)</span><br><span class="line"><span class="comment">################左场####################</span></span><br><span class="line">ax1 = axes[<span class="number">0</span>]</span><br><span class="line">ax1.set_extent([<span class="number">73</span>, <span class="number">135</span>, <span class="number">18</span>, <span class="number">53</span>], crs=ccrs.PlateCarree())</span><br><span class="line">ax1.add_feature(cfeature.BORDERS, linestyle=<span class="string">'-'</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">ax1.coastlines()</span><br><span class="line">contour_plot1 = het_patterns[<span class="number">0</span>][<span class="string">'right'</span>][:,:,<span class="number">0</span>].plot.contourf(ax=ax1, transform=ccrs.PlateCarree(), cmap=<span class="string">'Blues'</span>, add_colorbar=<span class="literal">False</span>)</span><br><span class="line">plt.colorbar(contour_plot1, ax=ax1,shrink=<span class="number">0.6</span>)</span><br><span class="line">ax1.set_title(<span class="string">'Extreme Precipitation days'</span>)</span><br><span class="line"><span class="comment">################右场####################</span></span><br><span class="line">ax2 = axes[<span class="number">1</span>]</span><br><span class="line">ax2.set_extent([<span class="number">73</span>, <span class="number">135</span>, <span class="number">18</span>, <span class="number">53</span>], crs=ccrs.PlateCarree())</span><br><span class="line">ax2.add_feature(cfeature.BORDERS, linestyle=<span class="string">'-'</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">ax2.coastlines()</span><br><span class="line">contour_plot2 = het_patterns[<span class="number">0</span>][<span class="string">'left'</span>][:,:,<span class="number">0</span>].plot.contourf(ax=ax2, transform=ccrs.PlateCarree(), cmap=<span class="string">'Reds'</span>, add_colorbar=<span class="literal">False</span>)</span><br><span class="line">plt.colorbar(contour_plot2, ax=ax2,shrink=<span class="number">0.6</span>)</span><br><span class="line">ax2.set_title(<span class="string">'Extreme Tmax days'</span>)</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">##########绘制PC############</span></span><br><span class="line">fig, ax = plt.subplots()</span><br><span class="line">pcs[<span class="string">'left'</span>][:,<span class="number">0</span>].plot(label=<span class="string">'Precipitation'</span>)</span><br><span class="line">pcs[<span class="string">'right'</span>][:,<span class="number">0</span>].plot(label=<span class="string">'Tmax'</span>)</span><br><span class="line">plt.ylabel(<span class="string">''</span>)</span><br><span class="line">plt.title(<span class="string">''</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>输出的异构场het_patterns是一个tuple对象，het_patterns[0]是tuple中存放的一个字典对象，这个字典对象包含了左场和右场，所以我们通过[‘right’]和[‘left’]选出来左右场；最后[:,:,0]的目的是选出第一个模态。这两个场是DataArray对象，包含经纬度信息，所以可以直接使用Xarray中的画图方法。这也是我推荐使用xmca.xarray而不是xmca.array的原因。pcs直接是字典对象了，所以不需要[0]解开tuple。</p>
+<p>图形输出结果：</p>
+<p><img src="/image/SVD1.png" alt="image-20200528144651404"></p>
+<p><img src="/image/SVD2.png" alt="image-20200528144651404"></p>
+<p>可以看出很显著的降水高温南北反相的特征，并且PC序列在90年代后出现显著趋势，与文章中的结果基本一致。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2023/12/20/SVD/" data-id="clqe2l2v90000h0ih35jbdxf1" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+    
+      <a href="/2023/12/19/wsl%E6%97%A0%E6%B3%95%E8%AF%BB%E5%8F%96%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">WSL无法读取移动硬盘的解决方案</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+    <div class="vcomments" id="vcomments"></div>
+    
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: 'Nas2VK24ghjkMeL9psOAV0t4-gzGzoHsz',
+                appKey: 'wz7jzCTKavkyF9OCm5uC7yDL',
+                notify: 'false',
+                verify: 'true',
+                avatar: 'mp',
+                pageSize: '10',
+                placeholder: '请输入...'
+            })
+        </script>
+        
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <!-- <ul class="list-inline">
+      <li>友情链接: </li>
+      <li><a href="https://blog.qlsmc.xyz/" target="_blank">满满干货</a></li>
+    </ul> -->
+    <div class="float-right">
+      <div class="powered-by">
+  
+	&emsp;<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span></span>&emsp;
+  
+    <i class="fe fe-bookmark"></i>文章访问量:<span id="busuanzi_value_page_pv"></span>
+  
+</div>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2023  ☁  YXY</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <!-- <a href="http://www.beian.miit.gov.cn/"  target="_blank">苏ICP备20024736号</a> -->
+    </ul>
+  </div>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2f3cfeb678793109105c1b9146f87165";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/shaun.svg" alt="ZSYXY Meteorological workshop"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Paper">Paper</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tags">Tags</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/tools">Tools</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/link">Link</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/categories/Private">Private</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+
+
+	
+<script src="/js/love.js"></script>
+
+ 
+
+</body>
+</html>

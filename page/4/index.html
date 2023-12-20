@@ -80,6 +80,144 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-zhexian2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/09/01/zhexian2/">双y轴折线图</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/09/01/zhexian2/" class="article-date">
+  <time datetime="2020-09-01T08:34:03.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Plot/">Plot</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>绘制双y轴折线图的要点在于将y轴的右轴变为一个兄弟轴(twin axis)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">ao = pd.read_csv(<span class="string">"AO.txt"</span>,sep=<span class="string">'\s+'</span>,header=<span class="literal">None</span>, names=[<span class="string">'year'</span>,<span class="string">'month'</span>,<span class="string">'AO'</span>])  </span><br><span class="line">ao_jan = ao[ao.month==<span class="number">1</span>]</span><br><span class="line">ao_feb = ao[ao.month==<span class="number">2</span>]</span><br><span class="line"><span class="comment">#创建Figure</span></span><br><span class="line">fig = plt.figure()</span><br><span class="line"><span class="comment">#绘制单y轴折线图</span></span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">ax1.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_jan.AO,<span class="string">'ko-'</span>,label=<span class="string">'Jan'</span>)</span><br><span class="line">ax1.set_ylabel(<span class="string">'January'</span>,c=<span class="string">'r'</span>)</span><br><span class="line">ax1.set_title(<span class="string">'1950-2019 AO Index'</span>)</span><br><span class="line"><span class="comment">#创建第二根y轴</span></span><br><span class="line">ax2 = ax1.twinx()  </span><br><span class="line">ax2.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_feb.AO,<span class="string">'rs-'</span>,label=<span class="string">'Feb'</span>)</span><br><span class="line">ax2.set_ylim(<span class="number">-4</span>,<span class="number">4</span>)</span><br><span class="line">ax2.set_ylabel(<span class="string">'February'</span>,c=<span class="string">'k'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出图形如下：</p>
+<p><img src="/image/zhexian2-1.png" alt="image-20200702161610554"></p>
+<p>测试数据下载地址：<a href="/image/AO.txt">点此下载</a></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/09/01/zhexian2/" data-id="cljmaen98003raoih5pqieikj" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
+          <article id="post-zhexian1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/09/01/zhexian1/">基本折线图(单变量，多变量)</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/09/01/zhexian1/" class="article-date">
+  <time datetime="2020-09-01T08:22:39.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Plot/">Plot</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>一、单变量折线图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment">#读取数据</span></span><br><span class="line">ao = pd.read_csv(<span class="string">"AO.txt"</span>,sep=<span class="string">'\s+'</span>,header=<span class="literal">None</span>, names=[<span class="string">'year'</span>,<span class="string">'month'</span>,<span class="string">'AO'</span>])  </span><br><span class="line">ao_jan = ao[ao.month==<span class="number">1</span>]</span><br><span class="line"><span class="comment">#创建Figure</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">8</span>))</span><br><span class="line"><span class="comment">#创建Axes</span></span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line"><span class="comment">#绘制折线图</span></span><br><span class="line">ax1.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_jan.AO, <span class="string">'ko-'</span>)</span><br><span class="line"><span class="comment">#添加图题</span></span><br><span class="line">ax1.set_title(<span class="string">'1950-2019 January AO Index'</span>)</span><br><span class="line"><span class="comment">#添加y=0值水平参考线</span></span><br><span class="line">ax1.axhline(<span class="number">0</span>,ls=<span class="string">':'</span>,c=<span class="string">'r'</span>)</span><br><span class="line"><span class="comment">#添加x=1990垂直参考线</span></span><br><span class="line">ax1.axvline(<span class="number">1990</span>,ls=<span class="string">'--'</span>,c=<span class="string">'g'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>输出图形如下：</p>
+<p><img src="/image/zhexian1-1.png" alt="image-20200702161610554"></p>
+<p>其中数据格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">print(ao)</span><br><span class="line">     year  month        AO</span><br><span class="line"><span class="number">0</span>    <span class="number">1950</span>      <span class="number">1</span> <span class="number">-0.060310</span></span><br><span class="line"><span class="number">1</span>    <span class="number">1950</span>      <span class="number">2</span>  <span class="number">0.626810</span></span><br><span class="line"><span class="number">2</span>    <span class="number">1950</span>      <span class="number">3</span> <span class="number">-0.008128</span></span><br><span class="line"><span class="number">3</span>    <span class="number">1950</span>      <span class="number">4</span>  <span class="number">0.555100</span></span><br><span class="line"><span class="number">4</span>    <span class="number">1950</span>      <span class="number">5</span>  <span class="number">0.071577</span></span><br><span class="line">..    ...    ...       ...</span><br><span class="line"><span class="number">835</span>  <span class="number">2019</span>      <span class="number">8</span> <span class="number">-0.721770</span></span><br><span class="line"><span class="number">836</span>  <span class="number">2019</span>      <span class="number">9</span>  <span class="number">0.306200</span></span><br><span class="line"><span class="number">837</span>  <span class="number">2019</span>     <span class="number">10</span> <span class="number">-0.082195</span></span><br><span class="line"><span class="number">838</span>  <span class="number">2019</span>     <span class="number">11</span> <span class="number">-1.193400</span></span><br><span class="line"><span class="number">839</span>  <span class="number">2019</span>     <span class="number">12</span>  <span class="number">0.412070</span></span><br><span class="line"></span><br><span class="line">[<span class="number">840</span> rows x <span class="number">3</span> columns]</span><br></pre></td></tr></table></figure>
+
+<p>二、多变量折线图</p>
+<p>实际上只是在同一个axes下叠加多个axes.plot()图层</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">ao = pd.read_csv(<span class="string">"AO.txt"</span>,sep=<span class="string">'\s+'</span>,header=<span class="literal">None</span>, names=[<span class="string">'year'</span>,<span class="string">'month'</span>,<span class="string">'AO'</span>])  </span><br><span class="line">ao_jan = ao[ao.month==<span class="number">1</span>]</span><br><span class="line">ao_feb = ao[ao.month==<span class="number">2</span>]</span><br><span class="line">fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">8</span>))</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">ax1.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_jan.AO,<span class="string">'ko-'</span>,label=<span class="string">'Jan'</span>)</span><br><span class="line">ax1.plot(np.arange(<span class="number">1950</span>,<span class="number">2020</span>,<span class="number">1</span>),ao_feb.AO,<span class="string">'rs-'</span>,label=<span class="string">'Feb'</span>)</span><br><span class="line">ax1.set_title(<span class="string">'1950-2019 AO Index'</span>)</span><br><span class="line">ax1.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/zhexian1-2.png" alt="image-20200702161610554"></p>
+<p>测试数据下载地址：<a href="/image/AO.txt">点此下载</a></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/09/01/zhexian1/" data-id="cljmaen98003uaoihdcky7xud" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-lat-time-lev" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -599,148 +737,6 @@
                                         </a>
                                         
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
-
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-4-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/27/f1-4-1-1/">功率谱</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/27/f1-4-1-1/" class="article-date">
-  <time datetime="2020-05-27T07:42:20.000Z" itemprop="datePublished">2020-05-27</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.stats.distributions <span class="keyword">import</span> chi2</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">功率谱分析</span></span><br><span class="line"><span class="string">输入：</span></span><br><span class="line"><span class="string">x：需要分析的时间序列(原始序列，未标准化或距平处理)</span></span><br><span class="line"><span class="string">m：最大滞后相关长度，m取值范围最好在(n/10)~(n/3)之间，n为样本数，可以多次调整m获得最佳效果，通常取m=n/3</span></span><br><span class="line"><span class="string">alpha1：红噪音检验信度</span></span><br><span class="line"><span class="string">alpha2：白噪音检验信度</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">l：功率谱图的X坐标，对应的周期为2m/l，使用时自己调整tick labels</span></span><br><span class="line"><span class="string">Sl：功率谱估计值</span></span><br><span class="line"><span class="string">Sr：红噪音</span></span><br><span class="line"><span class="string">Sw：白噪音</span></span><br><span class="line"><span class="string">r1：落后一个时刻的自相关函数，用于查看使用哪种噪音检验</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">specx_anal</span><span class="params">(x,m,alpha1,alpha2)</span>:</span></span><br><span class="line">    n = x.shape[<span class="number">0</span>]</span><br><span class="line">    x = (x - np.mean(x))/np.std(x)</span><br><span class="line">    r1 = np.zeros((n<span class="number">-6</span>))</span><br><span class="line">    r2 = np.zeros((n<span class="number">-7</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">0</span>,n<span class="number">-6</span>):</span><br><span class="line">        r1[i]=np.sum(x[:n-i]*x[i:])/x[:n-i].shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">1</span>,n<span class="number">-6</span>):</span><br><span class="line">        r2[i<span class="number">-1</span>]=np.sum(x[:n-i]*x[i:])/x[:n-i].shape[<span class="number">0</span>]</span><br><span class="line">    r2 = r2[::<span class="number">-1</span>]</span><br><span class="line">    r = np.hstack((r2,r1))</span><br><span class="line">    l = np.arange(<span class="number">0</span>,m+<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    tao = np.arange(<span class="number">1</span>,m,<span class="number">1</span>)</span><br><span class="line">    Sl  = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    Tl  = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    S0l = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    a = np.array((r.shape[<span class="number">0</span>]+<span class="number">1</span>)/<span class="number">2</span>).astype(<span class="string">'int32'</span>)</span><br><span class="line">    r = r[a<span class="number">-1</span>:a+m]</span><br><span class="line">    a=r[<span class="number">1</span>:<span class="number">-1</span>]*(<span class="number">1</span>+np.cos(np.pi*tao/m))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">2</span>,m+<span class="number">1</span>,<span class="number">1</span>):</span><br><span class="line">        Sl[i<span class="number">-1</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[i<span class="number">-1</span>]*np.pi*tao/m)))/m </span><br><span class="line">    Sl[<span class="number">0</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[<span class="number">0</span>]*np.pi*tao/m)))/(<span class="number">2</span>*m)</span><br><span class="line">    Sl[<span class="number">-1</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[<span class="number">-1</span>]*np.pi*tao/m)))/(<span class="number">2</span>*m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(l.shape[<span class="number">0</span>]):</span><br><span class="line">        Tl[i]=<span class="number">2</span>*m/l[i]</span><br><span class="line">    f=(<span class="number">2</span>*n-m/<span class="number">2</span>)/m</span><br><span class="line">    S=np.mean(Sl)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(l.shape[<span class="number">0</span>]):</span><br><span class="line">        S0l[i]=S*(<span class="number">1</span>-r[<span class="number">1</span>]*r[<span class="number">1</span>])/(<span class="number">1</span>+r[<span class="number">1</span>]*r[<span class="number">1</span>]<span class="number">-2</span>*r[<span class="number">1</span>]*np.cos(l[i]*np.pi/m))</span><br><span class="line">    x2r = chi2.ppf(<span class="number">1</span>-alpha1,df = f)</span><br><span class="line">    Sr=S0l*x2r/f</span><br><span class="line">    x2w = chi2.ppf(<span class="number">1</span>-alpha2,df = f)</span><br><span class="line">    Sw=S*x2w/f;</span><br><span class="line">    r1=r[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> l,Sl,Sr,Sw,r1</span><br></pre></td></tr></table></figure>
-
-<p>示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([<span class="number">16.80</span>,  <span class="number">15.35</span>,  <span class="number">17.00</span>,  <span class="number">22.50</span>,  <span class="number">23.50</span>,  <span class="number">27.00</span>,  <span class="number">27.60</span>,  <span class="number">28.00</span>,  <span class="number">27.15</span>,  <span class="number">24.00</span>,  <span class="number">20.85</span>,  <span class="number">18.25</span>,</span><br><span class="line">              <span class="number">16.20</span>,  <span class="number">14.30</span>,  <span class="number">16.55</span>,  <span class="number">21.10</span>,  <span class="number">24.00</span>,  <span class="number">26.25</span>,  <span class="number">27.80</span>,  <span class="number">27.30</span>,  <span class="number">27.05</span>,  <span class="number">25.50</span>,  <span class="number">23.80</span>,  <span class="number">19.95</span>,</span><br><span class="line">              <span class="number">15.60</span>,  <span class="number">17.00</span>,  <span class="number">19.70</span>,  <span class="number">20.90</span>,  <span class="number">24.00</span>,  <span class="number">24.80</span>,  <span class="number">26.95</span>,  <span class="number">26.70</span>,  <span class="number">27.40</span>,  <span class="number">24.85</span>,  <span class="number">22.20</span>,  <span class="number">18.90</span>,</span><br><span class="line">              <span class="number">15.80</span>,  <span class="number">13.55</span>,  <span class="number">17.60</span>,  <span class="number">21.75</span>,  <span class="number">25.00</span>,  <span class="number">26.20</span>,  <span class="number">26.95</span>,  <span class="number">27.00</span>,  <span class="number">26.35</span>,  <span class="number">24.60</span>,  <span class="number">21.55</span>,  <span class="number">17.85</span>,</span><br><span class="line">              <span class="number">15.60</span>,  <span class="number">18.05</span>,  <span class="number">18.90</span>,  <span class="number">21.90</span>,  <span class="number">24.35</span>,  <span class="number">26.20</span>,  <span class="number">26.80</span>,  <span class="number">26.90</span>,  <span class="number">28.05</span>,  <span class="number">25.60</span>,  <span class="number">22.00</span>,  <span class="number">17.80</span>,</span><br><span class="line">              <span class="number">16.20</span>,  <span class="number">15.20</span>,  <span class="number">17.60</span>,  <span class="number">20.00</span>,  <span class="number">23.75</span>,  <span class="number">25.20</span>,  <span class="number">27.00</span>,  <span class="number">27.80</span>,  <span class="number">26.90</span>,  <span class="number">24.40</span>,  <span class="number">21.00</span>,  <span class="number">17.80</span>,</span><br><span class="line">              <span class="number">14.00</span>,  <span class="number">13.55</span>,  <span class="number">19.95</span>,  <span class="number">23.00</span>,  <span class="number">25.15</span>,  <span class="number">26.80</span>,  <span class="number">27.00</span>,  <span class="number">27.10</span>,  <span class="number">26.80</span>,  <span class="number">25.50</span>,  <span class="number">22.20</span>,  <span class="number">19.50</span>,</span><br><span class="line">              <span class="number">18.00</span>,  <span class="number">17.80</span>,  <span class="number">18.95</span>,  <span class="number">21.70</span>,  <span class="number">23.40</span>,  <span class="number">27.35</span>,  <span class="number">28.00</span>,  <span class="number">27.80</span>,  <span class="number">27.20</span>,  <span class="number">25.00</span>,  <span class="number">22.20</span>,  <span class="number">19.95</span>,</span><br><span class="line">              <span class="number">18.95</span>,  <span class="number">19.00</span>,  <span class="number">20.50</span>,  <span class="number">22.20</span>,  <span class="number">23.35</span>,  <span class="number">25.55</span>,  <span class="number">27.90</span>,  <span class="number">27.80</span>,  <span class="number">28.00</span>,  <span class="number">24.60</span>,  <span class="number">22.50</span>,  <span class="number">19.20</span>,</span><br><span class="line">              <span class="number">17.70</span>,  <span class="number">15.10</span>,  <span class="number">16.50</span>,  <span class="number">22.00</span>,  <span class="number">24.00</span>,  <span class="number">28.00</span>,  <span class="number">28.60</span>,  <span class="number">27.90</span>,  <span class="number">27.00</span>,  <span class="number">25.40</span>,  <span class="number">23.00</span>,  <span class="number">21.30</span>,</span><br><span class="line">              <span class="number">18.50</span>,  <span class="number">18.00</span>,  <span class="number">19.00</span>,  <span class="number">23.25</span>,  <span class="number">24.25</span>,  <span class="number">25.40</span>,  <span class="number">28.10</span>,  <span class="number">28.50</span>,  <span class="number">26.70</span>,  <span class="number">25.70</span>,  <span class="number">22.00</span>,  <span class="number">18.00</span>,</span><br><span class="line">              <span class="number">18.00</span>,  <span class="number">17.00</span>,  <span class="number">18.00</span>,  <span class="number">20.00</span>,  <span class="number">24.05</span>,  <span class="number">25.50</span>,  <span class="number">27.55</span>,  <span class="number">27.50</span>,  <span class="number">26.60</span>,  <span class="number">26.00</span>,  <span class="number">23.50</span>, <span class="number">20.00</span>])</span><br><span class="line"></span><br><span class="line">l,Sl,Sr,Sw,r1 = specx_anal(x,x.shape[<span class="number">0</span>]//<span class="number">3</span>,<span class="number">0.1</span>,<span class="number">0.1</span>)</span><br><span class="line">plt.plot(l,Sl,<span class="string">'-b'</span>,label=<span class="string">'Real'</span>)</span><br><span class="line">plt.plot(l,Sr,<span class="string">'--r'</span>,label=<span class="string">'red noise'</span>)</span><br><span class="line">plt.plot(l,np.linspace(Sw,Sw,l.shape[<span class="number">0</span>]),<span class="string">'--m'</span>,label=<span class="string">'white noise'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line">print(r1)</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200527155848450.png" alt="image-20200527155848450"></p>
-<p>参考：<a href="http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=14978&amp;extra=page%3D3" target="_blank" rel="noopener">http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=14978&amp;extra=page%3D3</a></p>
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/27/f1-4-1-1/" data-id="cljmaen92002iaoihd4z5fnpi" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-cdopython" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/23/cdopython/">Use CDO in Python</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/23/cdopython/" class="article-date">
-  <time datetime="2020-05-23T14:52:08.000Z" itemprop="datePublished">2020-05-23</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Other/">Other</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>在Python中调用CDO批量处理文件（非cdo-python库）。</p>
-<p>实际上可以利用CDO的chain方式连锁处理，代码会更简洁。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="comment">#批量文件路径</span></span><br><span class="line">filePath = <span class="string">'/CMIP6/hist/ta/CESM2/r1i1p1f1/'</span></span><br><span class="line"><span class="comment">#获取文件名</span></span><br><span class="line">filename = os.listdir(filePath)</span><br><span class="line"><span class="comment">#将全部文件进行筛选，进保留文件名以ta开头的文件</span></span><br><span class="line">filename = list(filter(<span class="keyword">lambda</span> x:x.startswith(<span class="string">'ta'</span>), filename))</span><br><span class="line"><span class="comment">#对文件循环，注意每条语句的输入和输出，根据需要修改和开启/关闭指令</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(filename)):</span><br><span class="line"><span class="comment">#     os.system('cdo sellevel,50000   &#123;&#125;&#123;&#125; &#123;&#125;tmp1.nc'.format(filePath,filename[i],filePath))</span></span><br><span class="line">    os.system(<span class="string">'cdo remapbil,r144x73   &#123;&#125;&#123;&#125; &#123;&#125;no&#123;&#125;.nc'</span>.format(filePath,filename[i],filePath,i))</span><br><span class="line"><span class="comment">#     os.system('cdo sellonlatbox,-180,180,0,90  &#123;&#125;tmp2.nc &#123;&#125;no&#123;&#125;.nc'.format(filePath,filePath,i)) </span></span><br><span class="line"><span class="comment">#     os.system('cdo delete,month=2,day=29  &#123;&#125;tmp3.nc &#123;&#125;no&#123;&#125;.nc'.format(filePath,filePath,i)) </span></span><br><span class="line"><span class="comment">#删掉中间文件</span></span><br><span class="line">    os.system(<span class="string">'rm -f &#123;&#125;tmp*'</span>.format(filePath)) </span><br><span class="line"><span class="comment">#合并</span></span><br><span class="line">os.system(<span class="string">'cdo -b 32 mergetime &#123;&#125;no* &#123;&#125;ta.nc'</span>.format(filePath,filePath)) </span><br><span class="line"><span class="comment">#删掉中间文件</span></span><br><span class="line">os.system(<span class="string">'rm -f &#123;&#125;no*'</span>.format(filePath))</span><br></pre></td></tr></table></figure>
-
-
-
-<p>可使用的CDO指令可以参考：</p>
-
-
-	<div class="row">
-    <embed src="/image/cdo_refcard.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/23/cdopython/" data-id="cljmaen8o000kaoihe1e7czzn" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
 
                                     </footer>
 

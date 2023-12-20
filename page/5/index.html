@@ -80,6 +80,148 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-4-1-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/27/f1-4-1-1/">功率谱</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/27/f1-4-1-1/" class="article-date">
+  <time datetime="2020-05-27T07:42:20.000Z" itemprop="datePublished">2020-05-27</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.stats.distributions <span class="keyword">import</span> chi2</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">功率谱分析</span></span><br><span class="line"><span class="string">输入：</span></span><br><span class="line"><span class="string">x：需要分析的时间序列(原始序列，未标准化或距平处理)</span></span><br><span class="line"><span class="string">m：最大滞后相关长度，m取值范围最好在(n/10)~(n/3)之间，n为样本数，可以多次调整m获得最佳效果，通常取m=n/3</span></span><br><span class="line"><span class="string">alpha1：红噪音检验信度</span></span><br><span class="line"><span class="string">alpha2：白噪音检验信度</span></span><br><span class="line"><span class="string">输出：</span></span><br><span class="line"><span class="string">l：功率谱图的X坐标，对应的周期为2m/l，使用时自己调整tick labels</span></span><br><span class="line"><span class="string">Sl：功率谱估计值</span></span><br><span class="line"><span class="string">Sr：红噪音</span></span><br><span class="line"><span class="string">Sw：白噪音</span></span><br><span class="line"><span class="string">r1：落后一个时刻的自相关函数，用于查看使用哪种噪音检验</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">specx_anal</span><span class="params">(x,m,alpha1,alpha2)</span>:</span></span><br><span class="line">    n = x.shape[<span class="number">0</span>]</span><br><span class="line">    x = (x - np.mean(x))/np.std(x)</span><br><span class="line">    r1 = np.zeros((n<span class="number">-6</span>))</span><br><span class="line">    r2 = np.zeros((n<span class="number">-7</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">0</span>,n<span class="number">-6</span>):</span><br><span class="line">        r1[i]=np.sum(x[:n-i]*x[i:])/x[:n-i].shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">1</span>,n<span class="number">-6</span>):</span><br><span class="line">        r2[i<span class="number">-1</span>]=np.sum(x[:n-i]*x[i:])/x[:n-i].shape[<span class="number">0</span>]</span><br><span class="line">    r2 = r2[::<span class="number">-1</span>]</span><br><span class="line">    r = np.hstack((r2,r1))</span><br><span class="line">    l = np.arange(<span class="number">0</span>,m+<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">    tao = np.arange(<span class="number">1</span>,m,<span class="number">1</span>)</span><br><span class="line">    Sl  = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    Tl  = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    S0l = np.zeros((m+<span class="number">1</span>))</span><br><span class="line">    a = np.array((r.shape[<span class="number">0</span>]+<span class="number">1</span>)/<span class="number">2</span>).astype(<span class="string">'int32'</span>)</span><br><span class="line">    r = r[a<span class="number">-1</span>:a+m]</span><br><span class="line">    a=r[<span class="number">1</span>:<span class="number">-1</span>]*(<span class="number">1</span>+np.cos(np.pi*tao/m))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> np.arange(<span class="number">2</span>,m+<span class="number">1</span>,<span class="number">1</span>):</span><br><span class="line">        Sl[i<span class="number">-1</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[i<span class="number">-1</span>]*np.pi*tao/m)))/m </span><br><span class="line">    Sl[<span class="number">0</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[<span class="number">0</span>]*np.pi*tao/m)))/(<span class="number">2</span>*m)</span><br><span class="line">    Sl[<span class="number">-1</span>]=(r[<span class="number">0</span>]+np.sum(a*np.cos(l[<span class="number">-1</span>]*np.pi*tao/m)))/(<span class="number">2</span>*m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(l.shape[<span class="number">0</span>]):</span><br><span class="line">        Tl[i]=<span class="number">2</span>*m/l[i]</span><br><span class="line">    f=(<span class="number">2</span>*n-m/<span class="number">2</span>)/m</span><br><span class="line">    S=np.mean(Sl)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(l.shape[<span class="number">0</span>]):</span><br><span class="line">        S0l[i]=S*(<span class="number">1</span>-r[<span class="number">1</span>]*r[<span class="number">1</span>])/(<span class="number">1</span>+r[<span class="number">1</span>]*r[<span class="number">1</span>]<span class="number">-2</span>*r[<span class="number">1</span>]*np.cos(l[i]*np.pi/m))</span><br><span class="line">    x2r = chi2.ppf(<span class="number">1</span>-alpha1,df = f)</span><br><span class="line">    Sr=S0l*x2r/f</span><br><span class="line">    x2w = chi2.ppf(<span class="number">1</span>-alpha2,df = f)</span><br><span class="line">    Sw=S*x2w/f;</span><br><span class="line">    r1=r[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> l,Sl,Sr,Sw,r1</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([<span class="number">16.80</span>,  <span class="number">15.35</span>,  <span class="number">17.00</span>,  <span class="number">22.50</span>,  <span class="number">23.50</span>,  <span class="number">27.00</span>,  <span class="number">27.60</span>,  <span class="number">28.00</span>,  <span class="number">27.15</span>,  <span class="number">24.00</span>,  <span class="number">20.85</span>,  <span class="number">18.25</span>,</span><br><span class="line">              <span class="number">16.20</span>,  <span class="number">14.30</span>,  <span class="number">16.55</span>,  <span class="number">21.10</span>,  <span class="number">24.00</span>,  <span class="number">26.25</span>,  <span class="number">27.80</span>,  <span class="number">27.30</span>,  <span class="number">27.05</span>,  <span class="number">25.50</span>,  <span class="number">23.80</span>,  <span class="number">19.95</span>,</span><br><span class="line">              <span class="number">15.60</span>,  <span class="number">17.00</span>,  <span class="number">19.70</span>,  <span class="number">20.90</span>,  <span class="number">24.00</span>,  <span class="number">24.80</span>,  <span class="number">26.95</span>,  <span class="number">26.70</span>,  <span class="number">27.40</span>,  <span class="number">24.85</span>,  <span class="number">22.20</span>,  <span class="number">18.90</span>,</span><br><span class="line">              <span class="number">15.80</span>,  <span class="number">13.55</span>,  <span class="number">17.60</span>,  <span class="number">21.75</span>,  <span class="number">25.00</span>,  <span class="number">26.20</span>,  <span class="number">26.95</span>,  <span class="number">27.00</span>,  <span class="number">26.35</span>,  <span class="number">24.60</span>,  <span class="number">21.55</span>,  <span class="number">17.85</span>,</span><br><span class="line">              <span class="number">15.60</span>,  <span class="number">18.05</span>,  <span class="number">18.90</span>,  <span class="number">21.90</span>,  <span class="number">24.35</span>,  <span class="number">26.20</span>,  <span class="number">26.80</span>,  <span class="number">26.90</span>,  <span class="number">28.05</span>,  <span class="number">25.60</span>,  <span class="number">22.00</span>,  <span class="number">17.80</span>,</span><br><span class="line">              <span class="number">16.20</span>,  <span class="number">15.20</span>,  <span class="number">17.60</span>,  <span class="number">20.00</span>,  <span class="number">23.75</span>,  <span class="number">25.20</span>,  <span class="number">27.00</span>,  <span class="number">27.80</span>,  <span class="number">26.90</span>,  <span class="number">24.40</span>,  <span class="number">21.00</span>,  <span class="number">17.80</span>,</span><br><span class="line">              <span class="number">14.00</span>,  <span class="number">13.55</span>,  <span class="number">19.95</span>,  <span class="number">23.00</span>,  <span class="number">25.15</span>,  <span class="number">26.80</span>,  <span class="number">27.00</span>,  <span class="number">27.10</span>,  <span class="number">26.80</span>,  <span class="number">25.50</span>,  <span class="number">22.20</span>,  <span class="number">19.50</span>,</span><br><span class="line">              <span class="number">18.00</span>,  <span class="number">17.80</span>,  <span class="number">18.95</span>,  <span class="number">21.70</span>,  <span class="number">23.40</span>,  <span class="number">27.35</span>,  <span class="number">28.00</span>,  <span class="number">27.80</span>,  <span class="number">27.20</span>,  <span class="number">25.00</span>,  <span class="number">22.20</span>,  <span class="number">19.95</span>,</span><br><span class="line">              <span class="number">18.95</span>,  <span class="number">19.00</span>,  <span class="number">20.50</span>,  <span class="number">22.20</span>,  <span class="number">23.35</span>,  <span class="number">25.55</span>,  <span class="number">27.90</span>,  <span class="number">27.80</span>,  <span class="number">28.00</span>,  <span class="number">24.60</span>,  <span class="number">22.50</span>,  <span class="number">19.20</span>,</span><br><span class="line">              <span class="number">17.70</span>,  <span class="number">15.10</span>,  <span class="number">16.50</span>,  <span class="number">22.00</span>,  <span class="number">24.00</span>,  <span class="number">28.00</span>,  <span class="number">28.60</span>,  <span class="number">27.90</span>,  <span class="number">27.00</span>,  <span class="number">25.40</span>,  <span class="number">23.00</span>,  <span class="number">21.30</span>,</span><br><span class="line">              <span class="number">18.50</span>,  <span class="number">18.00</span>,  <span class="number">19.00</span>,  <span class="number">23.25</span>,  <span class="number">24.25</span>,  <span class="number">25.40</span>,  <span class="number">28.10</span>,  <span class="number">28.50</span>,  <span class="number">26.70</span>,  <span class="number">25.70</span>,  <span class="number">22.00</span>,  <span class="number">18.00</span>,</span><br><span class="line">              <span class="number">18.00</span>,  <span class="number">17.00</span>,  <span class="number">18.00</span>,  <span class="number">20.00</span>,  <span class="number">24.05</span>,  <span class="number">25.50</span>,  <span class="number">27.55</span>,  <span class="number">27.50</span>,  <span class="number">26.60</span>,  <span class="number">26.00</span>,  <span class="number">23.50</span>, <span class="number">20.00</span>])</span><br><span class="line"></span><br><span class="line">l,Sl,Sr,Sw,r1 = specx_anal(x,x.shape[<span class="number">0</span>]//<span class="number">3</span>,<span class="number">0.1</span>,<span class="number">0.1</span>)</span><br><span class="line">plt.plot(l,Sl,<span class="string">'-b'</span>,label=<span class="string">'Real'</span>)</span><br><span class="line">plt.plot(l,Sr,<span class="string">'--r'</span>,label=<span class="string">'red noise'</span>)</span><br><span class="line">plt.plot(l,np.linspace(Sw,Sw,l.shape[<span class="number">0</span>]),<span class="string">'--m'</span>,label=<span class="string">'white noise'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br><span class="line">print(r1)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200527155848450.png" alt="image-20200527155848450"></p>
+<p>参考：<a href="http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=14978&amp;extra=page%3D3" target="_blank" rel="noopener">http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=14978&amp;extra=page%3D3</a></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/27/f1-4-1-1/" data-id="cljmaen92002iaoihd4z5fnpi" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
+          <article id="post-cdopython" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/23/cdopython/">Use CDO in Python</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/23/cdopython/" class="article-date">
+  <time datetime="2020-05-23T14:52:08.000Z" itemprop="datePublished">2020-05-23</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Other/">Other</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>在Python中调用CDO批量处理文件（非cdo-python库）。</p>
+<p>实际上可以利用CDO的chain方式连锁处理，代码会更简洁。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="comment">#批量文件路径</span></span><br><span class="line">filePath = <span class="string">'/CMIP6/hist/ta/CESM2/r1i1p1f1/'</span></span><br><span class="line"><span class="comment">#获取文件名</span></span><br><span class="line">filename = os.listdir(filePath)</span><br><span class="line"><span class="comment">#将全部文件进行筛选，进保留文件名以ta开头的文件</span></span><br><span class="line">filename = list(filter(<span class="keyword">lambda</span> x:x.startswith(<span class="string">'ta'</span>), filename))</span><br><span class="line"><span class="comment">#对文件循环，注意每条语句的输入和输出，根据需要修改和开启/关闭指令</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(filename)):</span><br><span class="line"><span class="comment">#     os.system('cdo sellevel,50000   &#123;&#125;&#123;&#125; &#123;&#125;tmp1.nc'.format(filePath,filename[i],filePath))</span></span><br><span class="line">    os.system(<span class="string">'cdo remapbil,r144x73   &#123;&#125;&#123;&#125; &#123;&#125;no&#123;&#125;.nc'</span>.format(filePath,filename[i],filePath,i))</span><br><span class="line"><span class="comment">#     os.system('cdo sellonlatbox,-180,180,0,90  &#123;&#125;tmp2.nc &#123;&#125;no&#123;&#125;.nc'.format(filePath,filePath,i)) </span></span><br><span class="line"><span class="comment">#     os.system('cdo delete,month=2,day=29  &#123;&#125;tmp3.nc &#123;&#125;no&#123;&#125;.nc'.format(filePath,filePath,i)) </span></span><br><span class="line"><span class="comment">#删掉中间文件</span></span><br><span class="line">    os.system(<span class="string">'rm -f &#123;&#125;tmp*'</span>.format(filePath)) </span><br><span class="line"><span class="comment">#合并</span></span><br><span class="line">os.system(<span class="string">'cdo -b 32 mergetime &#123;&#125;no* &#123;&#125;ta.nc'</span>.format(filePath,filePath)) </span><br><span class="line"><span class="comment">#删掉中间文件</span></span><br><span class="line">os.system(<span class="string">'rm -f &#123;&#125;no*'</span>.format(filePath))</span><br></pre></td></tr></table></figure>
+
+
+
+<p>可使用的CDO指令可以参考：</p>
+
+
+	<div class="row">
+    <embed src="/image/cdo_refcard.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/23/cdopython/" data-id="cljmaen8o000kaoihe1e7czzn" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plot/" rel="tag">Plot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-plot" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -625,165 +767,6 @@
                                     </div>
                                     <footer class="article-footer">
                                         <a data-url="http://yoursite.com/2020/05/19/f1-2-3-1/" data-id="cljmaen910027aoihhg7qgt27" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-2-4-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/19/f1-2-4-1/">滤波(Butterworth滤波器)</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/19/f1-2-4-1/" class="article-date">
-  <time datetime="2020-05-19T13:40:07.000Z" itemprop="datePublished">2020-05-19</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>分析气候变化趋势中常用的方法还有滤波技术，主要分为低通滤波，高通滤波以及带通滤波。Scipy库中提供了构造Butterworth滤波器的函数。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.butter(N, Wn, btype=<span class="string">'low'</span>, analog=<span class="literal">False</span>, output=<span class="string">'ba'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>参数：</p>
-<p>　　　　N: 滤波器阶数</p>
-<p>　　　　Wn: 归一化的截止频率。计算公式为Wn=2*截止频率/采样频率。（注意：采样频率要大于两倍的信号本身最大的频率，才能还原信号。截止频率一定小于信号本身最大的频率，所以Wn一定在0和1之间）。当构造带通滤波器或者带阻滤波器时，Wn为长度为2的列表。</p>
-<p>　　　　btype:{‘lowpass’, ‘highpass’, ‘bandpass’, ‘bandstop’}参数可选</p>
-<p>　　　　　　‘lowpass’　默认值，低通滤波</p>
-<p>　　　　　　‘highpass’　高通滤波</p>
-<p>　　　　　　‘bandpass’　带通滤波</p>
-<p>　　　　　　‘bandstop’　阻通滤波</p>
-<p>analog：若为True，返回模拟滤波器，否则为数字滤波器</p>
-<p>默认设置下，构造滤波器函数会返回滤波器的分子系数向量b和滤波器的分母系数向量a。</p>
-<p>滤波器构建成功后，即可对数据进行滤波。滤波函数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.filtfilt(b, a, x, axis=<span class="number">-1</span>, padtype=<span class="string">'odd'</span>, padlen=<span class="literal">None</span>, method=<span class="string">'pad'</span>, irlen=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-
-<p>参数：</p>
-<p>　　　　b: 滤波器的分子系数向量</p>
-<p>　　　　a: 滤波器的分母系数向量</p>
-<p>　　　　x: 要过滤的数据数组</p>
-<p>　　　　x: 指定要过滤的数据数组的x维</p>
-<p>　　　　padtype: {‘odd’, ‘even’, ‘constant’, None} 参数可选，默认为’odd’</p>
-<p>　　　　padlen：整形，在应用滤波器之前在轴两端延伸的元素数。此值必须小于要滤波元素个数-1</p>
-<p>　　　　method：确定处理信号边缘的方法，{‘pad’ ，’gust’}参数可选</p>
-<p>　　　　　　‘pad’　填充信号；填充类型padtype和padlen决定，irlen被忽略</p>
-<p>　　　　　　‘gust’　使用古斯塔夫森方法，而忽略padtype和padlen</p>
-<p>　　　　irlen：当method为’gust’时，irlen指定滤波器的响应长度。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">y = np.array([<span class="number">6.08</span>, <span class="number">4.56</span>, <span class="number">5.63</span>, <span class="number">5.31</span>, <span class="number">5.15</span>, <span class="number">5.44</span>, <span class="number">4.65</span>, <span class="number">4.24</span>, <span class="number">7.3</span>,  <span class="number">5.86</span>, <span class="number">4.51</span>, <span class="number">6.28</span>, <span class="number">5.55</span>, <span class="number">5.35</span>,</span><br><span class="line">              <span class="number">5.12</span>, <span class="number">4.76</span>, <span class="number">4.35</span>, <span class="number">3.76</span>, <span class="number">4.74</span>, <span class="number">5.55</span>, <span class="number">4.54</span>, <span class="number">5.74</span>, <span class="number">5.54</span>, <span class="number">3.67</span>, <span class="number">4.77</span>, <span class="number">4.9</span>,  <span class="number">3.06</span>, <span class="number">3.9</span>,</span><br><span class="line">              <span class="number">4.18</span>, <span class="number">5.44</span>, <span class="number">5.21</span>, <span class="number">3.86</span>, <span class="number">3.96</span>, <span class="number">4.47</span>, <span class="number">4.37</span>, <span class="number">4.86</span>, <span class="number">4.43</span>, <span class="number">3.63</span>, <span class="number">3.98</span>, <span class="number">3.94</span>, <span class="number">5.09</span>, <span class="number">4.48</span>,</span><br><span class="line">              <span class="number">4.05</span>, <span class="number">4.81</span>, <span class="number">4.07</span>, <span class="number">4.48</span>, <span class="number">4.46</span>, <span class="number">3.95</span>, <span class="number">5.24</span>, <span class="number">3.54</span>, <span class="number">3.11</span>, <span class="number">5.07</span>, <span class="number">6.09</span>, <span class="number">4.59</span>, <span class="number">4.55</span>, <span class="number">4.7</span>,</span><br><span class="line">              <span class="number">3.43</span>, <span class="number">4.37</span>, <span class="number">4.79</span>, <span class="number">3.64</span>, <span class="number">4.3</span>,  <span class="number">3.5</span> ])</span><br><span class="line"><span class="comment">####高通滤波####</span></span><br><span class="line">b, a = signal.butter(<span class="number">3</span>, <span class="number">2</span>/<span class="number">3</span>, <span class="string">'highpass'</span>)</span><br><span class="line">high_series = signal.filtfilt(b, a, y)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),y,<span class="string">'k'</span>,label=<span class="string">'y'</span>)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),high_series+y.mean(),<span class="string">'r'</span>,label=<span class="string">'highpass'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200519214619977.png" alt="image-20200519214619977"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####低通滤波####获得10年以上的信号</span></span><br><span class="line">b, a = signal.butter(<span class="number">3</span>, <span class="number">2</span>/<span class="number">10</span>, <span class="string">'lowpass'</span>)</span><br><span class="line">low_series = signal.filtfilt(b, a, y)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),y,<span class="string">'k'</span>,label=<span class="string">'y'</span>)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),low_series,<span class="string">'r'</span>,label=<span class="string">'lowpass'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200519214647083.png" alt="image-20200519214647083"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####带通滤波####获得3-10年间的信号</span></span><br><span class="line">b, a = signal.butter(<span class="number">3</span>, [<span class="number">2</span>/<span class="number">10</span>,<span class="number">2</span>/<span class="number">3</span>], <span class="string">'bandpass'</span>)</span><br><span class="line">low_series = signal.filtfilt(b, a, y)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),y,<span class="string">'k'</span>,label=<span class="string">'y'</span>)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),low_series+y.mean(),<span class="string">'r'</span>,label=<span class="string">'bandpass'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/image/image-20200519214659491.png" alt="image-20200519214659491"></p>
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/19/f1-2-4-1/" data-id="cljmaen92002eaoih85ychj6p" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-f1-1-4-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/19/f1-1-4-1/">数据标准化</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/19/f1-1-4-1/" class="article-date">
-  <time datetime="2020-05-19T13:35:24.000Z" itemprop="datePublished">2020-05-19</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Function/">Function</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                                    <p>将以下内容复制进A.py文件，与使用脚本放在同一文件夹内，通过import A 调用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">function ：standardized(x,a)</span></span><br><span class="line"><span class="string">将数据标准化。 </span></span><br><span class="line"><span class="string">对x的a轴标准化。</span></span><br><span class="line"><span class="string">x为序列或数组，</span></span><br><span class="line"><span class="string">a为int；如1或(0,1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">standardized</span><span class="params">(x,a)</span>:</span></span><br><span class="line">    y = (x - x.mean(axis=(a)))/x.std(axis=(a))</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line">improt A</span><br><span class="line">standardized(x,a)</span><br></pre></td></tr></table></figure>
-
-<p>x为任意形状数组，函数对x的a轴进行标准化，</p>
-<p>a为int型；如1或(0,1)。</p>
-
-                                                                        
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-4-1/" data-id="cljmaen900022aoih058na3n4" class="article-share-link">
                                             Share
                                         </a>
                                         

@@ -80,6 +80,165 @@
       <h1 class="page-type-title"></h1>
       
         
+          <article id="post-f1-2-4-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/19/f1-2-4-1/">滤波(Butterworth滤波器)</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/19/f1-2-4-1/" class="article-date">
+  <time datetime="2020-05-19T13:40:07.000Z" itemprop="datePublished">2020-05-19</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>分析气候变化趋势中常用的方法还有滤波技术，主要分为低通滤波，高通滤波以及带通滤波。Scipy库中提供了构造Butterworth滤波器的函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.butter(N, Wn, btype=<span class="string">'low'</span>, analog=<span class="literal">False</span>, output=<span class="string">'ba'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>　　　　N: 滤波器阶数</p>
+<p>　　　　Wn: 归一化的截止频率。计算公式为Wn=2*截止频率/采样频率。（注意：采样频率要大于两倍的信号本身最大的频率，才能还原信号。截止频率一定小于信号本身最大的频率，所以Wn一定在0和1之间）。当构造带通滤波器或者带阻滤波器时，Wn为长度为2的列表。</p>
+<p>　　　　btype:{‘lowpass’, ‘highpass’, ‘bandpass’, ‘bandstop’}参数可选</p>
+<p>　　　　　　‘lowpass’　默认值，低通滤波</p>
+<p>　　　　　　‘highpass’　高通滤波</p>
+<p>　　　　　　‘bandpass’　带通滤波</p>
+<p>　　　　　　‘bandstop’　阻通滤波</p>
+<p>analog：若为True，返回模拟滤波器，否则为数字滤波器</p>
+<p>默认设置下，构造滤波器函数会返回滤波器的分子系数向量b和滤波器的分母系数向量a。</p>
+<p>滤波器构建成功后，即可对数据进行滤波。滤波函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.signal.filtfilt(b, a, x, axis=<span class="number">-1</span>, padtype=<span class="string">'odd'</span>, padlen=<span class="literal">None</span>, method=<span class="string">'pad'</span>, irlen=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<p>　　　　b: 滤波器的分子系数向量</p>
+<p>　　　　a: 滤波器的分母系数向量</p>
+<p>　　　　x: 要过滤的数据数组</p>
+<p>　　　　x: 指定要过滤的数据数组的x维</p>
+<p>　　　　padtype: {‘odd’, ‘even’, ‘constant’, None} 参数可选，默认为’odd’</p>
+<p>　　　　padlen：整形，在应用滤波器之前在轴两端延伸的元素数。此值必须小于要滤波元素个数-1</p>
+<p>　　　　method：确定处理信号边缘的方法，{‘pad’ ，’gust’}参数可选</p>
+<p>　　　　　　‘pad’　填充信号；填充类型padtype和padlen决定，irlen被忽略</p>
+<p>　　　　　　‘gust’　使用古斯塔夫森方法，而忽略padtype和padlen</p>
+<p>　　　　irlen：当method为’gust’时，irlen指定滤波器的响应长度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">y = np.array([<span class="number">6.08</span>, <span class="number">4.56</span>, <span class="number">5.63</span>, <span class="number">5.31</span>, <span class="number">5.15</span>, <span class="number">5.44</span>, <span class="number">4.65</span>, <span class="number">4.24</span>, <span class="number">7.3</span>,  <span class="number">5.86</span>, <span class="number">4.51</span>, <span class="number">6.28</span>, <span class="number">5.55</span>, <span class="number">5.35</span>,</span><br><span class="line">              <span class="number">5.12</span>, <span class="number">4.76</span>, <span class="number">4.35</span>, <span class="number">3.76</span>, <span class="number">4.74</span>, <span class="number">5.55</span>, <span class="number">4.54</span>, <span class="number">5.74</span>, <span class="number">5.54</span>, <span class="number">3.67</span>, <span class="number">4.77</span>, <span class="number">4.9</span>,  <span class="number">3.06</span>, <span class="number">3.9</span>,</span><br><span class="line">              <span class="number">4.18</span>, <span class="number">5.44</span>, <span class="number">5.21</span>, <span class="number">3.86</span>, <span class="number">3.96</span>, <span class="number">4.47</span>, <span class="number">4.37</span>, <span class="number">4.86</span>, <span class="number">4.43</span>, <span class="number">3.63</span>, <span class="number">3.98</span>, <span class="number">3.94</span>, <span class="number">5.09</span>, <span class="number">4.48</span>,</span><br><span class="line">              <span class="number">4.05</span>, <span class="number">4.81</span>, <span class="number">4.07</span>, <span class="number">4.48</span>, <span class="number">4.46</span>, <span class="number">3.95</span>, <span class="number">5.24</span>, <span class="number">3.54</span>, <span class="number">3.11</span>, <span class="number">5.07</span>, <span class="number">6.09</span>, <span class="number">4.59</span>, <span class="number">4.55</span>, <span class="number">4.7</span>,</span><br><span class="line">              <span class="number">3.43</span>, <span class="number">4.37</span>, <span class="number">4.79</span>, <span class="number">3.64</span>, <span class="number">4.3</span>,  <span class="number">3.5</span> ])</span><br><span class="line"><span class="comment">####高通滤波####</span></span><br><span class="line">b, a = signal.butter(<span class="number">3</span>, <span class="number">2</span>/<span class="number">3</span>, <span class="string">'highpass'</span>)</span><br><span class="line">high_series = signal.filtfilt(b, a, y)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),y,<span class="string">'k'</span>,label=<span class="string">'y'</span>)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),high_series+y.mean(),<span class="string">'r'</span>,label=<span class="string">'highpass'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200519214619977.png" alt="image-20200519214619977"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####低通滤波####获得10年以上的信号</span></span><br><span class="line">b, a = signal.butter(<span class="number">3</span>, <span class="number">2</span>/<span class="number">10</span>, <span class="string">'lowpass'</span>)</span><br><span class="line">low_series = signal.filtfilt(b, a, y)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),y,<span class="string">'k'</span>,label=<span class="string">'y'</span>)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),low_series,<span class="string">'r'</span>,label=<span class="string">'lowpass'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200519214647083.png" alt="image-20200519214647083"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####带通滤波####获得3-10年间的信号</span></span><br><span class="line">b, a = signal.butter(<span class="number">3</span>, [<span class="number">2</span>/<span class="number">10</span>,<span class="number">2</span>/<span class="number">3</span>], <span class="string">'bandpass'</span>)</span><br><span class="line">low_series = signal.filtfilt(b, a, y)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),y,<span class="string">'k'</span>,label=<span class="string">'y'</span>)</span><br><span class="line">plt.plot(np.arange(<span class="number">0</span>,<span class="number">62</span>,<span class="number">1</span>),low_series+y.mean(),<span class="string">'r'</span>,label=<span class="string">'bandpass'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20200519214659491.png" alt="image-20200519214659491"></p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/19/f1-2-4-1/" data-id="cljmaen92002eaoih85ychj6p" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
+          <article id="post-f1-1-4-1" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h2 itemprop="name">
+      <a class="article-title" href="/2020/05/19/f1-1-4-1/">数据标准化</a>
+    </h2>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/05/19/f1-1-4-1/" class="article-date">
+  <time datetime="2020-05-19T13:35:24.000Z" itemprop="datePublished">2020-05-19</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Function/">Function</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <p>将以下内容复制进A.py文件，与使用脚本放在同一文件夹内，通过import A 调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">function ：standardized(x,a)</span></span><br><span class="line"><span class="string">将数据标准化。 </span></span><br><span class="line"><span class="string">对x的a轴标准化。</span></span><br><span class="line"><span class="string">x为序列或数组，</span></span><br><span class="line"><span class="string">a为int；如1或(0,1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">standardized</span><span class="params">(x,a)</span>:</span></span><br><span class="line">    y = (x - x.mean(axis=(a)))/x.std(axis=(a))</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line">improt A</span><br><span class="line">standardized(x,a)</span><br></pre></td></tr></table></figure>
+
+<p>x为任意形状数组，函数对x的a轴进行标准化，</p>
+<p>a为int型；如1或(0,1)。</p>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/05/19/f1-1-4-1/" data-id="cljmaen900022aoih058na3n4" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+
+                
+
+</article>
+        
           <article id="post-f1-1-3-2" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
     <div class="article-inner">
@@ -644,139 +803,6 @@
                                         </a>
                                         
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Method/" rel="tag">Method</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Statistical/" rel="tag">Statistical</a></li></ul>
-
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-使用python批量下载ECMWF数据" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/">批量下载气象数据(EC;NCEP;CMIP)</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time datetime="2020-05-13T01:19:58.000Z" itemprop="datePublished">2020-05-13</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Paper/">Paper</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                    <p>介绍如何使用python批量下载EC数据以及使用wget批量下载NCEP/NCAR以及CMIP资料。</p>
-                                                        
-                                                            <a class="article-more-link" href="/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/">
-                                                                Read More...
-                                                            </a>
-                                                            
-                                                                
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/13/%E4%BD%BF%E7%94%A8python%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDECMWF%E6%95%B0%E6%8D%AE/" data-id="cljmaen9a0048aoih3fg7fozp" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Data/" rel="tag">Data</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shell/" rel="tag">Shell</a></li></ul>
-
-                                    </footer>
-
-    </div>
-
-    
-
-                
-
-</article>
-        
-          <article id="post-博客搭建" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
-
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-  
-    <h2 itemprop="name">
-      <a class="article-title" href="/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">从无到有搭建一个属于自己的网站</a>
-    </h2>
-  
-  
-
-
-
-
-            </header>
-            
-
-                
-                    <div class="article-meta">
-                        <a href="/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="article-date">
-  <time datetime="2020-05-12T03:05:44.000Z" itemprop="datePublished">2020-05-12</time>
-</a>
-                            
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Paper/">Paper</a>
-  </div>
-
-                    </div>
-                    
-
-                        
-
-                                    <div class="article-entry" itemprop="articleBody">
-                                        
-
-
-                                            
-
-                                                
-                                                    <p>从萌生想法到成功搭建自己的网站前前后后花了大概半个月的时间，终于成功搭建一块了属于自己的地盘。第一篇文章就记录下搭建个人网站的全部过程吧。</p>
-<p>大家感兴趣的话完全可以尝试文中操作，免费创建属于自己的主页或者博客。</p>
-                                                        
-                                                            <a class="article-more-link" href="/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
-                                                                Read More...
-                                                            </a>
-                                                            
-                                                                
-                                    </div>
-                                    <footer class="article-footer">
-                                        <a data-url="http://yoursite.com/2020/05/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-id="cljmaen9a004baoih54wl0nuw" class="article-share-link">
-                                            Share
-                                        </a>
-                                        
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Other/" rel="tag">Other</a></li></ul>
 
                                     </footer>
 
