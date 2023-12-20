@@ -115,8 +115,8 @@
 
 <p>输出的异构场het_patterns是一个tuple对象，het_patterns[0]是tuple中存放的一个字典对象，这个字典对象包含了左场和右场，所以我们通过[‘right’]和[‘left’]选出来左右场；最后[:,:,0]的目的是选出第一个模态。这两个场是DataArray对象，包含经纬度信息，所以可以直接使用Xarray中的画图方法。这也是我推荐使用xmca.xarray而不是xmca.array的原因。pcs直接是字典对象了，所以不需要[0]解开tuple。</p>
 <p>图形输出结果：</p>
-<p><img src="/image/svd1.png" alt="image-20200528144651404"></p>
-<p><img src="/image/svd2.png" alt="image-20200528144651404"></p>
+<p><img src="/image/SVD_PATTERN.png" alt="image-20200528144651404"></p>
+<p><img src="/image/SVD_PC.png" alt="image-20200528144651404"></p>
 <p>可以看出很显著的降水高温南北反相的特征，并且PC序列在90年代后出现显著趋势，与文章中的结果基本一致。</p>
 
                                                                         
